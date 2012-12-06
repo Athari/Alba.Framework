@@ -11,6 +11,7 @@
     <AssemblyName>Alba.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,6 +50,7 @@
     <Compile Include="Collections\ObservableCollectionEx.cs" />
     <Compile Include="Commands\CommandDisplay.cs" />
     <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\ControlCommand.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Linq\Properties.cs" />
@@ -60,7 +62,9 @@
     <Compile Include="System\WellKnownSidTypeExts.cs" />
   </ItemGroup>
   <ItemGroup />
+  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

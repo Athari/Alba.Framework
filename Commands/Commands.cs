@@ -51,9 +51,9 @@ namespace Alba.Framework.Commands
                 bindings.Add(binding);
         }
 
-        public static RoutedCommand RegisterCommand (Type ownerType, Expression<Func<RoutedCommand>> propExpr, params string[] gestures)
+        public static ControlCommand RegisterCommand (Type ownerType, Expression<Func<ControlCommand>> propExpr, params string[] gestures)
         {
-            var cmd = new RoutedCommand(Properties.GetName(propExpr), ownerType);
+            var cmd = new ControlCommand(Properties.GetName(propExpr), ownerType);
             // ReSharper disable AssignNullToNotNullAttribute (converter throws if can't convert)
             foreach (string gesture in gestures)
                 cmd.InputGestures.Add((InputGesture)_keyGestureConverter.ConvertFrom(gesture));
