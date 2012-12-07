@@ -7,7 +7,9 @@ namespace Alba.Framework.Commands
 {
     public class EventCommand : ICommand
     {
-        private List<WeakReference> _execute, _canExecute, _canExecuteChanged;
+        private event EventHandler _execute;
+        private event EventHandler<CanExecuteEventArgs> _canExecute;
+        private List<WeakReference> _canExecuteChanged;
         private bool _isAutomaticRequery = true;
 
         public EventCommand (bool isAutomaticRequery = true)
@@ -17,9 +19,9 @@ namespace Alba.Framework.Commands
 
         public EventCommand Subscribe (Action execute, Func<bool> canExecute = null)
         {
-            WeakEvents.AddHandler(ref _execute, (s, a) => execute(), 1);
+            _execute += (s, a) => execute();
             if (canExecute != null)
-                WeakEvents.AddHandler<CanExecuteEventArgs>(ref _canExecute, (s, a) => { a.CanExecute = canExecute(); }, 1);
+                _canExecute += (s, a) => { a.CanExecute = canExecute(); };
             return this;
         }
 
@@ -32,13 +34,13 @@ namespace Alba.Framework.Commands
         public bool CanExecute ()
         {
             var can = new CanExecuteEventArgs();
-            WeakEvents.Call<CanExecuteEventArgs>(_canExecute, h => h(this, can));
+            _canExecute.NullableInvoke(this, can);
             return can.CanExecute;
         }
 
         public void Execute ()
         {
-            WeakEvents.Call(_execute, h => h(this, EventArgs.Empty));
+            _execute.NullableInvoke(this);
         }
 
         public bool IsAutomaticRequery
@@ -70,13 +72,13 @@ namespace Alba.Framework.Commands
         {
             add
             {
-                if (!_isAutomaticRequery)
+                if (_isAutomaticRequery)
                     CommandManager.RequerySuggested += value;
                 WeakEvents.AddHandler(ref _canExecuteChanged, value, 2);
             }
             remove
             {
-                if (!_isAutomaticRequery)
+                if (_isAutomaticRequery)
                     CommandManager.RequerySuggested -= value;
                 WeakEvents.RemoveHandler(_canExecuteChanged, value);
             }
