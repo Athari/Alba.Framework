@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Alba.Framework.Linq
 {
@@ -22,6 +23,13 @@ namespace Alba.Framework.Linq
             Type type = d.GetType();
             DependencyPropertyDescriptor.FromName(propName, type, type).SetValue(d, value);
             return value;
+        }
+
+        public static void SetBinding (DependencyObject d, string propName, BindingBase binding)
+        {
+            Type type = d.GetType();
+            DependencyProperty prop = DependencyPropertyDescriptor.FromName(propName, type, type).DependencyProperty;
+            BindingOperations.SetBinding(d, prop, binding);
         }
 
         public static T GetDpValue<T> (DependencyObject d, string propName)

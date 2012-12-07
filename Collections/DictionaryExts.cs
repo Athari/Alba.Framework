@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Alba.Framework.Collections
@@ -24,11 +25,27 @@ namespace Alba.Framework.Collections
             return @this.TryGetValue(key, out value) ? value : defaultValue;
         }
 
+        public static TValue GetOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> @this,
+            TKey key, Func<TValue> getDefaultValue)
+        {
+            TValue value;
+            return @this.TryGetValue(key, out value) ? value : getDefaultValue();
+        }
+
         public static TValue? GetOrDefault<TKey, TValue> (this IDictionary<TKey, TValue> @this,
             TKey key, TValue? defaultValue = null) where TValue : struct
         {
             TValue value;
             return @this.TryGetValue(key, out value) ? value : defaultValue;
+        }
+
+        public static TValue GetOrAdd<TKey, TValue> (this IDictionary<TKey, TValue> @this,
+            TKey key, Func<TValue> getDefaultValue)
+        {
+            TValue value;
+            if (!@this.TryGetValue(key, out value))
+                @this[key] = value = getDefaultValue();
+            return value;
         }
     }
 }

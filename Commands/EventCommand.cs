@@ -2,59 +2,60 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Alba.Framework.Events;
+using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
+using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 
 namespace Alba.Framework.Commands
 {
-    public class EventCommand : ICommand
+    public class EventCommand
     {
-        private event EventHandler _execute;
-        private event EventHandler<CanExecuteEventArgs> _canExecute;
+        private bool _isAutoRequery = true;
         private List<WeakReference> _canExecuteChanged;
-        private bool _isAutomaticRequery = true;
+        private event ExecuteEventHandler _execute;
+        private event CanExecuteEventHandler _canExecute;
 
-        public EventCommand (bool isAutomaticRequery = true)
+        public EventCommand (bool isAutoRequery = true)
         {
-            _isAutomaticRequery = isAutomaticRequery;
+            _isAutoRequery = isAutoRequery;
         }
 
-        public EventCommand Subscribe (Action execute, Func<bool> canExecute = null)
+        public void Subscribe (ExecuteEventHandler execute, CanExecuteEventHandler canExecute = null)
         {
-            _execute += (s, a) => execute();
+            _execute += execute;
             if (canExecute != null)
-                _canExecute += (s, a) => { a.CanExecute = canExecute(); };
-            return this;
+                _canExecute += canExecute;
         }
 
         public EventCommand NoAutoRequery ()
         {
-            IsAutomaticRequery = false;
+            IsAutoRequery = false;
             return this;
         }
 
-        public bool CanExecute ()
+        public bool CanExecute (object model, object parameter)
         {
-            var can = new CanExecuteEventArgs();
-            _canExecute.NullableInvoke(this, can);
-            return can.CanExecute;
+            var args = new CanExecuteEventArgs(model, parameter);
+            _canExecute.NullableInvoke(this, args);
+            return args.CanExecute;
         }
 
-        public void Execute ()
+        public void Execute (object model, object parameter)
         {
-            _execute.NullableInvoke(this);
+            _execute.NullableInvoke(this, new ExecuteEventArgs(model, parameter));
         }
 
-        public bool IsAutomaticRequery
+        public bool IsAutoRequery
         {
-            get { return _isAutomaticRequery; }
+            get { return _isAutoRequery; }
             set
             {
-                if (_isAutomaticRequery == value)
+                if (_isAutoRequery == value)
                     return;
                 if (value)
                     WeakEvents.Call(_canExecuteChanged, h => CommandManager.RequerySuggested += h);
                 else
                     WeakEvents.Call(_canExecuteChanged, h => CommandManager.RequerySuggested -= h);
-                _isAutomaticRequery = value;
+                _isAutoRequery = value;
             }
         }
 
@@ -63,7 +64,7 @@ namespace Alba.Framework.Commands
             OnCanExecuteChanged();
         }
 
-        protected virtual void OnCanExecuteChanged ()
+        public virtual void OnCanExecuteChanged ()
         {
             WeakEvents.Call(_canExecuteChanged, h => h(this, EventArgs.Empty));
         }
@@ -72,36 +73,42 @@ namespace Alba.Framework.Commands
         {
             add
             {
-                if (_isAutomaticRequery)
+                if (_isAutoRequery)
                     CommandManager.RequerySuggested += value;
                 WeakEvents.AddHandler(ref _canExecuteChanged, value, 2);
             }
             remove
             {
-                if (_isAutomaticRequery)
+                if (_isAutoRequery)
                     CommandManager.RequerySuggested -= value;
                 WeakEvents.RemoveHandler(_canExecuteChanged, value);
             }
         }
+    }
 
-        bool ICommand.CanExecute (object parameter)
+    public class ExecuteEventArgs : EventArgs
+    {
+        public object Model { get; set; }
+        public object Parameter { get; set; }
+
+        internal ExecuteEventArgs (object model, object parameter)
         {
-            return CanExecute();
+            Model = model;
+            Parameter = parameter;
         }
+    }
 
-        void ICommand.Execute (object parameter)
+    public class CanExecuteEventArgs : EventArgs
+    {
+        public object Model { get; set; }
+        public object Parameter { get; set; }
+        public bool CanExecute { get; set; }
+
+        internal CanExecuteEventArgs (object model, object parameter)
         {
-            Execute();
-        }
-
-        private class CanExecuteEventArgs : EventArgs
-        {
-            public bool CanExecute { get; set; }
-
-            public CanExecuteEventArgs (bool canExecute = true)
-            {
-                CanExecute = canExecute;
-            }
+            Model = model;
+            Parameter = parameter;
+            CanExecute = true;
         }
     }
 }

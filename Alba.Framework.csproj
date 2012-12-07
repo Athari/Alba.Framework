@@ -35,6 +35,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,9 @@
     <Compile Include="Collections\ListExts.cs" />
     <Compile Include="Collections\ObservableCollectionEx.cs" />
     <Compile Include="Commands\CommandDisplay.cs" />
+    <Compile Include="Commands\CommandExtension.cs" />
+    <Compile Include="Commands\CommandConverter.cs" />
+    <Compile Include="Commands\EventCommandRef.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\ControlCommand.cs" />
     <Compile Include="Commands\EventCommand.cs" />
@@ -60,6 +64,7 @@
     <Compile Include="Linq\Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="System\Paths.cs" />
+    <Compile Include="System\ServiceProviderExts.cs" />
     <Compile Include="System\StringExts.cs" />
     <Compile Include="System\UiDispatcher.cs" />
     <Compile Include="System\WellKnownSidTypeExts.cs" />
