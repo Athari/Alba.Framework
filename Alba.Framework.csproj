@@ -51,11 +51,14 @@
     <Compile Include="Commands\CommandDisplay.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\ControlCommand.cs" />
+    <Compile Include="Commands\EventCommand.cs" />
     <Compile Include="Common\SingleInstance.cs" />
+    <Compile Include="Events\EventArgs%28T%29.cs" />
+    <Compile Include="Events\EventHandlerExts.cs" />
+    <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Linq\Properties.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\EventArgs.cs" />
     <Compile Include="System\Paths.cs" />
     <Compile Include="System\StringExts.cs" />
     <Compile Include="System\UiDispatcher.cs" />

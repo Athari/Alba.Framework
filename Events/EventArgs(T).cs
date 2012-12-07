@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Events
 {
     public class EventArgs<T> : EventArgs
     {
