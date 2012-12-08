@@ -19,7 +19,9 @@ namespace Alba.Framework.Commands
         }
 
         public CommandExtension ()
-        {}
+        {
+            Converter = new CommandConverter();
+        }
 
         public CommandExtension (CommandDisplay display)
         {
@@ -35,7 +37,7 @@ namespace Alba.Framework.Commands
 
         private CommandConverter CommandConverter
         {
-            get { return (CommandConverter)(Converter ?? (Converter = new CommandConverter(Display))); }
+            get { return (CommandConverter)(Converter ?? (Converter = new CommandConverter())); }
         }
     }
 }

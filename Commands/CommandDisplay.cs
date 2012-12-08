@@ -1,7 +1,9 @@
-﻿using System.Windows.Media;
+﻿using System.ComponentModel;
+using System.Windows.Media;
 
 namespace Alba.Framework.Commands
 {
+    [TypeConverter (typeof(TypeConverter))] // otherwise doesn't work as an argument for markup extension in data templates
     public class CommandDisplay
     {
         public EventCommand Command { get; set; }

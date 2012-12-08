@@ -54,7 +54,6 @@
     <Compile Include="Commands\CommandConverter.cs" />
     <Compile Include="Commands\EventCommandRef.cs" />
     <Compile Include="Commands\Commands.cs" />
-    <Compile Include="Commands\ControlCommand.cs" />
     <Compile Include="Commands\EventCommand.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 
@@ -47,6 +48,11 @@ namespace Alba.Framework.Linq
         public static T GetValue<T> (object o, string propName)
         {
             return (T)o.GetType().GetProperty(propName).GetValue(o);
+        }
+
+        public static T GetPrivateValue<T> (object o, string propName)
+        {
+            return (T)o.GetType().GetProperty(propName, BindingFlags.NonPublic | BindingFlags.Instance).GetValue(o);
         }
     }
 }

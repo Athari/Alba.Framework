@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Alba.Framework.Commands
 {
-    internal class CommandConverter : IValueConverter
+    public class CommandConverter : IValueConverter
     {
         public EventCommand Command { get; set; }
 
@@ -22,7 +22,7 @@ namespace Alba.Framework.Commands
         public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                throw new InvalidOperationException("Model for command not specified.");
+                return DependencyProperty.UnsetValue;
             return new EventCommandRef {
                 Command = Command ?? Display.Command,
                 Display = Display,
