@@ -14,8 +14,9 @@ namespace Alba.Framework.Commands
         private event ExecuteEventHandler _execute;
         private event CanExecuteEventHandler _canExecute;
 
-        public EventCommand (bool isAutoRequery = true)
+        public EventCommand (string name, bool isAutoRequery = true)
         {
+            Name = name;
             _isAutoRequery = isAutoRequery;
         }
 
@@ -43,6 +44,8 @@ namespace Alba.Framework.Commands
         {
             _execute.NullableInvoke(this, new ExecuteEventArgs(model, parameter));
         }
+
+        public string Name { get; private set; }
 
         public bool IsAutoRequery
         {
@@ -98,16 +101,12 @@ namespace Alba.Framework.Commands
         }
     }
 
-    public class CanExecuteEventArgs : EventArgs
+    public class CanExecuteEventArgs : ExecuteEventArgs
     {
-        public object Model { get; set; }
-        public object Parameter { get; set; }
         public bool CanExecute { get; set; }
 
-        internal CanExecuteEventArgs (object model, object parameter)
+        internal CanExecuteEventArgs (object model, object parameter) : base(model, parameter)
         {
-            Model = model;
-            Parameter = parameter;
             CanExecute = true;
         }
     }

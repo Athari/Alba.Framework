@@ -5,19 +5,6 @@ namespace Alba.Framework.Commands
 {
     public class CommandExtension : Binding
     {
-        public EventCommand Command { get; set; }
-
-        private CommandDisplay _display;
-        public CommandDisplay Display
-        {
-            get { return _display; }
-            set
-            {
-                _display = value;
-                CommandConverter.Display = _display;
-            }
-        }
-
         public CommandExtension ()
         {
             Converter = new CommandConverter();
@@ -28,11 +15,23 @@ namespace Alba.Framework.Commands
             Display = display;
         }
 
-        public CommandExtension (string elementName, CommandDisplay display)
+        public CommandExtension (CommandDisplay display, string elementName)
         {
+            Display = display;
             Path = new PropertyPath("DataContext");
             ElementName = elementName;
-            Display = display;
+        }
+
+        public CommandDisplay Display
+        {
+            get { return CommandConverter.Display; }
+            set { CommandConverter.Display = value; }
+        }
+
+        public EventCommand Command
+        {
+            get { return CommandConverter.Command; }
+            set { CommandConverter.Command = value; }
         }
 
         private CommandConverter CommandConverter

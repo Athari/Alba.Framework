@@ -65,7 +65,8 @@
     <Compile Include="System\Paths.cs" />
     <Compile Include="System\ServiceProviderExts.cs" />
     <Compile Include="System\StringExts.cs" />
-    <Compile Include="System\UiDispatcher.cs" />
+    <Compile Include="System\ObjectExts.cs" />
+    <Compile Include="System\DispatcherExts.cs" />
     <Compile Include="System\WellKnownSidTypeExts.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace Alba.Framework.Commands
 {
-    public class EventCommandRef : ICommand
+    internal class EventCommandRef : ICommand
     {
         public EventCommand Command { get; set; }
         public CommandDisplay Display { get; set; }
