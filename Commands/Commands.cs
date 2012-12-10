@@ -14,6 +14,7 @@ namespace Alba.Framework.Commands
     {
         private const string ErrorUnexpectedCommandParam = "Command '{0}' expected parameter of type '{1}', but received '{2}'.";
 
+        // TODO Consider using ConditionalWeakTable<TKey, TValue> to avoid hard referencing models
         private static readonly CommandsHandlersDictionary _commandsHandlers = new CommandsHandlersDictionary();
 
         public static void Subscribe (List<object> refs, object model, EventCommand command, Action execute, Func<bool> canExecute = null)
