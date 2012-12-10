@@ -58,6 +58,7 @@
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
     <Compile Include="Events\EventHandlerExts.cs" />
+    <Compile Include="Events\FastWeakEvent%28T%29.cs" />
     <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Linq\Properties.cs" />
