@@ -6,16 +6,16 @@ using Alba.Framework.Mvvm;
 
 namespace Alba.Framework.Commands
 {
-    internal class CommandConverter : IValueConverter
+    internal class EventCommandConverter : IValueConverter
     {
         public EventCommand Command { get; set; }
 
-        public CommandDisplay Display { get; set; }
+        public EventCommandDisplay Display { get; set; }
 
-        public CommandConverter ()
+        public EventCommandConverter ()
         {}
 
-        public CommandConverter (CommandDisplay display)
+        public EventCommandConverter (EventCommandDisplay display)
         {
             Display = display;
         }

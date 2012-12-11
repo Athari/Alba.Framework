@@ -1,28 +1,29 @@
 ﻿using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Commands;
 
-namespace Alba.Framework.Commands
+namespace Alba.Framework.Markup
 {
     public class CommandExtension : Binding
     {
         public CommandExtension ()
         {
-            Converter = new CommandConverter();
+            Converter = new EventCommandConverter();
         }
 
-        public CommandExtension (CommandDisplay display)
+        public CommandExtension (EventCommandDisplay display)
         {
             Display = display;
         }
 
-        public CommandExtension (CommandDisplay display, string elementName)
+        public CommandExtension (EventCommandDisplay display, string elementName)
         {
             Display = display;
             Path = new PropertyPath("DataContext");
             ElementName = elementName;
         }
 
-        public CommandDisplay Display
+        public EventCommandDisplay Display
         {
             get { return CommandConverter.Display; }
             set { CommandConverter.Display = value; }
@@ -34,9 +35,9 @@ namespace Alba.Framework.Commands
             set { CommandConverter.Command = value; }
         }
 
-        private CommandConverter CommandConverter
+        private EventCommandConverter CommandConverter
         {
-            get { return (CommandConverter)(Converter ?? (Converter = new CommandConverter())); }
+            get { return (EventCommandConverter)(Converter ?? (Converter = new EventCommandConverter())); }
         }
     }
 }

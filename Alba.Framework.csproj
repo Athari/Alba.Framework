@@ -50,9 +50,8 @@
     <Compile Include="Collections\DictionaryExts.cs" />
     <Compile Include="Collections\ListExts.cs" />
     <Compile Include="Collections\ObservableCollectionEx.cs" />
-    <Compile Include="Commands\CommandDisplay.cs" />
-    <Compile Include="Commands\CommandExtension.cs" />
-    <Compile Include="Commands\CommandConverter.cs" />
+    <Compile Include="Commands\EventCommandDisplay.cs" />
+    <Compile Include="Commands\EventCommandConverter.cs" />
     <Compile Include="Commands\EventCommandRef.cs" />
     <Compile Include="Commands\EventCommands.cs" />
     <Compile Include="Commands\EventCommand.cs" />
@@ -63,6 +62,7 @@
     <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Linq\Properties.cs" />
+    <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Mvvm\IModel.cs" />
     <Compile Include="Mvvm\ModelBase.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />

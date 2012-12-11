@@ -7,7 +7,7 @@ namespace Alba.Framework.Commands
     internal class EventCommandRef : ICommand
     {
         public EventCommand Command { get; set; }
-        public CommandDisplay Display { get; set; }
+        public EventCommandDisplay Display { get; set; }
         public IModel Model { get; set; }
 
         bool ICommand.CanExecute (object parameter)
