@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
     <Compile Include="Collections\CollectionExts.cs" />
+    <Compile Include="Collections\ConditionalWeakTableExts.cs" />
     <Compile Include="Collections\DictionaryExts.cs" />
     <Compile Include="Collections\ListExts.cs" />
     <Compile Include="Collections\ObservableCollectionEx.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Commands\CommandExtension.cs" />
     <Compile Include="Commands\CommandConverter.cs" />
     <Compile Include="Commands\EventCommandRef.cs" />
-    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\EventCommands.cs" />
     <Compile Include="Commands\EventCommand.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Linq\Properties.cs" />
+    <Compile Include="Mvvm\IModel.cs" />
     <Compile Include="Mvvm\ModelBase.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

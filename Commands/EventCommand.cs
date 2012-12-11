@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Alba.Framework.Events;
+using Alba.Framework.Mvvm;
 using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
 using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 
@@ -33,14 +34,14 @@ namespace Alba.Framework.Commands
             return this;
         }
 
-        public bool CanExecute (object model, object parameter)
+        public bool CanExecute (IModel model, object parameter)
         {
             var args = new CanExecuteEventArgs(model, parameter);
             _canExecute.NullableInvoke(this, args);
             return args.CanExecute;
         }
 
-        public void Execute (object model, object parameter)
+        public void Execute (IModel model, object parameter)
         {
             _execute.NullableInvoke(this, new ExecuteEventArgs(model, parameter));
         }
@@ -91,10 +92,10 @@ namespace Alba.Framework.Commands
 
     public class ExecuteEventArgs : EventArgs
     {
-        public object Model { get; set; }
+        public IModel Model { get; set; }
         public object Parameter { get; set; }
 
-        internal ExecuteEventArgs (object model, object parameter)
+        internal ExecuteEventArgs (IModel model, object parameter)
         {
             Model = model;
             Parameter = parameter;
@@ -105,7 +106,7 @@ namespace Alba.Framework.Commands
     {
         public bool CanExecute { get; set; }
 
-        internal CanExecuteEventArgs (object model, object parameter) : base(model, parameter)
+        internal CanExecuteEventArgs (IModel model, object parameter) : base(model, parameter)
         {
             CanExecute = true;
         }

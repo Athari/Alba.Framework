@@ -3,46 +3,66 @@ using System.Linq.Expressions;
 using Alba.Framework.Collections;
 using Alba.Framework.Events;
 using Alba.Framework.Linq;
+using Alba.Framework.Mvvm;
 using Alba.Framework.System;
 using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
 using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 using ModelsHandlersDictionary = System.Runtime.CompilerServices.ConditionalWeakTable<
-    System.Object,
-    Alba.Framework.Commands.Commands.ModelHandlers>;
+    Alba.Framework.Mvvm.IModel,
+    Alba.Framework.Commands.EventCommands.ModelHandlers>;
 using CommandsHandlersDictionary = System.Collections.Generic.Dictionary<
     Alba.Framework.Commands.EventCommand,
     /*ModelsHandlersDictionary*/ System.Runtime.CompilerServices.ConditionalWeakTable<
-        System.Object,
-        Alba.Framework.Commands.Commands.ModelHandlers>>;
+        Alba.Framework.Mvvm.IModel,
+        Alba.Framework.Commands.EventCommands.ModelHandlers>>;
 
 namespace Alba.Framework.Commands
 {
-    public static class Commands
+    public static class EventCommands
     {
         private const string ErrorUnexpectedCommandParam = "Command '{0}' expected parameter of type '{1}', but received '{2}'.";
 
         private static readonly CommandsHandlersDictionary _commandsHandlers = new CommandsHandlersDictionary();
 
-        public static void Subscribe (object model, EventCommand command, Action execute, Func<bool> canExecute = null)
+        public static void Subscribe (IModel model, EventCommand command, Action execute, Func<bool> canExecute = null)
         {
             ModelHandlers handlers = GetModelHandlers(command, model, true);
 
-            handlers.Execute += (s, a) => execute();
-
-            if (canExecute != null)
-                handlers.CanExecute += (s, a) => { a.CanExecute = canExecute(); };
+            lock (handlers) {
+                handlers.Execute += (s, a) => execute();
+                if (canExecute != null)
+                    handlers.CanExecute += (s, a) => { a.CanExecute = canExecute(); };
+            }
         }
 
-        public static void Subscribe<T> (object model, EventCommand command, Action<T> execute, Func<T, bool> canExecute = null)
+        public static void Subscribe<T> (IModel model, EventCommand command, Action<T> execute, Func<T, bool> canExecute = null)
         {
             ModelHandlers handlers = GetModelHandlers(command, model, true);
 
-            handlers.Execute += InvokeWithParamTypeCheck<ExecuteEventArgs, T>(command,
-                a => execute((T)a.Parameter));
+            lock (handlers) {
+                handlers.Execute += InvokeWithParamTypeCheck<ExecuteEventArgs, T>(command,
+                    a => execute((T)a.Parameter));
+                if (canExecute != null)
+                    handlers.CanExecute += InvokeWithParamTypeCheck<CanExecuteEventArgs, T>(command,
+                        a => a.CanExecute = canExecute((T)a.Parameter));
+            }
+        }
 
-            if (canExecute != null)
-                handlers.CanExecute += InvokeWithParamTypeCheck<CanExecuteEventArgs, T>(command,
-                    a => a.CanExecute = canExecute((T)a.Parameter));
+        public static void Unsubscribe (IModel model, EventCommand command)
+        {
+            lock (_commandsHandlers) {
+                ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrDefault(command);
+                if (modelsHandlers != null)
+                    modelsHandlers.Remove(model);
+            }
+        }
+
+        public static void Unsubscribe (IModel model)
+        {
+            lock (_commandsHandlers) {
+                foreach (ModelsHandlersDictionary modelsHandlers in _commandsHandlers.Values)
+                    modelsHandlers.Remove(model);
+            }
         }
 
         private static EventHandler<TArgs> InvokeWithParamTypeCheck<TArgs, TParam> (
@@ -73,20 +93,20 @@ namespace Alba.Framework.Commands
             handlers.RaiseCanExecute(sender, args);
         }
 
-        private static ModelHandlers GetModelHandlers (EventCommand command, object model, bool create)
+        private static ModelHandlers GetModelHandlers (EventCommand command, IModel model, bool create)
         {
-            if (create) {
-                ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrAdd(command, () => {
-                    command.Subscribe(OnCommandExecute, OnCommandCanExecute);
-                    return new ModelsHandlersDictionary();
-                });
-                return modelsHandlers.GetOrCreateValue(model);
-            }
-            else {
-                ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrDefault(command);
-                ModelHandlers handlers;
-                return modelsHandlers == null ? null
-                    : modelsHandlers.TryGetValue(model, out handlers) ? handlers : null;
+            lock (_commandsHandlers) {
+                if (create) {
+                    ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrAdd(command, () => {
+                        command.Subscribe(OnCommandExecute, OnCommandCanExecute);
+                        return new ModelsHandlersDictionary();
+                    });
+                    return modelsHandlers.GetValue(model, k => new ModelHandlers());
+                }
+                else {
+                    ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrDefault(command);
+                    return modelsHandlers == null ? null : modelsHandlers.GetOrDefault(model);
+                }
             }
         }
 

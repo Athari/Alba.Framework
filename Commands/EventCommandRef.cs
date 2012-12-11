@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using Alba.Framework.Mvvm;
 
 namespace Alba.Framework.Commands
 {
@@ -7,7 +8,7 @@ namespace Alba.Framework.Commands
     {
         public EventCommand Command { get; set; }
         public CommandDisplay Display { get; set; }
-        public object Model { get; set; }
+        public IModel Model { get; set; }
 
         bool ICommand.CanExecute (object parameter)
         {

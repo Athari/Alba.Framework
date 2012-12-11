@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace Alba.Framework.Mvvm
 {
-    public class ModelBase : INotifyPropertyChanging, INotifyPropertyChanged
+    public class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged
     {
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;

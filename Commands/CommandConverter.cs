@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Mvvm;
 
 namespace Alba.Framework.Commands
 {
@@ -21,12 +22,14 @@ namespace Alba.Framework.Commands
 
         public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value == null || value == DependencyProperty.UnsetValue)
                 return DependencyProperty.UnsetValue;
+            if (!(value is IModel))
+                throw new ArgumentException("value must be IModel", "value");
             return new EventCommandRef {
                 Command = Command ?? Display.Command,
                 Display = Display,
-                Model = value,
+                Model = (IModel)value,
             };
         }
 
