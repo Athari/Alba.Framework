@@ -50,6 +50,7 @@
     <Compile Include="Collections\DictionaryExts.cs" />
     <Compile Include="Collections\ListExts.cs" />
     <Compile Include="Collections\ObservableCollectionEx.cs" />
+    <Compile Include="Collections\ReadOnlyObservableCollectionEx.cs" />
     <Compile Include="Commands\EventCommandDisplay.cs" />
     <Compile Include="Commands\EventCommandConverter.cs" />
     <Compile Include="Commands\EventCommandRef.cs" />

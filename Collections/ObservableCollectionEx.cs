@@ -6,10 +6,16 @@ using NcChangedAction = System.Collections.Specialized.NotifyCollectionChangedAc
 
 namespace Alba.Framework.Collections
 {
-    public class ObservableCollectionEx<T> : ObservableCollection<T>
+    public class ObservableCollectionEx<T> : ObservableCollection<T>, INotifyPropertyChanged
     {
         protected const string CountPropertyName = "Count";
         protected const string IndexerPropertyName = "Item[]";
+
+        public new event PropertyChangedEventHandler PropertyChanged
+        {
+            add { base.PropertyChanged += value; }
+            remove { base.PropertyChanged -= value; }
+        }
 
         public new T Add (T item)
         {
