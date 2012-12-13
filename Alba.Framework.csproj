@@ -73,7 +73,10 @@
     <Compile Include="Linq\Properties.cs" />
     <Compile Include="Markup\Behaviors.cs" />
     <Compile Include="Markup\CommandExtension.cs" />
-    <Compile Include="Markup\WindowButtons.cs" />
+    <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
+    <Compile Include="Markup\DialogButton.cs" />
+    <Compile Include="Markup\SelfBinding.cs" />
+    <Compile Include="Markup\WindowButton.cs" />
     <Compile Include="Mvvm\IModel.cs" />
     <Compile Include="Mvvm\ModelBase.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />

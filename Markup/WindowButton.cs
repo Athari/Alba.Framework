@@ -3,7 +3,7 @@
 namespace Alba.Framework.Markup
 {
     [Flags]
-    public enum WindowButtons
+    public enum WindowButton
     {
         None = 0,
         System = 1 << 0,
