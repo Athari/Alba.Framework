@@ -6,5 +6,10 @@
         {
             return @this == null ? "null" : @this.GetType().FullName;
         }
+
+        public static T To<T> (this object @this)
+        {
+            return (T)@this;
+        }
     }
 }

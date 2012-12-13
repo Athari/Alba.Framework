@@ -38,14 +38,16 @@ namespace Alba.Framework.Collections
 
         protected virtual void OnCollectionChanged (NotifyCollectionChangedEventArgs args)
         {
-            if (CollectionChanged != null)
-                CollectionChanged(this, args);
+            var handler = CollectionChanged;
+            if (handler != null)
+                handler(this, args);
         }
 
         protected virtual void OnPropertyChanged (PropertyChangedEventArgs args)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, args);
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, args);
         }
     }
 }

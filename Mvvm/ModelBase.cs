@@ -1,14 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Threading;
 using JetBrains.Annotations;
 
 namespace Alba.Framework.Mvvm
 {
-    public class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged
+    public abstract class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged
     {
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
+
+        protected ModelBase ()
+        {
+            Dispatcher = Dispatcher.CurrentDispatcher;
+        }
+
+        public Dispatcher Dispatcher { get; private set; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanging ([CallerMemberName] string propName = null)
