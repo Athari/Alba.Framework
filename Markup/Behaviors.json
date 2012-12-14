@@ -1,0 +1,11 @@
+﻿_={
+    using: [ "System.Windows" ],
+    classes: {
+        Behaviors: {
+            attached: {
+                "WindowButton WindowButtons": { for: "Window", default: "WindowButton.Default", changed: 1 },
+                "DialogButton DialogButtons": { for: "Window" },
+            }
+        }
+    }
+}

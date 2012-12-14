@@ -11,7 +11,8 @@
     <AssemblyName>Alba.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <UseCommonOutputDirectory>true</UseCommonOutputDirectory>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -72,6 +76,9 @@
     <Compile Include="Interop\WS.cs" />
     <Compile Include="Linq\Properties.cs" />
     <Compile Include="Markup\Behaviors.cs" />
+    <Compile Include="Markup\Behaviors.g.cs">
+      <DependentUpon>Behaviors.tt</DependentUpon>
+    </Compile>
     <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
     <Compile Include="Markup\DialogButton.cs" />
@@ -88,7 +95,22 @@
     <Compile Include="System\DispatcherExts.cs" />
     <Compile Include="System\WellKnownSidTypeExts.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Markup\Behaviors.json">
+      <Generator>AttachT4</Generator>
+      <LastGenOutput>Behaviors.tt</LastGenOutput>
+    </None>
+    <None Include="Markup\Behaviors.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Behaviors.json</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

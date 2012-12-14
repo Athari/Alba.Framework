@@ -1,0 +1,59 @@
+<#@ template hostspecific="true" debug="true" #>
+<#@ output extension="/" #>
+<#@ include file="$(SolutionDir)\Alba.Framework.CodeGeneration\T4\Common.ttinclude" #>
+<#
+    var T4 = GetT4();
+    var data = LoadJson();
+
+    foreach (JProperty pcls in data["classes"]) {
+        var cls = pcls.Value;
+        string clsName = pcls.Name;
+        T4.StartFile(pcls.Name + ".g.cs");
+
+#>
+<# foreach (JValue use in data["using"]) { #>
+using <#=use#>;
+<# } #>
+<# if (cls["using"] != null) foreach (JValue use in cls["using"]) { #>
+using <#=use#>;
+<# } #>
+
+// ReSharper disable RedundantCast
+namespace <#=Namespace#>
+{
+    public static partial class <#=clsName#>
+    {
+<#    foreach (JProperty pprop in cls["attached"]) {
+        var prop = pprop.Value; string[] tn = pprop.Name.Split(' ');
+        string propType = tn[0],
+               propName = tn[1],
+               propDefault = prop["default"] != null ? string.Format("({0}){1}", propType, prop["default"]) : string.Format("default({0})", propType),
+               propChanged = prop["changed"] != null ? string.Format("{0}_Changed", propName) : null; #>
+        public static DependencyProperty <#=propName#>Property = DependencyProperty.RegisterAttached(
+            "<#=propName#>", typeof(<#=propType#>), typeof(<#=clsName#>),
+            new PropertyMetadata(<#=propDefault#><#=IfFormat(", {0}", propChanged)#>));
+<#    } #>
+
+<#    foreach (JProperty pprop in cls["attached"]) {
+        var prop = pprop.Value; string[] tn = pprop.Name.Split(' ');
+        string propType = tn[0],
+               propName = tn[1],
+               propFor = (string)prop["for"] ?? "DependencyObject"; #>
+        public static <#=propType#> Get<#=propName#> (Window d)
+        {
+            return (<#=propType#>)d.GetValue(<#=propName#>Property);
+        }
+
+        public static void Set<#=propName#> (Window d, <#=propType#> value)
+        {
+            d.SetValue(<#=propName#>Property, value);
+        }
+
+<#    } #>
+    }
+}
+<#
+
+    }
+    T4.Process();
+#>
