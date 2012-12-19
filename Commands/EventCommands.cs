@@ -3,17 +3,17 @@ using System.Linq.Expressions;
 using Alba.Framework.Collections;
 using Alba.Framework.Events;
 using Alba.Framework.Linq;
-using Alba.Framework.Mvvm;
+using Alba.Framework.Mvvm.Models;
 using Alba.Framework.System;
 using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
 using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 using ModelsHandlersDictionary = System.Runtime.CompilerServices.ConditionalWeakTable<
-    Alba.Framework.Mvvm.IModel,
+    Alba.Framework.Mvvm.Models.IModel,
     Alba.Framework.Commands.EventCommands.ModelHandlers>;
 using CommandsHandlersDictionary = System.Collections.Generic.Dictionary<
     Alba.Framework.Commands.EventCommand,
     /*ModelsHandlersDictionary*/ System.Runtime.CompilerServices.ConditionalWeakTable<
-        Alba.Framework.Mvvm.IModel,
+        Alba.Framework.Mvvm.Models.IModel,
         Alba.Framework.Commands.EventCommands.ModelHandlers>>;
 
 namespace Alba.Framework.Commands

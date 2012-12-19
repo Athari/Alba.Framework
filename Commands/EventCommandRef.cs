@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Alba.Framework.Mvvm;
+using Alba.Framework.Mvvm.Models;
 
 namespace Alba.Framework.Commands
 {

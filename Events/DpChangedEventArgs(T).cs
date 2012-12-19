@@ -1,6 +1,6 @@
-﻿using System.Windows;
+using System.Windows;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Events
 {
     public class DpChangedEventArgs<T>
     {

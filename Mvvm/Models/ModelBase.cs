@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using JetBrains.Annotations;
 
-namespace Alba.Framework.Mvvm
+namespace Alba.Framework.Mvvm.Models
 {
     public abstract class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged
     {

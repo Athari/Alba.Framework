@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace Alba.Framework.Markup
+namespace Alba.Framework.Mvvm.Dialogs
 {
     [Flags]
     public enum WindowButton

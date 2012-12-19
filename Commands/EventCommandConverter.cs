@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Alba.Framework.Mvvm;
+using Alba.Framework.Mvvm.Models;
 
 namespace Alba.Framework.Commands
 {

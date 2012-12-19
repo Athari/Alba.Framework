@@ -1,7 +1,7 @@
-﻿_={
+_={
     using: [ "System.Windows", "Alba.Framework.System" ],
     classes: {
-        Behaviors: {
+        DialogProps: {
             attached: {
                 "WindowButton WindowButtons": { for: "Window", default: "WindowButton.Default", changed: 1 },
                 "DialogButton DialogButtons": { for: "Window" },

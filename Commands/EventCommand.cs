@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Input;
 using Alba.Framework.Events;
-using Alba.Framework.Mvvm;
+using Alba.Framework.Mvvm.Models;
 using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
 using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 

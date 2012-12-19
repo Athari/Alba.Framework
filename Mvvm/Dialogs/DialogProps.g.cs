@@ -2,17 +2,16 @@ using System.Windows;
 using Alba.Framework.System;
 
 // ReSharper disable RedundantCast
-namespace Alba.Framework.Markup
+namespace Alba.Framework.Mvvm.Dialogs
 {
-    public static partial class Behaviors
+    public static partial class DialogProps
     {
         public static DependencyProperty WindowButtonsProperty = DependencyProperty.RegisterAttached(
-            "WindowButtons", typeof(WindowButton), typeof(Behaviors),
+            "WindowButtons", typeof(WindowButton), typeof(DialogProps),
             new PropertyMetadata((WindowButton)WindowButton.Default, WindowButtons_Changed));
         public static DependencyProperty DialogButtonsProperty = DependencyProperty.RegisterAttached(
-            "DialogButtons", typeof(DialogButton), typeof(Behaviors),
+            "DialogButtons", typeof(DialogButton), typeof(DialogProps),
             new PropertyMetadata(default(DialogButton)));
-
         public static WindowButton GetWindowButtons (Window d)
         {
             return (WindowButton)d.GetValue(WindowButtonsProperty);

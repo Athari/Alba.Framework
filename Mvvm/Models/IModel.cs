@@ -1,4 +1,4 @@
-﻿namespace Alba.Framework.Mvvm
+namespace Alba.Framework.Mvvm.Models
 {
     public interface IModel
     {}

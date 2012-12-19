@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using Alba.Framework.Commands;
 
-namespace Alba.Framework.Mvvm
+namespace Alba.Framework.Mvvm.Models
 {
     public class ViewModelBase : ModelBase
     {

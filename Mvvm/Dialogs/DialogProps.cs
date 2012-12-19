@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Windows;
+using Alba.Framework.Events;
 using Alba.Framework.Interop;
 using Alba.Framework.System;
-using DpChangedEventArgs = System.Windows.DependencyPropertyChangedEventArgs;
 
-namespace Alba.Framework.Markup
+namespace Alba.Framework.Mvvm.Dialogs
 {
-    public static partial class Behaviors
+    public static partial class DialogProps
     {
         private static void WindowButtons_Changed (Window window, DpChangedEventArgs<WindowButton> args)
         {
