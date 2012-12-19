@@ -38,7 +38,8 @@ namespace <#=Namespace#>
         var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
             propType = propTypeName[0],
             propName = propTypeName[1],
-            propFor = (string)prop["for"] ?? "DependencyObject"; #>
+            propFor = (string)prop["for"] ?? "DependencyObject",
+            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null; #>
         public static <#=propType#> Get<#=propName#> (<#=propFor#> d)
         {
             return (<#=propType#>)d.GetValue(<#=propName#>Property);
@@ -49,6 +50,13 @@ namespace <#=Namespace#>
             d.SetValue(<#=propName#>Property, value);
         }
 
+<#      if (propChanged != null) { #>
+        private static void <#=propChanged#> (DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            <#=propChanged#>((<#=propFor#>)d, new DpChangedEventArgs<<#=propType#>>(args));
+        }
+
+<#      } #>
 <#    } #>
     }
 }

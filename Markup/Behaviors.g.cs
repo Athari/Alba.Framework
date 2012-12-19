@@ -1,4 +1,5 @@
 using System.Windows;
+using Alba.Framework.System;
 
 // ReSharper disable RedundantCast
 namespace Alba.Framework.Markup
@@ -20,6 +21,11 @@ namespace Alba.Framework.Markup
         public static void SetWindowButtons (Window d, WindowButton value)
         {
             d.SetValue(WindowButtonsProperty, value);
+        }
+
+        private static void WindowButtons_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            WindowButtons_Changed((Window)d, new DpChangedEventArgs<WindowButton>(args));
         }
 
         public static DialogButton GetDialogButtons (Window d)

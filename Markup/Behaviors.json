@@ -1,5 +1,5 @@
 ﻿_={
-    using: [ "System.Windows" ],
+    using: [ "System.Windows", "Alba.Framework.System" ],
     classes: {
         Behaviors: {
             attached: {

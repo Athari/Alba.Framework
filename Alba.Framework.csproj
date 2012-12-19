@@ -88,6 +88,7 @@
     <Compile Include="Mvvm\ModelBase.cs" />
     <Compile Include="Mvvm\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="System\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="System\Paths.cs" />
     <Compile Include="System\ServiceProviderExts.cs" />
     <Compile Include="System\StringExts.cs" />
