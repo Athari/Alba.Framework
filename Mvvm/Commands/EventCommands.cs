@@ -1,28 +1,20 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using Alba.Framework.Collections;
 using Alba.Framework.Events;
 using Alba.Framework.Linq;
 using Alba.Framework.Mvvm.Models;
 using Alba.Framework.System;
-using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
-using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
-using ModelsHandlersDictionary = System.Runtime.CompilerServices.ConditionalWeakTable<
-    Alba.Framework.Mvvm.Models.IModel,
-    Alba.Framework.Commands.EventCommands.ModelHandlers>;
-using CommandsHandlersDictionary = System.Collections.Generic.Dictionary<
-    Alba.Framework.Commands.EventCommand,
-    /*ModelsHandlersDictionary*/ System.Runtime.CompilerServices.ConditionalWeakTable<
-        Alba.Framework.Mvvm.Models.IModel,
-        Alba.Framework.Commands.EventCommands.ModelHandlers>>;
 
-namespace Alba.Framework.Commands
+namespace Alba.Framework.Mvvm.Commands
 {
     public static class EventCommands
     {
         private const string ErrorUnexpectedCommandParam = "Command '{0}' expected parameter of type '{1}', but received '{2}'.";
 
-        private static readonly CommandsHandlersDictionary _commandsHandlers = new CommandsHandlersDictionary();
+        private static readonly Dictionary<EventCommand, ConditionalWeakTable<IModel, ModelHandlers>> _commandsHandlers = new Dictionary<EventCommand, ConditionalWeakTable<IModel, ModelHandlers>>();
 
         public static void Subscribe (IModel model, EventCommand command, Action execute, Func<bool> canExecute = null)
         {
@@ -51,7 +43,7 @@ namespace Alba.Framework.Commands
         public static void Unsubscribe (IModel model, EventCommand command)
         {
             lock (_commandsHandlers) {
-                ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrDefault(command);
+                ConditionalWeakTable<IModel, ModelHandlers> modelsHandlers = _commandsHandlers.GetOrDefault(command);
                 if (modelsHandlers != null)
                     modelsHandlers.Remove(model);
             }
@@ -60,7 +52,7 @@ namespace Alba.Framework.Commands
         public static void Unsubscribe (IModel model)
         {
             lock (_commandsHandlers) {
-                foreach (ModelsHandlersDictionary modelsHandlers in _commandsHandlers.Values)
+                foreach (ConditionalWeakTable<IModel, ModelHandlers> modelsHandlers in _commandsHandlers.Values)
                     modelsHandlers.Remove(model);
             }
         }
@@ -97,14 +89,14 @@ namespace Alba.Framework.Commands
         {
             lock (_commandsHandlers) {
                 if (create) {
-                    ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrAdd(command, () => {
+                    ConditionalWeakTable<IModel, ModelHandlers> modelsHandlers = _commandsHandlers.GetOrAdd(command, () => {
                         command.Subscribe(OnCommandExecute, OnCommandCanExecute);
-                        return new ModelsHandlersDictionary();
+                        return new ConditionalWeakTable<IModel, ModelHandlers>();
                     });
                     return modelsHandlers.GetValue(model, k => new ModelHandlers());
                 }
                 else {
-                    ModelsHandlersDictionary modelsHandlers = _commandsHandlers.GetOrDefault(command);
+                    ConditionalWeakTable<IModel, ModelHandlers> modelsHandlers = _commandsHandlers.GetOrDefault(command);
                     return modelsHandlers == null ? null : modelsHandlers.GetOrDefault(model);
                 }
             }
@@ -117,8 +109,8 @@ namespace Alba.Framework.Commands
 
         internal class ModelHandlers
         {
-            public event ExecuteEventHandler Execute;
-            public event CanExecuteEventHandler CanExecute;
+            public event EventHandler<ExecuteEventArgs> Execute;
+            public event EventHandler<CanExecuteEventArgs> CanExecute;
 
             public void RaiseExecute (object sender, ExecuteEventArgs args)
             {

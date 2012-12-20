@@ -1,10 +1,16 @@
 _={
-    using: [ "System.Windows", "Alba.Framework.System" ],
+    using: [
+        "System.Windows",
+        "System.Windows.Controls.Primitives",
+        "Alba.Framework.Events"
+    ],
     classes: {
         DialogProps: {
             attached: {
                 "WindowButton WindowButtons": { for: "Window", default: "WindowButton.Default", changed: 1 },
                 "DialogButton DialogButtons": { for: "Window" },
+                "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
+                "DialogButton DialogResult": { for: "Window", default: "DialogButton.Cancel" },
             }
         }
     }

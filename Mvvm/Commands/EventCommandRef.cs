@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Windows.Input;
 using Alba.Framework.Mvvm.Models;
 
-namespace Alba.Framework.Commands
+namespace Alba.Framework.Mvvm.Commands
 {
     internal class EventCommandRef : ICommand
     {

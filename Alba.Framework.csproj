@@ -55,11 +55,6 @@
     <Compile Include="Collections\ListExts.cs" />
     <Compile Include="Collections\ObservableCollectionEx.cs" />
     <Compile Include="Collections\ReadOnlyObservableCollectionEx.cs" />
-    <Compile Include="Commands\EventCommandDisplay.cs" />
-    <Compile Include="Commands\EventCommandConverter.cs" />
-    <Compile Include="Commands\EventCommandRef.cs" />
-    <Compile Include="Commands\EventCommands.cs" />
-    <Compile Include="Commands\EventCommand.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
@@ -79,11 +74,17 @@
     <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
     <Compile Include="Markup\SelfBinding.cs" />
+    <Compile Include="Mvvm\Commands\EventCommand.cs" />
+    <Compile Include="Mvvm\Commands\EventCommandConverter.cs" />
+    <Compile Include="Mvvm\Commands\EventCommandDisplay.cs" />
+    <Compile Include="Mvvm\Commands\EventCommandRef.cs" />
+    <Compile Include="Mvvm\Commands\EventCommands.cs" />
     <Compile Include="Mvvm\Dialogs\DialogProps.cs" />
     <Compile Include="Mvvm\Dialogs\DialogButton.cs" />
     <Compile Include="Mvvm\Dialogs\DialogProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Mvvm\Dialogs\DialogResult%28T%29.cs" />
     <Compile Include="Mvvm\Dialogs\WindowButton.cs" />
     <Compile Include="Mvvm\Models\IModel.cs" />
     <Compile Include="Mvvm\Models\ModelBase.cs" />

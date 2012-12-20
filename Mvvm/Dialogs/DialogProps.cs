@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics.Contracts;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
 using Alba.Framework.Interop;
 using Alba.Framework.System;
@@ -33,6 +35,16 @@ namespace Alba.Framework.Mvvm.Dialogs
             var ustyle = style.To<uint>();
             var ubit = bit.To<uint>();
             style = (value != 0 ? ustyle | ubit : ustyle & ~ubit).To<T>();
+        }
+
+        private static void ButtonResult_Changed (ButtonBase button, DpChangedEventArgs<DialogButton> args)
+        {
+            button.Click += (s, a) => {
+                var win = Window.GetWindow(button);
+                Contract.Assume(win != null);
+                SetDialogResult(win, args.NewValue);
+                win.Close();
+            };
         }
     }
 }

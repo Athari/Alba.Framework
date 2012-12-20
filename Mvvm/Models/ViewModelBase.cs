@@ -1,5 +1,5 @@
 using System;
-using Alba.Framework.Commands;
+using Alba.Framework.Mvvm.Commands;
 
 namespace Alba.Framework.Mvvm.Models
 {

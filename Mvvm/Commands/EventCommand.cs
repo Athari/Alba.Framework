@@ -1,19 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using Alba.Framework.Events;
 using Alba.Framework.Mvvm.Models;
-using ExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.ExecuteEventArgs>;
-using CanExecuteEventHandler = System.EventHandler<Alba.Framework.Commands.CanExecuteEventArgs>;
 
-namespace Alba.Framework.Commands
+namespace Alba.Framework.Mvvm.Commands
 {
     public class EventCommand
     {
         private bool _isAutoRequery = true;
         private List<WeakReference> _canExecuteChanged;
-        private event ExecuteEventHandler _execute;
-        private event CanExecuteEventHandler _canExecute;
+        private event EventHandler<ExecuteEventArgs> _execute;
+        private event EventHandler<CanExecuteEventArgs> _canExecute;
 
         public EventCommand (string name, bool isAutoRequery = true)
         {
@@ -21,7 +19,7 @@ namespace Alba.Framework.Commands
             _isAutoRequery = isAutoRequery;
         }
 
-        public void Subscribe (ExecuteEventHandler execute, CanExecuteEventHandler canExecute = null)
+        public void Subscribe (EventHandler<ExecuteEventArgs> execute, EventHandler<CanExecuteEventArgs> canExecute = null)
         {
             _execute += execute;
             if (canExecute != null)

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Data;
-using Alba.Framework.Commands;
+using Alba.Framework.Mvvm.Commands;
 
 namespace Alba.Framework.Markup
 {
