@@ -16,7 +16,7 @@ namespace Alba.Framework.Mvvm.Models
             Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public Dispatcher Dispatcher { get; private set; }
+        public Dispatcher Dispatcher { get; protected set; }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanging ([CallerMemberName] string propName = null)
@@ -37,6 +37,7 @@ namespace Alba.Framework.Mvvm.Models
         [NotifyPropertyChangedInvocator ("propName")]
         protected bool Set<T> (ref T field, T value, [CallerMemberName] string propName = null)
         {
+            VerifyAccess();
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
             OnPropertyChanging(propName);
@@ -48,6 +49,7 @@ namespace Alba.Framework.Mvvm.Models
         [NotifyPropertyChangedInvocator ("propNames")]
         protected bool Set<T> (ref T field, T value, params string[] propNames)
         {
+            VerifyAccess();
             if (EqualityComparer<T>.Default.Equals(field, value))
                 return false;
             foreach (string prop in propNames)
@@ -56,6 +58,12 @@ namespace Alba.Framework.Mvvm.Models
             foreach (string prop in propNames)
                 OnPropertyChanged(prop);
             return true;
+        }
+
+        protected void VerifyAccess ()
+        {
+            if (Dispatcher != null)
+                Dispatcher.VerifyAccess();
         }
     }
 }
