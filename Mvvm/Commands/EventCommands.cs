@@ -62,7 +62,7 @@ namespace Alba.Framework.Mvvm.Commands
             where TArgs : ExecuteEventArgs
         {
             return (s, a) => {
-                if (!(a.Parameter is TParam))
+                if (a.Parameter != null && !(a.Parameter is TParam))
                     throw new ArgumentException(string.Format(ErrorUnexpectedCommandParam,
                         command.Name, typeof(TParam).FullName, a.Parameter.GetTypeFullName()));
                 handler(a);

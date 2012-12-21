@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
-using JetBrains.Annotations;
+using Alba.Framework.Attributes;
 
 namespace Alba.Framework.Mvvm.Models
 {
@@ -58,6 +58,12 @@ namespace Alba.Framework.Mvvm.Models
             foreach (string prop in propNames)
                 OnPropertyChanged(prop);
             return true;
+        }
+
+        protected T Get<T> (ref T field)
+        {
+            VerifyAccess();
+            return field;
         }
 
         protected void VerifyAccess ()

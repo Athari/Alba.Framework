@@ -8,6 +8,7 @@ namespace Alba.Framework.Mvvm.Commands
     {
         public EventCommand Command { get; set; }
         public string Label { get; set; }
+        public string ShortLabel { get; set; }
         public ImageSource Icon { get; set; }
         public ImageSource LargeIcon { get; set; }
     }

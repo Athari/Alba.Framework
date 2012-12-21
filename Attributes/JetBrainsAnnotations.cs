@@ -17,7 +17,7 @@
 using System;
 using System.ComponentModel;
 
-namespace JetBrains.Annotations
+namespace Alba.Framework.Attributes
 {
     /// <summary>
     /// Indicates that marked element should be localized or not.
@@ -122,7 +122,7 @@ namespace JetBrains.Annotations
     /// <summary>
     /// Indicates that the function argument should be string literal and match one of the parameters
     /// of the caller function.
-    /// For example, ReSharper annotates the parameter of <see cref="System.ArgumentNullException"/>.
+    /// For example, ReSharper annotates the parameter of <see cref="ArgumentNullException"/>.
     /// </summary>
     /// <example>
     /// <code>
@@ -138,7 +138,7 @@ namespace JetBrains.Annotations
 
     /// <summary>
     /// Indicates that the method is contained in a type that implements
-    /// <see cref="System.ComponentModel.INotifyPropertyChanged"/> interface
+    /// <see cref="INotifyPropertyChanged"/> interface
     /// and this method is used to notify that some property value changed.
     /// </summary>
     /// <remarks>
