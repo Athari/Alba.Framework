@@ -1,24 +1,30 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
+using FPM = System.Windows.FrameworkPropertyMetadata;
+using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
 
 // ReSharper disable RedundantCast
 namespace Alba.Framework.Mvvm.Dialogs
 {
     public static partial class DialogProps
     {
-        public static DependencyProperty WindowButtonsProperty = DependencyProperty.RegisterAttached(
+        public static readonly DependencyProperty WindowButtonsProperty = DependencyProperty.RegisterAttached(
             "WindowButtons", typeof(WindowButton), typeof(DialogProps),
-            new PropertyMetadata((WindowButton)WindowButton.Default, WindowButtons_Changed));
-        public static DependencyProperty DialogButtonsProperty = DependencyProperty.RegisterAttached(
+            new FPM((WindowButton)WindowButton.Default, WindowButtons_Changed));
+
+        public static readonly DependencyProperty DialogButtonsProperty = DependencyProperty.RegisterAttached(
             "DialogButtons", typeof(DialogButton), typeof(DialogProps),
-            new PropertyMetadata(default(DialogButton)));
-        public static DependencyProperty ButtonResultProperty = DependencyProperty.RegisterAttached(
+            new FPM(default(DialogButton)));
+
+        public static readonly DependencyProperty ButtonResultProperty = DependencyProperty.RegisterAttached(
             "ButtonResult", typeof(DialogButton), typeof(DialogProps),
-            new PropertyMetadata(default(DialogButton), ButtonResult_Changed));
-        public static DependencyProperty DialogResultProperty = DependencyProperty.RegisterAttached(
+            new FPM(default(DialogButton), ButtonResult_Changed));
+
+        public static readonly DependencyProperty DialogResultProperty = DependencyProperty.RegisterAttached(
             "DialogResult", typeof(DialogButton), typeof(DialogProps),
-            new PropertyMetadata((DialogButton)DialogButton.Cancel));
+            new FPM((DialogButton)DialogButton.Cancel));
+
         public static WindowButton GetWindowButtons (Window d)
         {
             return (WindowButton)d.GetValue(WindowButtonsProperty);

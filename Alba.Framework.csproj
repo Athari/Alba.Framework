@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
+    <Compile Include="Controls\SelectorProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Collections\CollectionExts.cs" />
     <Compile Include="Collections\ConditionalWeakTableExts.cs" />
     <Compile Include="Collections\DictionaryExts.cs" />
@@ -56,6 +59,7 @@
     <Compile Include="Collections\ObservableCollectionEx.cs" />
     <Compile Include="Collections\ReadOnlyObservableCollectionEx.cs" />
     <Compile Include="Common\SingleInstance.cs" />
+    <Compile Include="Controls\SelectorProps.cs" />
     <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
     <Compile Include="Events\EventHandlerExts.cs" />
@@ -98,6 +102,16 @@
     <Compile Include="System\WellKnownSidTypeExts.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Controls\AttachedProps.json">
+      <Generator>AttachT4</Generator>
+      <LastGenOutput>AttachedProps.tt</LastGenOutput>
+    </None>
+    <None Include="Controls\AttachedProps.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AttachedProps.json</DependentUpon>
+    </None>
     <None Include="Mvvm\Dialogs\AttachedProps.json">
       <Generator>AttachT4</Generator>
       <LastGenOutput>AttachedProps.tt</LastGenOutput>
@@ -113,6 +127,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
