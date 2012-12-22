@@ -24,13 +24,19 @@ namespace Alba.Framework.Mvvm.Commands
         {
             if (value == null || value == DependencyProperty.UnsetValue)
                 return DependencyProperty.UnsetValue;
-            if (!(value is IModel))
+
+            var model = value as IModel;
+            if (model == null)
                 throw new ArgumentException("value must be IModel", "value");
-            return new EventCommandRef {
-                Command = Command ?? Display.Command,
+            EventCommand command = Command ?? Display.Command;
+
+            var commandRef = new EventCommandRef {
+                Command = command,
                 Display = Display,
-                Model = (IModel)value,
+                Model = model,
             };
+            EventCommands.AddCommandRef(model, command, commandRef);
+            return commandRef;
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

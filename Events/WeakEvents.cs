@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alba.Framework.Attributes;
 
 namespace Alba.Framework.Events
 {
@@ -24,7 +25,7 @@ namespace Alba.Framework.Events
             }
         }
 
-        public static void Call (List<WeakReference> handlers, Action<EventHandler> action)
+        public static void Call (List<WeakReference> handlers, [InstantHandle] Action<EventHandler> action)
         {
             if (handlers == null)
                 return;
@@ -57,7 +58,7 @@ namespace Alba.Framework.Events
             }
         }
 
-        public static void Call<T> (List<WeakReference> handlers, Action<EventHandler<T>> action)
+        public static void Call<T> (List<WeakReference> handlers, [InstantHandle] Action<EventHandler<T>> action)
         {
             if (handlers == null)
                 return;

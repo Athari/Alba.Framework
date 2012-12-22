@@ -17,6 +17,11 @@ namespace Alba.Framework.System
             @this.BeginInvoke(action);
         }
 
+        public static void ExecuteAsync (this Dispatcher @this, DispatcherPriority priority, Action action)
+        {
+            @this.BeginInvoke(priority, action);
+        }
+
         public static void Execute (this Dispatcher @this, Action action)
         {
             if (@this.CheckAccess())

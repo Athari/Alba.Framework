@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Alba.Framework.Collections
 {
@@ -20,6 +22,23 @@ namespace Alba.Framework.Collections
         {
             @this.Clear();
             @this.AddRange(items);
+        }
+
+        public static void RemoveStaleReferences<T> (this ICollection<WeakReference<T>> @this)
+            where T : class
+        {
+            T target;
+            var list = @this as List<WeakReference<T>>;
+            if (list != null) {
+                list.RemoveAll(wr => !wr.TryGetTarget(out target));
+                list.Capacity = list.Count;
+            }
+            else {
+                foreach (var wr in @this.ToArray()) {
+                    if (!wr.TryGetTarget(out target))
+                        @this.Remove(wr);
+                }
+            }
         }
     }
 }

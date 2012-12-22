@@ -49,6 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
+    <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
+    <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
+    <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
     <Compile Include="Controls\SelectorProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
@@ -56,8 +59,8 @@
     <Compile Include="Collections\ConditionalWeakTableExts.cs" />
     <Compile Include="Collections\DictionaryExts.cs" />
     <Compile Include="Collections\ListExts.cs" />
-    <Compile Include="Collections\ObservableCollectionEx.cs" />
-    <Compile Include="Collections\ReadOnlyObservableCollectionEx.cs" />
+    <Compile Include="Collections\ObservableCollectionEx%28T%29.cs" />
+    <Compile Include="Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Controls\SelectorProps.cs" />
     <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
@@ -74,7 +77,7 @@
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
-    <Compile Include="Linq\Properties.cs" />
+    <Compile Include="Linq\Props.cs" />
     <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
     <Compile Include="Markup\SelfBinding.cs" />

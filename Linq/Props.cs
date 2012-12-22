@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace Alba.Framework.Linq
 {
-    public static class Properties
+    public static class Props
     {
         public static string GetName<TObj, TProp> (Expression<Func<TObj, TProp>> expr)
         {

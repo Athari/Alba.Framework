@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Alba.Framework.Events;
 using Alba.Framework.Mvvm.Models;
+using Alba.Framework.System;
 
 namespace Alba.Framework.Mvvm.Commands
 {
@@ -61,14 +63,18 @@ namespace Alba.Framework.Mvvm.Commands
             }
         }
 
-        public void RaiseCanExecuteChanged ()
+        public void RaiseCanExecuteChanged (IModel model)
         {
-            OnCanExecuteChanged();
+            if (model.Dispatcher != null)
+                model.Dispatcher.ExecuteAsync(DispatcherPriority.Background, () => OnCanExecuteChanged(model));
+            else
+                OnCanExecuteChanged(model);
         }
 
-        public virtual void OnCanExecuteChanged ()
+        protected virtual void OnCanExecuteChanged (IModel model)
         {
-            WeakEvents.Call(_canExecuteChanged, h => h(this, EventArgs.Empty));
+            foreach (EventCommandRef commandRef in EventCommands.GetCommandRefs(model, this))
+                WeakEvents.Call(_canExecuteChanged, h => h(commandRef, EventArgs.Empty));
         }
 
         public event EventHandler CanExecuteChanged

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Alba.Framework.Collections;
@@ -57,6 +58,33 @@ namespace Alba.Framework.Mvvm.Commands
             }
         }
 
+        internal static void AddCommandRef (IModel model, EventCommand command, EventCommandRef commandRef)
+        {
+            ModelHandlers handlers = GetModelHandlers(command, model, true);
+
+            lock (handlers) {
+                handlers.CommandRefs.Add(new WeakReference<EventCommandRef>(commandRef));
+                handlers.CommandRefs.RemoveStaleReferences();
+            }
+        }
+
+        internal static IEnumerable<EventCommandRef> GetCommandRefs (IModel model, EventCommand command)
+        {
+            ModelHandlers handlers = GetModelHandlers(command, model, false);
+            if (handlers == null)
+                return Enumerable.Empty<EventCommandRef>();
+
+            lock (handlers) {
+                var result = new List<EventCommandRef>();
+                foreach (var wr in handlers.CommandRefs) {
+                    EventCommandRef commandRef;
+                    if (wr.TryGetTarget(out commandRef))
+                        result.Add(commandRef);
+                }
+                return result;
+            }
+        }
+
         private static EventHandler<TArgs> InvokeWithParamTypeCheck<TArgs, TParam> (
             EventCommand command, Action<TArgs> handler)
             where TArgs : ExecuteEventArgs
@@ -104,13 +132,19 @@ namespace Alba.Framework.Mvvm.Commands
 
         public static EventCommand Register (Expression<Func<EventCommand>> propExpr, bool isAutoRequery = true)
         {
-            return new EventCommand(Properties.GetName(propExpr), isAutoRequery);
+            return new EventCommand(Props.GetName(propExpr), isAutoRequery);
         }
 
         internal class ModelHandlers
         {
             public event EventHandler<ExecuteEventArgs> Execute;
             public event EventHandler<CanExecuteEventArgs> CanExecute;
+            public List<WeakReference<EventCommandRef>> CommandRefs { get; private set; }
+
+            public ModelHandlers ()
+            {
+                CommandRefs = new List<WeakReference<EventCommandRef>>();
+            }
 
             public void RaiseExecute (object sender, ExecuteEventArgs args)
             {
