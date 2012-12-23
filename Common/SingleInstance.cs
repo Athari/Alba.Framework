@@ -2,7 +2,7 @@
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Threading;
-using Alba.Framework.System;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Common
 {

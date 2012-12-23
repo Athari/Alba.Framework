@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Sys
 {
     public static class Paths
     {

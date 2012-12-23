@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Alba.Framework.Events;
 using Alba.Framework.Mvvm.Models;
-using Alba.Framework.System;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Mvvm.Commands
 {

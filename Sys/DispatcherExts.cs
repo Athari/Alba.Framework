@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Threading;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Sys
 {
     public static class DispatcherExts
     {

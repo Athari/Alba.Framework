@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
-using Alba.Framework.System;
+using Alba.Framework.Sys;
 using Alba.Framework.Collections;
 
 // ReSharper disable MemberCanBePrivate.Local

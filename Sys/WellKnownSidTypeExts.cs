@@ -1,6 +1,6 @@
 ﻿using System.Security.Principal;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Sys
 {
     public static class WellKnownSidTypeExts
     {

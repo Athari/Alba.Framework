@@ -7,7 +7,7 @@ using Alba.Framework.Collections;
 using Alba.Framework.Events;
 using Alba.Framework.Linq;
 using Alba.Framework.Mvvm.Models;
-using Alba.Framework.System;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Mvvm.Commands
 {

@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Text;
 
-namespace Alba.Framework.System
+namespace Alba.Framework.Sys
 {
     public static class StringExts
     {
@@ -19,6 +20,19 @@ namespace Alba.Framework.System
             if (!@this.EndsWith(postfix))
                 throw new ArgumentException("string does not contain postfix", "postfix");
             return @this.Remove(@this.Length - postfix.Length);
+        }
+
+        public static string AppendSentence (this string @this, string sentence)
+        {
+            var sb = new StringBuilder(@this, @this.Length + sentence.Length + 2);
+            sb.AppendSentence(sentence);
+            return sb.ToString();
+        }
+
+        public static void AppendSentence (this StringBuilder @this, string sentence)
+        {
+            @this.Append(@this[@this.Length - 1] == '.' ? " " : ". ");
+            @this.Append(sentence);
         }
     }
 }
