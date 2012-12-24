@@ -1,11 +1,13 @@
+// ReSharper disable RedundantUsingDirective
+// ReSharper disable RedundantCast
 using System.Collections;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
 using FPM = System.Windows.FrameworkPropertyMetadata;
 using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
 
-// ReSharper disable RedundantCast
 namespace Alba.Framework.Controls
 {
     public static partial class SelectorProps

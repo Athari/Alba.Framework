@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace Alba.Framework.Events
 {
     public static class EventHandlerExts
     {
+        [MethodImpl (MethodImplOptions.NoInlining)]
         public static void NullableInvoke (this EventHandler handler, object sender, EventArgs args = null)
         {
             if (args == null)
@@ -12,12 +14,14 @@ namespace Alba.Framework.Events
                 handler(sender, args);
         }
 
+        [MethodImpl (MethodImplOptions.NoInlining)]
         public static void NullableInvoke<T> (this EventHandler<T> handler, object sender, T args)
         {
             if (handler != null)
                 handler(sender, args);
         }
 
+        [MethodImpl (MethodImplOptions.NoInlining)]
         public static void NullableInvoke<T> (this EventHandler<EventArgs<T>> handler, object sender, T arg)
         {
             if (handler != null)

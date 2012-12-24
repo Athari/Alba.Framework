@@ -67,6 +67,10 @@
     <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
+    <Compile Include="Controls\ProgressBarProps.cs" />
+    <Compile Include="Controls\ProgressBarProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SelectorProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
@@ -93,8 +97,14 @@
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
     <Compile Include="Linq\Props.cs" />
+    <Compile Include="Markup\AncestorBinding.cs" />
     <Compile Include="Markup\CommandExtension.cs" />
+    <Compile Include="Markup\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Markup\Converters\ChainConverter.cs" />
+    <Compile Include="Markup\Converters\IsNotNullConverter.cs" />
     <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
+    <Compile Include="Markup\Converters\EqualsConverter.cs" />
+    <Compile Include="Markup\Converters\IsNullConverter.cs" />
     <Compile Include="Markup\Converters\ToByteSizeConverter.cs" />
     <Compile Include="Markup\SelfBinding.cs" />
     <Compile Include="Mvvm\Commands\EventCommand.cs" />
@@ -114,6 +124,7 @@
     <Compile Include="Mvvm\Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\ObservableExts.cs" />
+    <Compile Include="Sys\DoubleExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />

@@ -20,7 +20,7 @@ namespace Alba.Framework.Markup.Converters
             string suffix;
 
             if (i < 0x400)
-                return i.ToString("0 b");
+                return i.ToString("0 b", culture);
             else if (i < 0x100000) {
                 suffix = "KB";
                 readable = i;
@@ -47,7 +47,7 @@ namespace Alba.Framework.Markup.Converters
             }
             readable = readable/1024;
 
-            return string.Format(readable < 10 ? "{0:0.##} {1}" : "{0:0.#} {1}", readable, suffix);
+            return string.Format(culture, readable < 10 ? "{0:0.00} {1}" : "{0:0.0} {1}", readable, suffix);
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
