@@ -1,10 +1,11 @@
+// ReSharper disable RedundantUsingDirective
+// ReSharper disable RedundantCast
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
 using FPM = System.Windows.FrameworkPropertyMetadata;
 using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
 
-// ReSharper disable RedundantCast
 namespace Alba.Framework.Mvvm.Dialogs
 {
     public static partial class DialogProps
@@ -24,6 +25,10 @@ namespace Alba.Framework.Mvvm.Dialogs
         public static readonly DependencyProperty DialogResultProperty = DependencyProperty.RegisterAttached(
             "DialogResult", typeof(DialogButton), typeof(DialogProps),
             new FPM((DialogButton)DialogButton.Cancel));
+
+        public static readonly DependencyProperty OkButtonEnabledProperty = DependencyProperty.RegisterAttached(
+            "OkButtonEnabled", typeof(bool), typeof(DialogProps),
+            new FPM((bool)true));
 
         public static WindowButton GetWindowButtons (Window d)
         {
@@ -73,6 +78,16 @@ namespace Alba.Framework.Mvvm.Dialogs
         public static void SetDialogResult (Window d, DialogButton value)
         {
             d.SetValue(DialogResultProperty, value);
+        }
+
+        public static bool GetOkButtonEnabled (Window d)
+        {
+            return (bool)d.GetValue(OkButtonEnabledProperty);
+        }
+
+        public static void SetOkButtonEnabled (Window d, bool value)
+        {
+            d.SetValue(OkButtonEnabledProperty, value);
         }
 
     }

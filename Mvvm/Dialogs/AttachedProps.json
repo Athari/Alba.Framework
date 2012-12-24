@@ -11,6 +11,7 @@ _={
                 "DialogButton DialogButtons": { for: "Window" },
                 "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
                 "DialogButton DialogResult": { for: "Window", default: "DialogButton.Cancel" },
+                "bool OkButtonEnabled": { for: "Window", default: "true" },
             }
         }
     }

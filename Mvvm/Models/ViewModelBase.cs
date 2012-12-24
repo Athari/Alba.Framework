@@ -3,7 +3,7 @@ using Alba.Framework.Mvvm.Commands;
 
 namespace Alba.Framework.Mvvm.Models
 {
-    public class ViewModelBase : ModelBase
+    public abstract class ViewModelBase<TSelf> : ModelBase<TSelf>
     {
         protected void Subscribe (EventCommand command, Action execute, Func<bool> canExecute = null)
         {

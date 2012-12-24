@@ -1,12 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
+using Alba.Framework.Linq;
+using System.Linq;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Mvvm.Models
 {
-    public abstract class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged
+    public abstract class ModelBase<TSelf> : IModel, INotifyPropertyChanging, INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -17,6 +22,11 @@ namespace Alba.Framework.Mvvm.Models
         }
 
         public Dispatcher Dispatcher { get; protected set; }
+
+        public bool IsValid
+        {
+            get { return ValidatedProps.All(propName => ValidateProp(propName).IsNullOrEmpty()); }
+        }
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanging ([CallerMemberName] string propName = null)
@@ -46,6 +56,20 @@ namespace Alba.Framework.Mvvm.Models
             return true;
         }
 
+        [NotifyPropertyChangedInvocator ("propName")]
+        protected bool SetAndValidate<T> (ref T field, T value, [CallerMemberName] string propName = null)
+        {
+            VerifyAccess();
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            OnPropertyChanging(propName);
+            OnPropertyChanging("IsValid");
+            field = value;
+            OnPropertyChanged(propName);
+            OnPropertyChanged("IsValid");
+            return ValidateProp(propName) == null;
+        }
+
         [NotifyPropertyChangedInvocator ("propNames")]
         protected bool Set<T> (ref T field, T value, params string[] propNames)
         {
@@ -60,6 +84,22 @@ namespace Alba.Framework.Mvvm.Models
             return true;
         }
 
+        [NotifyPropertyChangedInvocator ("propNames")]
+        protected bool SetAndValidate<T> (ref T field, T value, params string[] propNames)
+        {
+            VerifyAccess();
+            if (EqualityComparer<T>.Default.Equals(field, value))
+                return false;
+            foreach (string prop in propNames)
+                OnPropertyChanging(prop);
+            OnPropertyChanging("IsValid");
+            field = value;
+            foreach (string prop in propNames)
+                OnPropertyChanged(prop);
+            OnPropertyChanged("IsValid");
+            return ValidateProp(propNames[0]) == null;
+        }
+
         protected T Get<T> (ref T field)
         {
             VerifyAccess();
@@ -70,6 +110,36 @@ namespace Alba.Framework.Mvvm.Models
         {
             if (Dispatcher != null)
                 Dispatcher.VerifyAccess();
+        }
+
+        protected virtual string[] ValidatedProps
+        {
+            get { return new string[0]; }
+        }
+
+        protected virtual string ValidateProp (string propName)
+        {
+            return null;
+        }
+
+        string IDataErrorInfo.this [string propName]
+        {
+            get { return ValidateProp(propName); }
+        }
+
+        string IDataErrorInfo.Error
+        {
+            get { return null; }
+        }
+
+        protected static string GetName<T> (Expression<Func<T>> propExpr)
+        {
+            return Props.GetName(propExpr);
+        }
+
+        protected static string GetName<T> (Expression<Func<TSelf, T>> propExpr)
+        {
+            return Props.GetName(propExpr);
         }
     }
 }
