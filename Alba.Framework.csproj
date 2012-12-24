@@ -87,6 +87,8 @@
     <Compile Include="Events\EventHandlerExts.cs" />
     <Compile Include="Events\FastWeakEvent%28T%29.cs" />
     <Compile Include="Events\WeakEvents.cs" />
+    <Compile Include="Interop\ASSOCF.cs" />
+    <Compile Include="Interop\ASSOCSTR.cs" />
     <Compile Include="Interop\WS_EX.cs" />
     <Compile Include="Interop\GWL.cs" />
     <Compile Include="Interop\HWND.cs" />
@@ -106,7 +108,9 @@
     <Compile Include="Markup\Converters\EqualsConverter.cs" />
     <Compile Include="Markup\Converters\IsNullConverter.cs" />
     <Compile Include="Markup\Converters\ToByteSizeConverter.cs" />
+    <Compile Include="Markup\Converters\ToImageSourceConverter.cs" />
     <Compile Include="Markup\SelfBinding.cs" />
+    <Compile Include="Markup\StaticExtension.cs" />
     <Compile Include="Mvvm\Commands\EventCommand.cs" />
     <Compile Include="Mvvm\Commands\EventCommandConverter.cs" />
     <Compile Include="Mvvm\Commands\EventCommandDisplay.cs" />
@@ -128,6 +132,7 @@
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
+    <Compile Include="Sys\Shell.cs" />
     <Compile Include="Sys\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
     <Compile Include="Sys\DispatcherExts.cs" />

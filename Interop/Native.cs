@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows;
 using System.Windows.Interop;
 
@@ -18,6 +19,10 @@ namespace Alba.Framework.Interop
 
         [DllImport ("user32.dll")]
         private static extern bool SetWindowPos (IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, SWP uFlags);
+
+        [DllImport ("Shlwapi.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern uint AssocQueryString (ASSOCF flags, ASSOCSTR str, string pszAssoc, string pszExtra,
+            [Out] StringBuilder pszOut, [In] [Out] ref int pcchOut);
 
         //[DllImport ("user32.dll")]
         //private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, Int32 wParam, Int32 lParam);
@@ -75,6 +80,17 @@ namespace Alba.Framework.Interop
         private static IntPtr GetHandle (Window window)
         {
             return window != null ? new WindowInteropHelper(window).Handle : IntPtr.Zero;
+        }
+
+        public static string AssocQueryString (ASSOCF flags, ASSOCSTR assocStr, string doctype, string extra = null)
+        {
+            int bufferSize = 0;
+            AssocQueryString(flags, assocStr, doctype, extra, null, ref bufferSize);
+            if (bufferSize == 0)
+                return "";
+            var assoc = new StringBuilder(bufferSize);
+            AssocQueryString(flags, assocStr, doctype, extra, assoc, ref bufferSize);
+            return assoc.ToString();
         }
     }
 }
