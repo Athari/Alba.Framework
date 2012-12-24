@@ -2,6 +2,7 @@ _={
     using: [
         "System.Windows",
         "System.Windows.Controls.Primitives",
+        "Alba.Framework.Controls",
         "Alba.Framework.Events"
     ],
     classes: {
@@ -12,6 +13,14 @@ _={
                 "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
                 "DialogButton DialogResult": { for: "Window", default: "DialogButton.Cancel" },
                 "bool OkButtonEnabled": { for: "Window", default: "true" },
+            }
+        },
+        ValidationProps: {
+            attached: {
+                "FrameworkElement ValidationIcon": { for: "FrameworkElement", default: "null", changed: 1 },
+                "FrameworkElement ValidatesControl": { for: "FrameworkElement", default: "null" },
+                "TooltipPopup TooltipPopup": { for: "Window", default: "null", vis: "private" },
+                "FrameworkElement CurrentValidatedControl": { for: "Window", default: "null", vis: "private" },
             }
         }
     }

@@ -82,6 +82,9 @@
     <Compile Include="Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Controls\SelectorProps.cs" />
+    <Compile Include="Controls\TooltipPopup.xaml.cs">
+      <DependentUpon>TooltipPopup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
     <Compile Include="Events\EventHandlerExts.cs" />
@@ -122,6 +125,10 @@
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
     <Compile Include="Mvvm\Dialogs\DialogResult%28T%29.cs" />
+    <Compile Include="Mvvm\Dialogs\ValidationProps.cs" />
+    <Compile Include="Mvvm\Dialogs\ValidationProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Mvvm\Dialogs\WindowButton.cs" />
     <Compile Include="Mvvm\Models\IModel.cs" />
     <Compile Include="Mvvm\Models\ModelBase.cs" />
@@ -137,6 +144,7 @@
     <Compile Include="Sys\ObjectExts.cs" />
     <Compile Include="Sys\DispatcherExts.cs" />
     <Compile Include="Sys\WellKnownSidTypeExts.cs" />
+    <Compile Include="Sys\WpfExts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Controls\AttachedProps.json">
@@ -164,7 +172,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Controls\TooltipPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
