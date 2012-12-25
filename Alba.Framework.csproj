@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
+    <Compile Include="Collections\ObservableQueue%28T%29.cs" />
     <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
@@ -103,15 +104,20 @@
     <Compile Include="Interop\WS.cs" />
     <Compile Include="Linq\Props.cs" />
     <Compile Include="Markup\AncestorBinding.cs" />
+    <Compile Include="Markup\ConvBindingExtension.cs" />
     <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Markup\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Markup\Converters\ChainConverter.cs" />
+    <Compile Include="Markup\Converters\NotEqualsParamConverter.cs" />
+    <Compile Include="Markup\Converters\EqualsParamConverter.cs" />
     <Compile Include="Markup\Converters\IsNotNullConverter.cs" />
     <Compile Include="Markup\Converters\EnumContainsConverter.cs" />
     <Compile Include="Markup\Converters\EqualsConverter.cs" />
     <Compile Include="Markup\Converters\IsNullConverter.cs" />
+    <Compile Include="Markup\Converters\StringFormatConverter.cs" />
     <Compile Include="Markup\Converters\ToByteSizeConverter.cs" />
     <Compile Include="Markup\Converters\ToImageSourceConverter.cs" />
+    <Compile Include="Markup\IntExtension.cs" />
     <Compile Include="Markup\SelfBinding.cs" />
     <Compile Include="Markup\StaticExtension.cs" />
     <Compile Include="Mvvm\Commands\EventCommand.cs" />

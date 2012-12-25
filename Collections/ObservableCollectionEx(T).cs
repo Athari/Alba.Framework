@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using NcChangedEventArgs = System.Collections.Specialized.NotifyCollectionChangedEventArgs;
 using NcChangedAction = System.Collections.Specialized.NotifyCollectionChangedAction;
+using NcChangedEventArgs = System.Collections.Specialized.NotifyCollectionChangedEventArgs;
 
 namespace Alba.Framework.Collections
 {

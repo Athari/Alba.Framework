@@ -12,6 +12,8 @@ namespace Alba.Framework.Markup.Converters
     {
         public List<ValueConverterRef> Converters { get; private set; }
 
+        public static readonly object PassParameter = new object();
+
         public ChainConverter ()
         {
             Converters = new List<ValueConverterRef>();
@@ -20,13 +22,18 @@ namespace Alba.Framework.Markup.Converters
         public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Converters.Aggregate(value, (v, conv) =>
-                conv.Converter.Convert(v, typeof(object), conv.Parameter, culture));
+                conv.Converter.Convert(v, typeof(object), GetParam(conv, parameter), culture));
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
         {
             return Enumerable.Reverse(Converters).Aggregate(value, (v, conv) =>
-                conv.Converter.ConvertBack(v, typeof(object), conv.Parameter, culture));
+                conv.Converter.ConvertBack(v, typeof(object), GetParam(conv, parameter), culture));
+        }
+
+        private object GetParam (ValueConverterRef conv, object chainParameter)
+        {
+            return ReferenceEquals(conv.Parameter, PassParameter) ? chainParameter : conv.Parameter;
         }
     }
 
