@@ -1,7 +1,9 @@
 _={
     using: [
+        "System.Collections.ObjectModel",
         "System.Windows",
         "System.Windows.Controls.Primitives",
+        "System.Windows.Media",
         "Alba.Framework.Controls",
         "Alba.Framework.Events"
     ],
@@ -9,10 +11,11 @@ _={
         DialogProps: {
             attached: {
                 "WindowButton WindowButtons": { for: "Window", default: "WindowButton.Default", changed: 1 },
-                "DialogButton DialogButtons": { for: "Window" },
-                "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
+                "DialogButton DialogButtons": { for: "Window", changed: 1 },
                 "DialogButton DialogResult": { for: "Window", default: "DialogButton.Cancel" },
                 "bool OkButtonEnabled": { for: "Window", default: "true" },
+                "ObservableCollection<Visual> LeftDialogButtons": { for: "Window" },
+                "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
             }
         },
         ValidationProps: {

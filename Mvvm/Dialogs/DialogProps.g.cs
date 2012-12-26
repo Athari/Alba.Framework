@@ -1,7 +1,9 @@
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable RedundantCast
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Alba.Framework.Controls;
 using Alba.Framework.Events;
 using FPM = System.Windows.FrameworkPropertyMetadata;
@@ -17,11 +19,7 @@ namespace Alba.Framework.Mvvm.Dialogs
 
         public static readonly DependencyProperty DialogButtonsProperty = DependencyProperty.RegisterAttached(
             "DialogButtons", typeof(DialogButton), typeof(DialogProps),
-            new FPM(default(DialogButton)));
-
-        public static readonly DependencyProperty ButtonResultProperty = DependencyProperty.RegisterAttached(
-            "ButtonResult", typeof(DialogButton), typeof(DialogProps),
-            new FPM(default(DialogButton), ButtonResult_Changed));
+            new FPM(default(DialogButton), DialogButtons_Changed));
 
         public static readonly DependencyProperty DialogResultProperty = DependencyProperty.RegisterAttached(
             "DialogResult", typeof(DialogButton), typeof(DialogProps),
@@ -30,6 +28,14 @@ namespace Alba.Framework.Mvvm.Dialogs
         public static readonly DependencyProperty OkButtonEnabledProperty = DependencyProperty.RegisterAttached(
             "OkButtonEnabled", typeof(bool), typeof(DialogProps),
             new FPM((bool)true));
+
+        public static readonly DependencyProperty LeftDialogButtonsProperty = DependencyProperty.RegisterAttached(
+            "LeftDialogButtons", typeof(ObservableCollection<Visual>), typeof(DialogProps),
+            new FPM(default(ObservableCollection<Visual>)));
+
+        public static readonly DependencyProperty ButtonResultProperty = DependencyProperty.RegisterAttached(
+            "ButtonResult", typeof(DialogButton), typeof(DialogProps),
+            new FPM(default(DialogButton), ButtonResult_Changed));
 
         public static WindowButton GetWindowButtons (Window d)
         {
@@ -56,19 +62,9 @@ namespace Alba.Framework.Mvvm.Dialogs
             d.SetValue(DialogButtonsProperty, value);
         }
 
-        public static DialogButton GetButtonResult (ButtonBase d)
+        private static void DialogButtons_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
-            return (DialogButton)d.GetValue(ButtonResultProperty);
-        }
-
-        public static void SetButtonResult (ButtonBase d, DialogButton value)
-        {
-            d.SetValue(ButtonResultProperty, value);
-        }
-
-        private static void ButtonResult_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            ButtonResult_Changed((ButtonBase)d, new DpChangedEventArgs<DialogButton>(args));
+            DialogButtons_Changed((Window)d, new DpChangedEventArgs<DialogButton>(args));
         }
 
         public static DialogButton GetDialogResult (Window d)
@@ -89,6 +85,31 @@ namespace Alba.Framework.Mvvm.Dialogs
         public static void SetOkButtonEnabled (Window d, bool value)
         {
             d.SetValue(OkButtonEnabledProperty, value);
+        }
+
+        public static ObservableCollection<Visual> GetLeftDialogButtons (Window d)
+        {
+            return (ObservableCollection<Visual>)d.GetValue(LeftDialogButtonsProperty);
+        }
+
+        public static void SetLeftDialogButtons (Window d, ObservableCollection<Visual> value)
+        {
+            d.SetValue(LeftDialogButtonsProperty, value);
+        }
+
+        public static DialogButton GetButtonResult (ButtonBase d)
+        {
+            return (DialogButton)d.GetValue(ButtonResultProperty);
+        }
+
+        public static void SetButtonResult (ButtonBase d, DialogButton value)
+        {
+            d.SetValue(ButtonResultProperty, value);
+        }
+
+        private static void ButtonResult_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            ButtonResult_Changed((ButtonBase)d, new DpChangedEventArgs<DialogButton>(args));
         }
 
     }

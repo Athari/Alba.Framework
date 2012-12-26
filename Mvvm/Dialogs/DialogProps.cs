@@ -1,7 +1,10 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Alba.Framework.Events;
 using Alba.Framework.Interop;
 using Alba.Framework.Sys;
@@ -45,6 +48,12 @@ namespace Alba.Framework.Mvvm.Dialogs
                 SetDialogResult(win, args.NewValue);
                 win.Close();
             };
+        }
+
+        private static void DialogButtons_Changed (Window window, DpChangedEventArgs<DialogButton> args)
+        {
+            if (GetLeftDialogButtons(window) == null)
+                SetLeftDialogButtons(window, new ObservableCollection<Visual>());
         }
     }
 }

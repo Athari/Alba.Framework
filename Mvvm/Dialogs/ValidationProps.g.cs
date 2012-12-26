@@ -1,7 +1,9 @@
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable RedundantCast
+using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Alba.Framework.Controls;
 using Alba.Framework.Events;
 using FPM = System.Windows.FrameworkPropertyMetadata;
