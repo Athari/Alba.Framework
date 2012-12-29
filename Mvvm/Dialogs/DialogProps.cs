@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using Alba.Framework.Events;
@@ -52,7 +51,7 @@ namespace Alba.Framework.Mvvm.Dialogs
 
         private static void DialogButtons_Changed (Window window, DpChangedEventArgs<DialogButton> args)
         {
-            if (GetLeftDialogButtons(window) == null)
+            if (args != null && GetLeftDialogButtons(window) == null) // args check to get rid of unused warning
                 SetLeftDialogButtons(window, new ObservableCollection<Visual>());
         }
     }

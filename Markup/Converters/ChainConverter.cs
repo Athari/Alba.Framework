@@ -4,15 +4,16 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Alba.Framework.Common;
 
 namespace Alba.Framework.Markup.Converters
 {
     [ContentProperty ("Converters")]
     public class ChainConverter : IValueConverter
     {
-        public List<ValueConverterRef> Converters { get; private set; }
+        public static readonly object PassParameter = new NamedObject("ChainConverter.PassParameter");
 
-        public static readonly object PassParameter = new object();
+        public List<ValueConverterRef> Converters { get; private set; }
 
         public ChainConverter ()
         {

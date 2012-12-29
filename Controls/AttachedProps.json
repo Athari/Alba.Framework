@@ -4,6 +4,7 @@
         "System.Windows",
         "System.Windows.Controls",
         "System.Windows.Controls.Primitives",
+        "System.Windows.Media",
         "Alba.Framework.Events"
     ],
     classes: {
@@ -17,6 +18,11 @@
             attached: {
                 "Visibility AnimationVisibility": { for: "ProgressBar", changed: 1 },
                 "bool IsError": { for: "ProgressBar" },
+            }
+        },
+        ButtonProps: {
+            attached: {
+                "ImageSource Icon": { for: "Button" },
             }
         },
     }

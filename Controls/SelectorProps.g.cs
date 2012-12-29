@@ -4,6 +4,7 @@ using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
 using Alba.Framework.Events;
 using FPM = System.Windows.FrameworkPropertyMetadata;
 using FPMO = System.Windows.FrameworkPropertyMetadataOptions;

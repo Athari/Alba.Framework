@@ -10,6 +10,7 @@ namespace Alba.Framework.Mvvm.Dialogs
         Cancel = 1 << 1,
         Yes = 1 << 2,
         No = 1 << 3,
+        Close = 1 << 4,
 
         OkCancel = Ok | Cancel,
         YesNo = Yes | No,

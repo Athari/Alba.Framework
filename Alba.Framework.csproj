@@ -68,6 +68,10 @@
     <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
+    <Compile Include="Common\NamedObject.cs" />
+    <Compile Include="Controls\ButtonProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProgressBarProps.cs" />
     <Compile Include="Controls\ProgressBarProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
@@ -108,6 +112,7 @@
     <Compile Include="Markup\CommandExtension.cs" />
     <Compile Include="Markup\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Markup\Converters\ChainConverter.cs" />
+    <Compile Include="Markup\Converters\DictionaryConverter.cs" />
     <Compile Include="Markup\Converters\NotEqualsParamConverter.cs" />
     <Compile Include="Markup\Converters\EqualsParamConverter.cs" />
     <Compile Include="Markup\Converters\IsNotNullConverter.cs" />
