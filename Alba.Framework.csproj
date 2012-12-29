@@ -122,9 +122,15 @@
     <Compile Include="Markup\Converters\StringFormatConverter.cs" />
     <Compile Include="Markup\Converters\ToByteSizeConverter.cs" />
     <Compile Include="Markup\Converters\ToImageSourceConverter.cs" />
+    <Compile Include="Markup\SystemBrushExtension.g.cs">
+      <DependentUpon>SystemColorsExtensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="Markup\IntExtension.cs" />
     <Compile Include="Markup\SelfBinding.cs" />
     <Compile Include="Markup\StaticExtension.cs" />
+    <Compile Include="Markup\SystemColorExtension.g.cs">
+      <DependentUpon>SystemColorsExtensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="Mvvm\Commands\EventCommand.cs" />
     <Compile Include="Mvvm\Commands\EventCommandConverter.cs" />
     <Compile Include="Mvvm\Commands\EventCommandDisplay.cs" />
@@ -167,6 +173,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>AttachedProps.json</DependentUpon>
+      <Parameters>&lt;%3fxml version="1.0" encoding="utf-16"%3f&gt;
+&lt;ArrayOfParameterStorage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Parameters>
+    </None>
+    <None Include="Markup\SystemColorsExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
     </None>
     <None Include="Mvvm\Dialogs\AttachedProps.json">
       <Generator>AttachT4</Generator>
