@@ -25,5 +25,11 @@
                 "ImageSource Icon": { for: "Button" },
             }
         },
+        TreeViewProps: {
+            attached: {
+                "object SelectedItem": { for: "TreeView", changed: 1 },
+                "bool SelectedItemSync": { for: "TreeView", changed: 1 },
+            }
+        },
     }
 }

@@ -24,10 +24,9 @@ namespace Alba.Framework.Interop
         private static extern uint AssocQueryString (ASSOCF flags, ASSOCSTR str, string pszAssoc, string pszExtra,
             [Out] StringBuilder pszOut, [In] [Out] ref int pcchOut);
 
-        //[DllImport ("user32.dll")]
-        //private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, Int32 wParam, Int32 lParam);
-        //[DllImport ("user32.dll", CharSet = CharSet.Auto)]
-        //private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, IntPtr wParam, IntPtr lParam);
+        [DllImport ("user32.dll", CharSet = CharSet.Auto)]
+        private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, IntPtr wParam, IntPtr lParam);
+
         //[DllImport ("user32.dll", CharSet = CharSet.Auto)]
         //private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, IntPtr wParam, string lParam);
 
@@ -58,6 +57,13 @@ namespace Alba.Framework.Interop
         public static WS_EX SetWindowStyleEx (this Window window, WS_EX style)
         {
             return (WS_EX)SetWindowLong(GetHandle(window), GWL.EXSTYLE, (uint)style);
+        }
+
+        public static void ClearWindowIcons (this Window window)
+        {
+            var hwnd = GetHandle(window);
+            SendMessage(hwnd, WM.SETICON, ICON.BIG, IntPtr.Zero);
+            SendMessage(hwnd, WM.SETICON, ICON.SMALL, IntPtr.Zero);
         }
 
         public static bool SetWindowPos (this Window window, Window windowAfter = null,

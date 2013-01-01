@@ -39,6 +39,9 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Interactive, Version=1.1.10823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ix_Experimental-Main.1.1.10823\lib\Net4\System.Interactive.dll</HintPath>
+    </Reference>
     <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -90,6 +93,10 @@
     <Compile Include="Controls\TooltipPopup.xaml.cs">
       <DependentUpon>TooltipPopup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\TreeViewProps.cs" />
+    <Compile Include="Controls\TreeViewProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Events\EventArgs%28T%29.cs" />
     <Compile Include="Events\EventHandlerExts.cs" />
@@ -97,6 +104,7 @@
     <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\ASSOCF.cs" />
     <Compile Include="Interop\ASSOCSTR.cs" />
+    <Compile Include="Interop\ICON.cs" />
     <Compile Include="Interop\WS_EX.cs" />
     <Compile Include="Interop\GWL.cs" />
     <Compile Include="Interop\HWND.cs" />
@@ -122,6 +130,8 @@
     <Compile Include="Markup\Converters\StringFormatConverter.cs" />
     <Compile Include="Markup\Converters\ToByteSizeConverter.cs" />
     <Compile Include="Markup\Converters\ToImageSourceConverter.cs" />
+    <Compile Include="Markup\Converters\YieldConverter.cs" />
+    <Compile Include="Markup\TemplateBinding.cs" />
     <Compile Include="Markup\SystemBrushExtension.g.cs">
       <DependentUpon>SystemColorsExtensions.tt</DependentUpon>
     </Compile>

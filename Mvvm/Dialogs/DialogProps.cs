@@ -24,6 +24,8 @@ namespace Alba.Framework.Mvvm.Dialogs
                 SetBitIf(ref styleEx, WS_EX.DLGMODALFRAME, ~(args.NewValue & WindowButton.Icon));
                 window.SetWindowStyle(style);
                 window.SetWindowStyleEx(styleEx);
+                if ((args.NewValue & WindowButton.Icon) == 0)
+                    window.ClearWindowIcons();
                 window.SetWindowPos(flags: SWP.FRAMECHANGED);
             };
             if (window.IsHandleInitialized())
