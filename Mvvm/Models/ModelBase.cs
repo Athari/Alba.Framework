@@ -1,20 +1,27 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
 using Alba.Framework.Linq;
-using System.Linq;
 using Alba.Framework.Sys;
+using Alba.Framework.Events;
 
 namespace Alba.Framework.Mvvm.Models
 {
     public abstract class ModelBase<TSelf> : IModel, INotifyPropertyChanging, INotifyPropertyChanged, IDataErrorInfo
+        where TSelf : ModelBase<TSelf>
     {
+        // ReSharper disable StaticFieldInGenericType
+        private static readonly string IsLoading_PropName = GetName(o => o.IsLoading);
+        // ReSharper restore StaticFieldInGenericType
+
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler IsLoadingChanged;
 
         protected ModelBase ()
         {
@@ -26,6 +33,13 @@ namespace Alba.Framework.Mvvm.Models
         public bool IsValid
         {
             get { return ValidatedProps.All(propName => ValidateProp(propName).IsNullOrEmpty()); }
+        }
+
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get { return Get(ref _isLoading); }
+            set { Set(ref _isLoading, value); }
         }
 
         [NotifyPropertyChangedInvocator]
@@ -42,6 +56,8 @@ namespace Alba.Framework.Mvvm.Models
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propName));
+            if (propName == IsLoading_PropName)
+                IsLoadingChanged.NullableInvoke(this);
         }
 
         [NotifyPropertyChangedInvocator ("propName")]
