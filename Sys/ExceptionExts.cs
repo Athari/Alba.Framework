@@ -10,7 +10,7 @@ namespace Alba.Framework.Sys
             var sb = new StringBuilder(@this.Message);
             for (Exception e = @this.InnerException; e != null; e = e.InnerException)
                 sb.AppendSentence(e.Message);
-            return sb.ToString();
+            return sb.ToString().SingleLine();
         }
     }
 }

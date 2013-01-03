@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
@@ -28,7 +29,7 @@ namespace Alba.Framework.Mvvm.Models
             Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public Dispatcher Dispatcher { get; protected set; }
+        public Dispatcher Dispatcher { get; private set; }
 
         public bool IsValid
         {
@@ -126,6 +127,13 @@ namespace Alba.Framework.Mvvm.Models
         {
             if (Dispatcher != null)
                 Dispatcher.VerifyAccess();
+        }
+
+        public IDisposable NoAccessCheck (Dispatcher newDispatcher = null)
+        {
+            Dispatcher oldDispatcher = Dispatcher;
+            Dispatcher = null;
+            return Disposable.Create(() => { Dispatcher = newDispatcher ?? oldDispatcher; });
         }
 
         protected virtual string[] ValidatedProps

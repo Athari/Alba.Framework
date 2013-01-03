@@ -11,5 +11,10 @@
         {
             return (T)@this;
         }
+
+        public static string NullableToString (this object @this)
+        {
+            return @this == null ? "" : @this.ToString();
+        }
     }
 }
