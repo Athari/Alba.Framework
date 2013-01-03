@@ -5,7 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Alba.Framework.Interop;
+using Alba.Framework.Sys;
 
+// ReSharper disable MethodOverloadWithOptionalParameter
 namespace Alba.Framework.Logs
 {
     public class RollingFileTraceListener : TextWriterTraceListener
@@ -15,6 +18,7 @@ namespace Alba.Framework.Logs
         private readonly string _timeStampPattern;
         private readonly int _maxArchivedFiles;
         private readonly RollingHelper _rollingHelper;
+        private readonly StringBuilder _currentLine;
 
         public RollingFileTraceListener (string fileName, int rollSize = 0,
             RollInterval rollInterval = RollInterval.None, string timeStampPattern = null, int maxArchivedFiles = 0)
@@ -25,39 +29,96 @@ namespace Alba.Framework.Logs
             _timeStampPattern = timeStampPattern;
             _maxArchivedFiles = maxArchivedFiles;
             _rollingHelper = new RollingHelper(this);
+            _currentLine = new StringBuilder();
         }
-
-        /*public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
-        {
-            base.TraceEvent(eventCache, source, eventType, id, message);
-        }
-
-        public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
-        {
-            base.TraceEvent(eventCache, source, eventType, id, format, args);
-        }
-
-        public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, object data)
-        {
-            base.TraceData(eventCache, source, eventType, id, data);
-        }
-
-        public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
-        {
-            base.TraceData(eventCache, source, eventType, id, data);
-        }*/
 
         public override void Write (string message)
         {
-            _rollingHelper.RollIfNecessary();
-            base.Write(message);
+            AppendLine(message);
         }
 
         public override void WriteLine (string message)
         {
+            AppendLine(message);
+            NeedIndent = true;
+            TraceEvent(new TraceEventCache(), "Trace", TraceEventType.Verbose, 0, message != null ? message.Trim() : "");
+            _currentLine.Clear();
+        }
+
+        private void AppendLine (string message)
+        {
+            if (NeedIndent)
+                WriteIndent();
+            _currentLine.Append(message);
+        }
+
+        public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, object data)
+        {
+            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, data, null))
+                WriteMessage(eventCache, source, eventType, id, data.NullableToString());
+        }
+
+        public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
+        {
+            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, null, data)) {
+                var sb = new StringBuilder();
+                if (data != null) {
+                    for (int i = 0; i < data.Length; i++) {
+                        if (i != 0)
+                            sb.Append(", ");
+                        if (data[i] != null)
+                            sb.Append(data[i]);
+                    }
+                }
+                WriteMessage(eventCache, source, eventType, id, sb.ToString());
+            }
+        }
+
+        public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
+        {
+            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, message, null, null, null))
+                WriteMessage(eventCache, source, eventType, id, message);
+        }
+
+        public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
+        {
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
+            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, format, args, null, null))
+                WriteMessage(eventCache, source, eventType, id, args != null ? string.Format(format, args) : format);
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+        }
+
+        private void WriteMessage (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
+        {
             _rollingHelper.RollIfNecessary();
+            if (source == "Trace" && eventType == TraceEventType.Verbose)
+                return;
+            message = message.Trim();
+            string threadIdPrefix = string.Format(CultureInfo.InvariantCulture, "[{0}] ", Native.GetCurrentThreadId());
+            if (message.StartsWith(threadIdPrefix))
+                message = message.Substring(threadIdPrefix.Length);
+            message = string.Format(id != 0 ? "[{0:u}] [{1}] {2} #{3}: {4}" : "[{0:u}] [{1}] {2}: {4}",
+                eventCache.DateTime, EventTypeToShortString(eventType), source, id, message);
             base.WriteLine(message);
             Flush();
+        }
+
+        private string EventTypeToShortString (TraceEventType eventType)
+        {
+            switch (eventType) {
+                case TraceEventType.Critical:
+                    return "CRIT";
+                case TraceEventType.Error:
+                    return "ERROR";
+                case TraceEventType.Warning:
+                    return "WARN";
+                case TraceEventType.Information:
+                    return "INFO";
+                case TraceEventType.Verbose:
+                    return "TRACE";
+                default:
+                    return eventType.ToString();
+            }
         }
 
         private class RollingHelper
@@ -337,6 +398,7 @@ namespace Alba.Framework.Logs
                     .Select(matchingFile => new ArchiveFile(matchingFile))
                     .OrderByDescending(archiveFile => archiveFile)
                     .Skip(_maxFiles)
+                    .ToList()
                     .ForEach(file => file.TryDelete());
             }
 
