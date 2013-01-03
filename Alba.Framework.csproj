@@ -109,6 +109,7 @@
     <Compile Include="Interop\ASSOCF.cs" />
     <Compile Include="Interop\ASSOCSTR.cs" />
     <Compile Include="Interop\ICON.cs" />
+    <Compile Include="Interop\MAPI.cs" />
     <Compile Include="Interop\WS_EX.cs" />
     <Compile Include="Interop\GWL.cs" />
     <Compile Include="Interop\HWND.cs" />

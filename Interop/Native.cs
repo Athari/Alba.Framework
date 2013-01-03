@@ -30,6 +30,9 @@ namespace Alba.Framework.Interop
         //[DllImport ("user32.dll", CharSet = CharSet.Auto)]
         //private static extern IntPtr SendMessage (IntPtr hWnd, WM Msg, IntPtr wParam, string lParam);
 
+        [DllImport ("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        public static extern uint GetCurrentThreadId ();
+
         //[DllImport ("user32.dll", SetLastError = true)]
         //private static extern bool SystemParametersInfo (SPI uiAction, uint uiParam, IntPtr pvParam, SPIF fWinIni);
         //[DllImport ("user32.dll", SetLastError = true)]
@@ -97,6 +100,34 @@ namespace Alba.Framework.Interop
             var assoc = new StringBuilder(bufferSize);
             AssocQueryString(flags, assocStr, doctype, extra, assoc, ref bufferSize);
             return assoc.ToString();
+        }
+
+        public static void Inc<T> (ref IntPtr ptr)
+        {
+            ptr = (IntPtr)((int)ptr + Marshal.SizeOf(typeof(T)));
+        }
+
+        public static void StructureToPtrInc<T> (T structure, ref IntPtr ptr, bool fDeleteOld = false)
+        {
+            Marshal.StructureToPtr(structure, ptr, fDeleteOld);
+            Inc<T>(ref ptr);
+        }
+
+        public static IntPtr AllocHGlobalArray<T> (int size)
+        {
+            return Marshal.AllocHGlobal(Marshal.SizeOf(typeof(T))*size);
+        }
+
+        public static void FreeHGlobalArray<T> (IntPtr hglobal, int size)
+        {
+            if (hglobal == IntPtr.Zero)
+                return;
+            IntPtr ptr = hglobal;
+            for (int i = 0; i < size; ++i) {
+                Marshal.DestroyStructure(ptr, typeof(T));
+                Inc<T>(ref ptr);
+            }
+            Marshal.FreeHGlobal(hglobal);
         }
     }
 }

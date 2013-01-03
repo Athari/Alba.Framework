@@ -21,11 +21,11 @@ namespace Alba.Framework.Common
             if (instanceName != null && instanceName.Contains("\\"))
                 throw new ArgumentException("name");
             if (instanceName == null)
-                instanceName = Paths.AppExePath.Replace('\\', '/');
+                instanceName = Paths.ExecutableFilePath.Replace('\\', '/');
             string newMutexName = isGlobal ? GlobalNamespacePrefix + instanceName : instanceName;
             lock (sync) {
                 // can only be called with the same name
-                if (!string.IsNullOrEmpty(mutexName) && string.Compare(mutexName, newMutexName, false) != 0)
+                if (!string.IsNullOrEmpty(mutexName) && string.CompareOrdinal(mutexName, newMutexName) != 0)
                     throw new ArgumentException("Must be unique for application.", "instanceName");
                 // has already checked
                 if (mutex != null)

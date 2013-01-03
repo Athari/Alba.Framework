@@ -7,9 +7,14 @@ namespace Alba.Framework.Sys
 {
     public static class Paths
     {
-        public static string AppExePath
+        public static string ExecutableFilePath
         {
             get { return Assembly.GetExecutingAssembly().CodeBase; }
+        }
+
+        public static string GetTempFileName (string ext)
+        {
+            return string.Format("{0}{1}.{2}", Path.GetTempPath(), Guid.NewGuid().ToString("N"), ext);
         }
 
         public static string GetRoamingAppDir (string company, string product)
