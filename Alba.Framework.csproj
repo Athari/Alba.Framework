@@ -120,6 +120,9 @@
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
     <Compile Include="Linq\Props.cs" />
+    <Compile Include="Logs\LogEntry.cs" />
+    <Compile Include="Logs\RollingFileTraceListener.cs" />
+    <Compile Include="Logs\TraceSourceExts.cs" />
     <Compile Include="Markup\AncestorBinding.cs" />
     <Compile Include="Markup\ConvBindingExtension.cs" />
     <Compile Include="Markup\CommandExtension.cs" />
@@ -219,6 +222,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
