@@ -120,6 +120,8 @@
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
     <Compile Include="Linq\Props.cs" />
+    <Compile Include="Logs\ILog.cs" />
+    <Compile Include="Logs\Log%28T%29.cs" />
     <Compile Include="Logs\LogEntry.cs" />
     <Compile Include="Logs\RollingFileTraceListener.cs" />
     <Compile Include="Logs\TraceSourceExts.cs" />

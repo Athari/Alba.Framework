@@ -13,6 +13,11 @@ namespace Alba.Framework.Logs
 {
     public class RollingFileTraceListener : TextWriterTraceListener
     {
+        private const int SourceNameFormatLen = 10;
+        private const int TypeNameFormatLen = 30;
+        private static readonly string SourceTypeNamesFormat = string.Format("{{0,{0}}}:{{1,{1}}}",
+            SourceNameFormatLen, TypeNameFormatLen);
+
         private readonly RollInterval _rollInterval;
         private readonly int _rollSize;
         private readonly string _timeStampPattern;
@@ -54,8 +59,15 @@ namespace Alba.Framework.Logs
 
         public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, object data)
         {
-            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, data, null))
+            if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, data, null)) {
+                var entry = data as LogEntry;
+                if (entry != null) {
+                    WriteMessage(eventCache, FormatSource(source, entry.FullTypeName), eventType, id,
+                        string.Format("{0}\n{1}", entry.Message, entry.DetailedMessage));
+                    return;
+                }
                 WriteMessage(eventCache, source, eventType, id, data.NullableToString());
+            }
         }
 
         public override void TraceData (TraceEventCache eventCache, string source, TraceEventType eventType, int id, params object[] data)
@@ -70,21 +82,21 @@ namespace Alba.Framework.Logs
                             sb.Append(data[i]);
                     }
                 }
-                WriteMessage(eventCache, source, eventType, id, sb.ToString());
+                WriteMessage(eventCache, FormatSource(source), eventType, id, sb.ToString());
             }
         }
 
         public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
             if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, message, null, null, null))
-                WriteMessage(eventCache, source, eventType, id, message);
+                WriteMessage(eventCache, FormatSource(source), eventType, id, message);
         }
 
         public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType eventType, int id, string format, params object[] args)
         {
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, format, args, null, null))
-                WriteMessage(eventCache, source, eventType, id, args != null ? string.Format(format, args) : format);
+                WriteMessage(eventCache, FormatSource(source), eventType, id, args != null ? string.Format(format, args) : format);
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
         }
 
@@ -97,10 +109,16 @@ namespace Alba.Framework.Logs
             string threadIdPrefix = string.Format(CultureInfo.InvariantCulture, "[{0}] ", Native.GetCurrentThreadId());
             if (message.StartsWith(threadIdPrefix))
                 message = message.Substring(threadIdPrefix.Length);
-            message = string.Format(id != 0 ? "[{0:u}] [{1}] {2} #{3}: {4}" : "[{0:u}] [{1}] {2}: {4}",
+            message = string.Format(id != 0 ? "[{0:u}] [{1}] <{2}#{3}> {4}" : "[{0:u}] [{1}] <{2}> {4}",
                 eventCache.DateTime, EventTypeToShortString(eventType), source, id, message);
             base.WriteLine(message);
             Flush();
+        }
+
+        private static string FormatSource (string sourceName, string typeName = null)
+        {
+            return string.Format(SourceTypeNamesFormat,
+                sourceName.SubstringEnd(SourceNameFormatLen), (typeName ?? "?").SubstringEnd(TypeNameFormatLen));
         }
 
         private string EventTypeToShortString (TraceEventType eventType)
@@ -109,13 +127,13 @@ namespace Alba.Framework.Logs
                 case TraceEventType.Critical:
                     return "CRIT";
                 case TraceEventType.Error:
-                    return "ERROR";
+                    return "ERRO";
                 case TraceEventType.Warning:
                     return "WARN";
                 case TraceEventType.Information:
                     return "INFO";
                 case TraceEventType.Verbose:
-                    return "TRACE";
+                    return "TRAC";
                 default:
                     return eventType.ToString();
             }
