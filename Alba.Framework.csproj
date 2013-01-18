@@ -108,8 +108,14 @@
     <Compile Include="Events\WeakEvents.cs" />
     <Compile Include="Interop\ASSOCF.cs" />
     <Compile Include="Interop\ASSOCSTR.cs" />
+    <Compile Include="Interop\Dll.cs" />
     <Compile Include="Interop\ICON.cs" />
     <Compile Include="Interop\MAPI.cs" />
+    <Compile Include="Interop\POINT.cs" />
+    <Compile Include="Interop\RECT.cs" />
+    <Compile Include="Interop\SW.cs" />
+    <Compile Include="Interop\WINDOWPLACEMENT.cs" />
+    <Compile Include="Interop\WPF.cs" />
     <Compile Include="Interop\WS_EX.cs" />
     <Compile Include="Interop\GWL.cs" />
     <Compile Include="Interop\HWND.cs" />
