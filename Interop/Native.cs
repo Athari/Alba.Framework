@@ -114,6 +114,19 @@ namespace Alba.Framework.Interop
             return GetHandle(window) != IntPtr.Zero;
         }
 
+        public static void InvokeOnHandle (this Window window, Action action)
+        {
+            EventHandler actionHandler = null;
+            actionHandler = (s, a) => {
+                action();
+                window.SourceInitialized -= actionHandler;
+            };
+            if (window.IsHandleInitialized())
+                action();
+            else
+                window.SourceInitialized += actionHandler;
+        }
+
         private static IntPtr GetHandle (Window window)
         {
             return window != null ? new WindowInteropHelper(window).Handle : IntPtr.Zero;

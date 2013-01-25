@@ -26,6 +26,11 @@ namespace Alba.Framework.Interop
             Y = (int)y;
         }
 
+        public bool IsEmpty
+        {
+            get { return X == 0 && Y == 0; }
+        }
+
         public static implicit operator Point (POINT p)
         {
             return new Point(p.X, p.Y);

@@ -46,6 +46,11 @@ namespace Alba.Framework.Interop
             set { Bottom = value + Top; }
         }
 
+        public bool IsEmpty
+        {
+            get { return Left == 0 && Top == 0 && Right == 0 && Bottom == 0; }
+        }
+
         public static implicit operator Rect (RECT r)
         {
             return new Rect(r.Left, r.Top, r.Width, r.Height);

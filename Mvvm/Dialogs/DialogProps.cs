@@ -1,4 +1,3 @@
-using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Windows;
@@ -14,7 +13,7 @@ namespace Alba.Framework.Mvvm.Dialogs
     {
         private static void WindowButtons_Changed (Window window, DpChangedEventArgs<WindowButton> args)
         {
-            EventHandler changeButtons = (s, a) => {
+            window.InvokeOnHandle(() => {
                 WS style = window.GetWindowStyle();
                 WS_EX styleEx = window.GetWindowStyleEx();
                 SetBitIf(ref style, WS.SYSMENU, args.NewValue & WindowButton.System);
@@ -27,11 +26,7 @@ namespace Alba.Framework.Mvvm.Dialogs
                 if ((args.NewValue & WindowButton.Icon) == 0)
                     window.ClearWindowIcons();
                 window.SetWindowPos(flags: SWP.FRAMECHANGED);
-            };
-            if (window.IsHandleInitialized())
-                changeButtons(null, EventArgs.Empty);
-            else
-                window.SourceInitialized += changeButtons;
+            });
         }
 
         private static void SetBitIf<T, U> (ref T style, U bit, WindowButton value)

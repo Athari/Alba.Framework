@@ -8,7 +8,11 @@ namespace Alba.Framework.Interop
     [StructLayout (LayoutKind.Sequential)]
     public struct WINDOWPLACEMENT
     {
+        [NonSerialized]
+        public static WINDOWPLACEMENT Invalid = new WINDOWPLACEMENT { Length = -1 };
+
         /// <summary>The length of the structure, in bytes. Before calling the GetWindowPlacement or SetWindowPlacement functions, set this member to sizeof(WINDOWPLACEMENT). GetWindowPlacement and SetWindowPlacement fail if this member is not set correctly.</summary>
+        [NonSerialized]
         internal int Length;
         /// <summary>Specifies flags that control the position of the minimized window and the method by which the window is restored.</summary>
         public WPF Flags;
@@ -20,5 +24,10 @@ namespace Alba.Framework.Interop
         public POINT MaxPosition;
         /// <summary>The window's coordinates when the window is in the restored position.</summary>
         public RECT NormalPosition;
+
+        public bool IsEmpty
+        {
+            get { return Flags == 0 && ShowCmd == 0 && MinPosition.IsEmpty && MaxPosition.IsEmpty && NormalPosition.IsEmpty; }
+        }
     }
 }
