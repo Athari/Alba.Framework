@@ -57,7 +57,7 @@ namespace Alba.Framework.Controls
 
         private void AutoHide ()
         {
-            Dispatcher.ExecuteAsync(DispatcherPriority.ApplicationIdle, () => { IsDisplaying = false; });
+            Dispatcher.QueueExecute(DispatcherPriority.ApplicationIdle, () => { IsDisplaying = false; });
         }
     }
 }

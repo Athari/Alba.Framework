@@ -66,7 +66,7 @@ namespace Alba.Framework.Mvvm.Commands
         public void RaiseCanExecuteChanged (IModel model)
         {
             if (model.Dispatcher != null)
-                model.Dispatcher.ExecuteAsync(DispatcherPriority.Background, () => OnCanExecuteChanged(model));
+                model.Dispatcher.QueueExecute(DispatcherPriority.Background, () => OnCanExecuteChanged(model));
             else
                 OnCanExecuteChanged(model);
         }
