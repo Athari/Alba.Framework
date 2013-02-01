@@ -10,6 +10,7 @@ namespace Alba.Framework.Logs
         private static readonly string FullTypeName = typeof(T).FullName;
         private static readonly string TypeName = typeof(T).Name;
         private readonly TraceSource _source;
+        private readonly SimpleMonitor _reentrancyMonitor = new SimpleMonitor();
 
         public Log (TraceSource source)
         {
@@ -78,36 +79,57 @@ namespace Alba.Framework.Logs
 
         private void AddEntry (TraceEventType eventType, string message, string detailedMessage, Exception exception)
         {
-            bool hasMessage = !message.IsNullOrEmpty();
-            bool hasDetailedMessage = !detailedMessage.IsNullOrEmpty();
-            bool hasException = exception != null;
-            var entry = new LogEntry {
-                Exception = exception,
-                TypeName = TypeName,
-                FullTypeName = FullTypeName,
-            };
-            if (hasMessage && hasException) {
-                entry.Message = message.AppendSentence(exception.GetFullMessage());
-                entry.DetailedMessage = string.Format("Exception: {0}", exception);
+            using (_reentrancyMonitor.Enter()) {
+                if (_reentrancyMonitor.BusyCount > 1)
+                    return;
+
+                bool hasMessage = !message.IsNullOrEmpty();
+                bool hasDetailedMessage = !detailedMessage.IsNullOrEmpty();
+                bool hasException = exception != null;
+                var entry = new LogEntry {
+                    Exception = exception,
+                    TypeName = TypeName,
+                    FullTypeName = FullTypeName,
+                };
+                if (hasMessage && hasException) {
+                    entry.Message = message.AppendSentence(exception.GetFullMessage());
+                    entry.DetailedMessage = string.Format("Exception: {0}", exception);
+                }
+                else if (hasMessage && hasDetailedMessage) {
+                    entry.Message = message;
+                    entry.DetailedMessage = detailedMessage;
+                }
+                else if (hasMessage) {
+                    entry.Message = message;
+                }
+                else if (hasException) {
+                    entry.Message = exception.GetFullMessage();
+                    entry.DetailedMessage = string.Format("Exception: {0}", exception);
+                }
+                else if (hasDetailedMessage) {
+                    entry.Message = detailedMessage;
+                }
+                else {
+                    entry.Message = string.Format("{0} message in {1}", eventType, TypeName);
+                }
+                _source.TraceData(eventType, entry);
             }
-            else if (hasMessage && hasDetailedMessage) {
-                entry.Message = message;
-                entry.DetailedMessage = detailedMessage;
+        }
+
+        private class SimpleMonitor : IDisposable
+        {
+            public int BusyCount { get; private set; }
+
+            public IDisposable Enter ()
+            {
+                ++BusyCount;
+                return this;
             }
-            else if (hasMessage) {
-                entry.Message = message;
+
+            public void Dispose ()
+            {
+                --BusyCount;
             }
-            else if (hasException) {
-                entry.Message = exception.GetFullMessage();
-                entry.DetailedMessage = string.Format("Exception: {0}", exception);
-            }
-            else if (hasDetailedMessage) {
-                entry.Message = detailedMessage;
-            }
-            else {
-                entry.Message = string.Format("{0} message in {1}", eventType, TypeName);
-            }
-            _source.TraceData(eventType, entry);
         }
     }
 }
