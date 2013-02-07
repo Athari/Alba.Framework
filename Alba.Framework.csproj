@@ -72,6 +72,7 @@
     <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
+    <Compile Include="Common\BoolMonitor.cs" />
     <Compile Include="Common\NamedObject.cs" />
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>

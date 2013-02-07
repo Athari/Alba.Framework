@@ -37,6 +37,7 @@
             ],
             attached: {
                 "WINDOWPLACEMENT Placement": { for: "Window", default: "WINDOWPLACEMENT.Invalid", changed: 1, flags: "BindsTwoWayByDefault" },
+                "Rect NormalPosition": { for: "Window", vis: "private" },
             }
         },
     }

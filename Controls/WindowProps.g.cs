@@ -18,6 +18,10 @@ namespace Alba.Framework.Controls
             "Placement", typeof(WINDOWPLACEMENT), typeof(WindowProps),
             new FPM((WINDOWPLACEMENT)WINDOWPLACEMENT.Invalid, FPMO.BindsTwoWayByDefault, Placement_Changed));
 
+        private static readonly DependencyProperty NormalPositionProperty = DependencyProperty.RegisterAttached(
+            "NormalPosition", typeof(Rect), typeof(WindowProps),
+            new FPM(default(Rect)));
+
         public static WINDOWPLACEMENT GetPlacement (Window d)
         {
             return (WINDOWPLACEMENT)d.GetValue(PlacementProperty);
@@ -31,6 +35,16 @@ namespace Alba.Framework.Controls
         private static void Placement_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             Placement_Changed((Window)d, new DpChangedEventArgs<WINDOWPLACEMENT>(args));
+        }
+
+        private static Rect GetNormalPosition (Window d)
+        {
+            return (Rect)d.GetValue(NormalPositionProperty);
+        }
+
+        private static void SetNormalPosition (Window d, Rect value)
+        {
+            d.SetValue(NormalPositionProperty, value);
         }
 
     }
