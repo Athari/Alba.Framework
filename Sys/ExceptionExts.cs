@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Sys
 {

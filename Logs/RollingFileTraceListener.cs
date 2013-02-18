@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Alba.Framework.Interop;
 using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 // ReSharper disable MethodOverloadWithOptionalParameter
 namespace Alba.Framework.Logs

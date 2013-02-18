@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
 using Alba.Framework.Linq;
-using Alba.Framework.Sys;
 using Alba.Framework.Events;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Mvvm.Models
 {

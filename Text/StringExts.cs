@@ -2,7 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Alba.Framework.Sys
+namespace Alba.Framework.Text
 {
     public static class StringExts
     {

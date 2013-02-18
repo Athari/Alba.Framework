@@ -192,11 +192,17 @@
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
-    <Compile Include="Sys\StringExts.cs" />
+    <Compile Include="Text\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
     <Compile Include="Sys\DispatcherExts.cs" />
     <Compile Include="Sys\WellKnownSidTypeExts.cs" />
     <Compile Include="Sys\WpfExts.cs" />
+    <Compile Include="Text\Wildcards\WildcardOptions.cs" />
+    <Compile Include="Text\Wildcards\WildcardPattern.cs" />
+    <Compile Include="Text\Wildcards\WildcardPatternException.cs" />
+    <Compile Include="Text\Wildcards\WildcardPatternMatcher.cs" />
+    <Compile Include="Text\Wildcards\WildcardPatternParser.cs" />
+    <Compile Include="Text\Wildcards\WildcardPatternToRegexParser.cs" />
     <Compile Include="Threading\AsyncLock.cs" />
   </ItemGroup>
   <ItemGroup>

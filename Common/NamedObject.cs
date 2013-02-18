@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Common
 {

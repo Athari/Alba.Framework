@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Logs
