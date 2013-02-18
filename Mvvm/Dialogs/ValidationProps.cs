@@ -5,7 +5,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using Alba.Framework.Controls;
 using Alba.Framework.Events;
-using Alba.Framework.Linq;
 using Alba.Framework.Sys;
 
 namespace Alba.Framework.Mvvm.Dialogs
@@ -13,8 +12,6 @@ namespace Alba.Framework.Mvvm.Dialogs
     public static partial class ValidationProps
     {
         private const int PopupPosDelta = 4;
-
-        private static readonly string ToolTip_PropName = Props.GetName((FrameworkElement o) => o.ToolTip);
 
         private static void ValidationIcon_Changed (FrameworkElement control, DpChangedEventArgs<FrameworkElement> args)
         {
@@ -71,7 +68,7 @@ namespace Alba.Framework.Mvvm.Dialogs
             var icon = GetValidationIcon(control);
             SetCurrentValidatedControl(window, control);
 
-            if (icon == null || icon.GetValue(FrameworkElement.ToolTipProperty) == null || !control.IsKeyboardFocused) {
+            if (icon == null || GetMessage(icon) == null || !control.IsKeyboardFocused) {
                 popup.Hide();
             }
             else {
@@ -79,7 +76,7 @@ namespace Alba.Framework.Mvvm.Dialogs
                 var popupContent = BindingOperations.GetBinding(popup, ContentControl.ContentProperty);
                 if (popupContent == null || !ReferenceEquals(popupContent.Source, icon))
                     BindingOperations.SetBinding(popup, ContentControl.ContentProperty,
-                        new Binding { Source = icon, Path = new PropertyPath(ToolTip_PropName) });
+                        new Binding { Source = icon, Path = new PropertyPath(MessageProperty) });
                 popup.Show();
                 if (pos.X + icon.ActualWidth + PopupPosDelta + popup.Width - TooltipPopup.ShadowMargin
                     <= SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenWidth) {

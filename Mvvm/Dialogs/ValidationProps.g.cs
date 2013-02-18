@@ -21,6 +21,10 @@ namespace Alba.Framework.Mvvm.Dialogs
             "ValidatesControl", typeof(FrameworkElement), typeof(ValidationProps),
             new FPM((FrameworkElement)null));
 
+        public static readonly DependencyProperty MessageProperty = DependencyProperty.RegisterAttached(
+            "Message", typeof(object), typeof(ValidationProps),
+            new FPM((object)null));
+
         private static readonly DependencyProperty TooltipPopupProperty = DependencyProperty.RegisterAttached(
             "TooltipPopup", typeof(TooltipPopup), typeof(ValidationProps),
             new FPM((TooltipPopup)null));
@@ -52,6 +56,16 @@ namespace Alba.Framework.Mvvm.Dialogs
         public static void SetValidatesControl (FrameworkElement d, FrameworkElement value)
         {
             d.SetValue(ValidatesControlProperty, value);
+        }
+
+        public static object GetMessage (FrameworkElement d)
+        {
+            return (object)d.GetValue(MessageProperty);
+        }
+
+        public static void SetMessage (FrameworkElement d, object value)
+        {
+            d.SetValue(MessageProperty, value);
         }
 
         private static TooltipPopup GetTooltipPopup (Window d)

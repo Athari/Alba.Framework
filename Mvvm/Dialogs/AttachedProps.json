@@ -22,6 +22,7 @@ _={
             attached: {
                 "FrameworkElement ValidationIcon": { for: "FrameworkElement", default: "null", changed: 1 },
                 "FrameworkElement ValidatesControl": { for: "FrameworkElement", default: "null" },
+                "object Message": { for: "FrameworkElement", default: "null" },
                 "TooltipPopup TooltipPopup": { for: "Window", default: "null", vis: "private" },
                 "FrameworkElement CurrentValidatedControl": { for: "Window", default: "null", vis: "private" },
             }
