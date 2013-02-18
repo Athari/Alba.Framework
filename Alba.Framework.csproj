@@ -130,6 +130,8 @@
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
+    <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
+    <Compile Include="Markup\DefaultStyleExtension.cs" />
     <Compile Include="Serialization\Json.cs" />
     <Compile Include="Linq\Props.cs" />
     <Compile Include="Logs\ILog.cs" />
