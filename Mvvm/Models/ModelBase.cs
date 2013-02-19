@@ -29,7 +29,7 @@ namespace Alba.Framework.Mvvm.Models
             Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        public Dispatcher Dispatcher { get; private set; }
+        public Dispatcher Dispatcher { get; protected set; }
 
         public bool IsValid
         {
