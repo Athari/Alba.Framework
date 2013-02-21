@@ -74,6 +74,9 @@ namespace Alba.Framework.Serialization
         {
             return new JsonSerializer {
                 TypeNameHandling = TypeNameHandling.Auto,
+                Converters = {
+                    new EnumFlagsConverter(),
+                },
                 ContractResolver = new DefaultContractResolver {
                     IgnoreSerializableAttribute = false,
                 }
