@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -46,6 +47,44 @@ namespace Alba.Framework.Text
         {
             @this.Append(@this[@this.Length - 1] == '.' ? " " : ". ");
             @this.Append(sentence);
+        }
+
+        public static string Format (this string format, IFormatProvider provider, params object[] args)
+        {
+            return string.Format(provider, format, args);
+        }
+
+        public static string Format (this string format, params object[] args)
+        {
+            return string.Format(format, args);
+        }
+
+        public static string FormatInvariant (this string format, params object[] args)
+        {
+            return string.Format(CultureInfo.InvariantCulture, format, args);
+        }
+
+        public static bool Contains (this string @this, string value, StringComparison comparisonType)
+        {
+            return @this.IndexOf(value, comparisonType) >= 0;
+        }
+
+        public static string Sub (this string @this, int startIndex, int length)
+        {
+            return startIndex >= 0
+                ? (length >= 0
+                    ? @this.Substring(startIndex, length)
+                    : @this.Substring(startIndex, @this.Length - startIndex + length))
+                : (length >= 0
+                    ? @this.Substring(@this.Length + startIndex, length)
+                    : @this.Substring(@this.Length + startIndex, @this.Length + startIndex + length));
+        }
+
+        public static string Sub (this string @this, int startIndex)
+        {
+            return startIndex >= 0
+                ? @this.Substring(startIndex)
+                : @this.Substring(@this.Length + startIndex);
         }
     }
 }
