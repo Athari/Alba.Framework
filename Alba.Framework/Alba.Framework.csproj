@@ -71,6 +71,8 @@
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
     <Compile Include="Common\BoolMonitor.cs" />
+    <Compile Include="Common\IIdentifiable.cs" />
+    <Compile Include="Common\IOwned.cs" />
     <Compile Include="Common\NamedObject.cs" />
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
@@ -131,7 +133,9 @@
     <Compile Include="IO\TeeOutputStream.cs" />
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
-    <Compile Include="Serialization\Json\EnumFlagsConverter.cs" />
+    <Compile Include="Serialization\DictionarySerializationBinder.cs" />
+    <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\IJsonLinkProvider.cs" />
     <Compile Include="Serialization\Json\Json.cs" />
     <Compile Include="Linq\Props.cs" />
     <Compile Include="Logs\ILog.cs" />
@@ -187,6 +191,18 @@
     <Compile Include="Mvvm\Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\ObservableExts.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonGlobalLinkProvider.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonLinkConverter.cs" />
+    <Compile Include="Serialization\Json\JsonLinkedContext.cs" />
+    <Compile Include="Serialization\Json\JsonLinkedContractResolver.cs" />
+    <Compile Include="Serialization\Json\JsonLinkedOptions.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonLinkProvider.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonOriginConverter.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonPathLinkProvider.cs" />
+    <Compile Include="Serialization\Json\JsonResolveLinkContext.cs" />
+    <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
+    <Compile Include="Serialization\SerializationBinderExts.cs" />
+    <Compile Include="Sys\ConvertibleExts.cs" />
     <Compile Include="Sys\DoubleExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Sys\Paths.cs" />
@@ -252,6 +268,7 @@
       <Name>Newtonsoft.Json.Net40</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
