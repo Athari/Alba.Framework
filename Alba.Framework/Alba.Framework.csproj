@@ -133,8 +133,8 @@
     <Compile Include="IO\TeeOutputStream.cs" />
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
-    <Compile Include="Serialization\EnumFlagsConverter.cs" />
-    <Compile Include="Serialization\Json.cs" />
+    <Compile Include="Serialization\Json\EnumFlagsConverter.cs" />
+    <Compile Include="Serialization\Json\Json.cs" />
     <Compile Include="Linq\Props.cs" />
     <Compile Include="Logs\ILog.cs" />
     <Compile Include="Logs\Log%28T%29.cs" />
