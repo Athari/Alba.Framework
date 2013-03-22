@@ -16,10 +16,15 @@ namespace Alba.Framework.Serialization.Json
         internal IList<object> Stack { get; private set; }
         public JsonLinkedOptions Options { get; private set; }
 
-        public JsonLinkedContext ()
+        public JsonLinkedContext (JsonLinkedOptions options)
         {
             Stack = new List<object>();
-            Options = new JsonLinkedOptions();
+            Options = options;
+        }
+
+        public JsonLinkedContext (IEnumerable<IJsonLinkProvider> linkProviders) : this()
+        {
+            Options.LinkProviders.AddRange(linkProviders);
         }
 
         public static JsonLinkedContext Get (StreamingContext streamingContext)

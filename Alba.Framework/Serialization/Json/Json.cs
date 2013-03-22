@@ -66,6 +66,7 @@ namespace Alba.Framework.Serialization.Json
         private static JsonSerializer GetJsonSerializer ()
         {
             return new JsonSerializer {
+                DefaultValueHandling = DefaultValueHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.Auto,
                 Converters = {
                     new EnumFlagsConverter(),
