@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Alba.Framework.Logs;
@@ -10,23 +9,17 @@ namespace Alba.Framework.Serialization.Json
 {
     public class Json
     {
-        private static TraceSource _trace;
-        private static ILog _log;
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<Json>(AlbaFrameworkTraceSources.Serialization));
 
-        public static TraceSource Trace
+        private static ILog Log
         {
-            get { return _trace; }
-            set
-            {
-                _trace = value;
-                _log = new Log<Json>(_trace);
-            }
+            get { return _log.Value; }
         }
 
         public static bool PopulateFromFile (object obj, string fileName)
         {
             if (!File.Exists(fileName)) {
-                _log.Info(string.Format("File '{0}' does not exist, loading skipped.", fileName));
+                Log.Info(string.Format("File '{0}' does not exist, loading skipped.", fileName));
                 return false;
             }
 
@@ -38,7 +31,7 @@ namespace Alba.Framework.Serialization.Json
                 }
             }
             catch (Exception e) {
-                _log.Error(string.Format("Failed to load file '{0}'.", fileName), e);
+                Log.Error(string.Format("Failed to load file '{0}'.", fileName), e);
             }
             return true;
         }
@@ -66,7 +59,7 @@ namespace Alba.Framework.Serialization.Json
                     File.Move(tempFileName, fileName);
             }
             catch (Exception e) {
-                _log.Error(string.Format("Failed to save file '{0}'.", fileName), e);
+                Log.Error(string.Format("Failed to save file '{0}'.", fileName), e);
             }
         }
 
