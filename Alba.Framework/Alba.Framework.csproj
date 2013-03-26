@@ -131,6 +131,7 @@
     <Compile Include="Interop\Native.cs" />
     <Compile Include="Interop\WM.cs" />
     <Compile Include="Interop\WS.cs" />
+    <Compile Include="IO\Streams.cs" />
     <Compile Include="IO\TeeOutputStream.cs" />
     <Compile Include="Logs\AlbaFrameworkTraceSources.cs" />
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
+    <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
     <Compile Include="Sys\DispatcherExts.cs" />
