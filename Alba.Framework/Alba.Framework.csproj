@@ -138,7 +138,8 @@
     <Compile Include="Markup\DefaultStyleExtension.cs" />
     <Compile Include="Serialization\DictionarySerializationBinder.cs" />
     <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
-    <Compile Include="Serialization\Json\CustomJsonSerializer.cs" />
+    <Compile Include="Serialization\Json\CustomJsonSerializer%28T%29.cs" />
+    <Compile Include="Serialization\Json\ICustomJsonSerializer%28T%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\IJsonLinkProvider.cs" />
     <Compile Include="Serialization\Json\Json.cs" />
     <Compile Include="Linq\Props.cs" />
@@ -195,14 +196,14 @@
     <Compile Include="Mvvm\Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\ObservableExts.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonGlobalLinkProvider.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonGlobalLinkProvider%28TValue%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonLinkConverter.cs" />
     <Compile Include="Serialization\Json\JsonLinkedContext.cs" />
     <Compile Include="Serialization\Json\JsonLinkedContractResolver.cs" />
     <Compile Include="Serialization\Json\JsonLinkedOptions.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonLinkProvider.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonLinkProvider%28TValue%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonOriginConverter.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonPathLinkProvider.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonPathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\JsonResolveLinkContext.cs" />
     <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
     <Compile Include="Serialization\SerializationBinderExts.cs" />

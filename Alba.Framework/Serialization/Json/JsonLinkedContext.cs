@@ -22,7 +22,8 @@ namespace Alba.Framework.Serialization.Json
             Options = options;
         }
 
-        public JsonLinkedContext (IEnumerable<IJsonLinkProvider> linkProviders) : this()
+        public JsonLinkedContext (IEnumerable<IJsonLinkProvider> linkProviders) :
+            this(new JsonLinkedOptions())
         {
             Options.LinkProviders.AddRange(linkProviders);
         }

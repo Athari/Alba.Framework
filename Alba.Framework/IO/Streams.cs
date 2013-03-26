@@ -61,6 +61,11 @@ namespace Alba.Framework.IO
             return new StringWriter(formatProvider ?? CultureInfo.CurrentCulture);
         }
 
+        public static StringWriter WriteInvariantString ()
+        {
+            return new StringWriter(CultureInfo.InvariantCulture);
+        }
+
         public static StringReader ReadString (string value, Encoding encoding = null)
         {
             return new StringReader(value);
@@ -69,6 +74,11 @@ namespace Alba.Framework.IO
         public static StringWriter WriteStringBuilder (StringBuilder sb, IFormatProvider formatProvider = null)
         {
             return new StringWriter(sb, formatProvider ?? CultureInfo.CurrentCulture);
+        }
+
+        public static StringWriter WriteInvariantStringBuilder (StringBuilder sb)
+        {
+            return new StringWriter(sb, CultureInfo.InvariantCulture);
         }
 
         public static MemoryStream WriteMemory (int capacity = 0)
