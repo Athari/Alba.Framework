@@ -74,13 +74,20 @@ namespace Alba.Framework.Serialization.Json
 
         public void SerializeToFile (T value, string fileName, bool createBackup = true, bool throwOnError = true)
         {
+            string dirName = Path.GetDirectoryName(fileName);
             string tempFileName = fileName + TempFileExt;
             string backupFileName = fileName + BackupFileExt;
 
             try {
+                if (dirName != null)
+                    Directory.CreateDirectory(dirName);
                 using (var textWriter = Streams.CreateTextFile(tempFileName))
                     SerializeToStream(value, textWriter);
-                File.Replace(tempFileName, fileName, backupFileName);
+
+                if (File.Exists(fileName))
+                    File.Replace(tempFileName, fileName, backupFileName);
+                else
+                    File.Move(tempFileName, fileName);
 
                 if (!createBackup) {
                     try {

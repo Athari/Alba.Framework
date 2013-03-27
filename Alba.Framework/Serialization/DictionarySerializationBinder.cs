@@ -19,7 +19,7 @@ namespace Alba.Framework.Serialization
             if (name == null) {
                 var attr = type.GetCustomAttribute<JsonObjectAttribute>();
                 if (attr == null || attr.Id == null)
-                    throw new ArgumentException("Name must be specified either directly or by JsonObjectAttribute.Id.", "name");
+                    throw new ArgumentException("Name for type '{0}' not specified. Name must be specified either directly or by JsonObjectAttribute.Id.".Fmt(type), "name");
                 name = attr.Id;
             }
             _typeToName[type] = name;
