@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Threading.Tasks;
 using Alba.Framework.Logs;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -36,7 +35,7 @@ namespace Alba.Framework.Serialization.Json
             return true;
         }
 
-        public static async Task SerializeToFile (object obj, string fileName)
+        public static void SerializeToFile (object obj, string fileName)
         {
             string tempFileName = fileName + ".tmp";
             string backupFileName = fileName + ".bak";
@@ -50,7 +49,7 @@ namespace Alba.Framework.Serialization.Json
                     jsonWriter.QuoteName = false;
 
                     GetJsonSerializer().Serialize(jsonWriter, obj);
-                    await streamWriter.FlushAsync().ConfigureAwait(false);
+                    jsonWriter.Flush();
                 }
 
                 if (File.Exists(fileName))
