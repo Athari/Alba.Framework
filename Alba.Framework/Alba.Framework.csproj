@@ -68,9 +68,11 @@
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
     <Compile Include="Collections\EnumerableExts.cs" />
     <Compile Include="Collections\ObservableQueue%28T%29.cs" />
+    <Compile Include="Collections\QueueExts.cs" />
     <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
+    <Compile Include="Collections\StackExts.cs" />
     <Compile Include="Common\BoolMonitor.cs" />
     <Compile Include="Common\IIdentifiable.cs" />
     <Compile Include="Common\IOwned.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
+    <Compile Include="Sys\TypeExts.cs" />
     <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
