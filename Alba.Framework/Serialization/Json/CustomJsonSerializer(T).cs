@@ -35,7 +35,7 @@ namespace Alba.Framework.Serialization.Json
                 TypeNameHandling = TypeNameHandling.Auto,
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
                 ContractResolver = GetContractResolver(),
-                Binder = BindTypeName(new DictionarySerializationBinder()),
+                Binder = BindTypeNameInternal(new DictionarySerializationBinder()),
                 Context = new StreamingContext(StreamingContextStates.All,
                     new JsonLinkedContext(linkProviders: GetLinkProviders())),
             };
@@ -60,10 +60,14 @@ namespace Alba.Framework.Serialization.Json
             yield break;
         }
 
-        protected virtual DictionarySerializationBinder BindTypeName (DictionarySerializationBinder binder)
+        private DictionarySerializationBinder BindTypeNameInternal (DictionarySerializationBinder binder)
         {
+            BindTypeName(binder);
             return binder;
         }
+
+        protected virtual void BindTypeName (DictionarySerializationBinder binder)
+        {}
 
         protected virtual void RememberLinks (T value, JsonLinkedContext context)
         {}

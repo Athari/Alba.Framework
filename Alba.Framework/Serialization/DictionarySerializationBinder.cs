@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Alba.Framework.Sys;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+// TODO Local subtypes: name resolution depending on property type
 namespace Alba.Framework.Serialization
 {
     public class DictionarySerializationBinder : DefaultSerializationBinder
@@ -25,9 +27,21 @@ namespace Alba.Framework.Serialization
             return this;
         }
 
+        public DictionarySerializationBinder AddSubtypes (Type type)
+        {
+            foreach (Type subtype in type.GetConcreteSubtypes())
+                Add(subtype);
+            return this;
+        }
+
         public DictionarySerializationBinder Add<T> (string name = null)
         {
             return Add(typeof(T), name);
+        }
+
+        public DictionarySerializationBinder AddSubtypes<T> ()
+        {
+            return AddSubtypes(typeof(T));
         }
 
         public override Type BindToType (string assemblyName, string typeName)
