@@ -8,6 +8,9 @@ namespace Alba.Framework.Serialization.Json
 {
     public class Json
     {
+        /// <summary>Value for <see cref="JsonPropertyAttribute.Order"/> of identifier property.</summary>
+        public const int IdPropOrder = -1000;
+
         private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<Json>(AlbaFrameworkTraceSources.Serialization));
 
         private static ILog Log

@@ -9,7 +9,7 @@ namespace Alba.Framework.Serialization.Json
 {
     public class JsonLinkedContext
     {
-        public const string TypePropName = "$";
+        public const string TypePropName = "$type";
         public const string LinkPathSeparator = "/";
         public const char LinkTypeSeparator = ':';
 
