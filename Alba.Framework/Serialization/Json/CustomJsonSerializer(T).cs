@@ -73,7 +73,7 @@ namespace Alba.Framework.Serialization.Json
         protected virtual void RememberLinks (T value, JsonLinkedContext context)
         {}
 
-        public void SerializeToFile (T value, string fileName, bool createBackup = true, bool throwOnError = true)
+        public bool SerializeToFile (T value, string fileName, bool createBackup = true, bool throwOnError = true)
         {
             string dirName = Path.GetDirectoryName(fileName);
             string tempFileName = fileName + TempFileExt;
@@ -100,11 +100,13 @@ namespace Alba.Framework.Serialization.Json
                         Log.Warning(string.Format(ErrorRemoveBackupFile, backupFileName), e);
                     }
                 }
+                return true;
             }
             catch (Exception e) {
                 if (!e.IsIOException())
                     throw;
                 ProcessIOException(e, throwOnError, string.Format(ErrorSaveFile, fileName));
+                return false;
             }
         }
 
@@ -133,16 +135,18 @@ namespace Alba.Framework.Serialization.Json
             }
         }
 
-        public void PopulateFromFile (T value, string fileName, bool throwOnError = true)
+        public bool PopulateFromFile (T value, string fileName, bool throwOnError = true)
         {
             try {
                 using (var textReader = Streams.ReadTextFile(fileName))
                     PopulateFromStream(value, textReader);
+                return true;
             }
             catch (Exception e) {
                 if (!e.IsIOException())
                     throw;
                 ProcessIOException(e, throwOnError, string.Format(ErrorOpenFile, fileName));
+                return false;
             }
         }
 

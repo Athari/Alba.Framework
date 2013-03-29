@@ -30,7 +30,7 @@ namespace Alba.Framework.Text
         public static string RemovePostfix (this string @this, string postfix)
         {
             if (!@this.EndsWith(postfix))
-                throw new ArgumentException("string does not contain postfix", "postfix");
+                throw new ArgumentException("String '{0}' does not contain postfix '{1}'.".Fmt(@this, postfix), "postfix");
             return @this.Remove(@this.Length - postfix.Length);
         }
 
