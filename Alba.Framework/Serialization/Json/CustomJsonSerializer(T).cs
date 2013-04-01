@@ -127,7 +127,7 @@ namespace Alba.Framework.Serialization.Json
             using (var jsonWriter = new JsonTextWriter(textWriter)) {
                 jsonWriter.Formatting = Formatting.Indented;
                 jsonWriter.Indentation = 2;
-                jsonWriter.QuoteName = false;
+                jsonWriter.QuoteNameHandling = QuoteNameHandling.Auto;
 
                 serializer.Serialize(jsonWriter, value);
                 //await streamWriter.FlushAsync().ConfigureAwait(false);
