@@ -49,7 +49,7 @@ namespace Alba.Framework.Serialization.Json
                 using (var jsonWriter = new JsonTextWriter(streamWriter)) {
                     jsonWriter.Formatting = Formatting.Indented;
                     jsonWriter.Indentation = 2;
-                    jsonWriter.QuoteName = false;
+                    jsonWriter.QuoteNameHandling = QuoteNameHandling.Auto;
 
                     GetJsonSerializer().Serialize(jsonWriter, obj);
                     jsonWriter.Flush();
