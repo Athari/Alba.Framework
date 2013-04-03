@@ -77,7 +77,9 @@
     <Compile Include="Common\BoolMonitor.cs" />
     <Compile Include="Common\IIdentifiable.cs" />
     <Compile Include="Common\IOwned.cs" />
+    <Compile Include="Common\IOwner.cs" />
     <Compile Include="Common\NamedObject.cs" />
+    <Compile Include="Common\OwnerExts.cs" />
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>

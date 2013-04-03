@@ -1,10 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Alba.Framework.Collections
 {
     public static class EnumerableExts
     {
+        public static IEnumerable<T> Concat<T> (params IEnumerable<T>[] enumerables)
+        {
+            return enumerables.SelectMany(e => e);
+        }
+
+        public static IEnumerable<T> Concat<T> (this IEnumerable<T> @this, T value)
+        {
+            foreach (var item in @this)
+                yield return item;
+            yield return value;
+        }
+
         public static string JoinString<T> (this IEnumerable<T> @this, string separator)
         {
             return string.Join(separator, @this);

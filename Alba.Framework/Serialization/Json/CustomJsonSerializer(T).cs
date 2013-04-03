@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using Alba.Framework.Attributes;
 using Alba.Framework.Collections;
+using Alba.Framework.Common;
 using Alba.Framework.IO;
 using Alba.Framework.Logs;
 using Alba.Framework.Sys;
@@ -63,15 +65,29 @@ namespace Alba.Framework.Serialization.Json
 
         private DictionarySerializationBinder BindTypeNameInternal (DictionarySerializationBinder binder)
         {
-            BindTypeName(binder);
+            BindTypeNames(binder);
             return binder;
         }
 
-        protected virtual void BindTypeName (DictionarySerializationBinder binder)
+        protected virtual void BindTypeNames (DictionarySerializationBinder binder)
         {}
 
         protected virtual void RememberLinks (T value, JsonLinkedContext context)
-        {}
+        {
+            RememberLinks((object)value, context);
+        }
+
+        protected static void RememberLinks (object value, JsonLinkedContext context)
+        {
+            if (value == null)
+                return;
+            context.PushObject(value);
+            context.RememberLink(value);
+            var owner = value as IOwner;
+            if (owner != null)
+                owner.Owned.ForEach(owned => RememberLinks(owned, context));
+            context.PopObject(value);
+        }
 
         public bool SerializeToFile (T value, string fileName, bool createBackup = true, bool throwOnError = true)
         {
@@ -152,6 +168,8 @@ namespace Alba.Framework.Serialization.Json
 
         public void PopulateFromString (T value, string source)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
             using (var stringReader = Streams.ReadString(source))
                 PopulateFromStream(value, stringReader);
         }
@@ -183,6 +201,8 @@ namespace Alba.Framework.Serialization.Json
 
         public T DeserializeFromString (string source)
         {
+            if (source == null)
+                return default(T);
             using (var stringReader = Streams.ReadString(source))
                 return DeserializeFromStream(stringReader);
         }
