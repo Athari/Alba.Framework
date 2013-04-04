@@ -47,7 +47,7 @@ namespace Alba.Framework.Serialization
         public override Type BindToType (string assemblyName, string typeName)
         {
             if (!assemblyName.IsNullOrEmpty())
-                throw new InvalidOperationException("Type '{1}' (assembly={0}) not found.".Fmt(typeName, assemblyName));
+                throw new InvalidOperationException("Type '{1}' (assembly={0}) not defined. Using types from arbitrary assemblies not allowed.".Fmt(typeName, assemblyName));
             try {
                 return _nameToType[typeName];
             }
