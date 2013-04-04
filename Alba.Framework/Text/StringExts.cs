@@ -63,7 +63,7 @@ namespace Alba.Framework.Text
         }
 
         [StringFormatMethod ("format")]
-        public static string FormatInvariant (this string format, params object[] args)
+        public static string FmtInvariant (this string format, params object[] args)
         {
             return string.Format(CultureInfo.InvariantCulture, format, args);
         }

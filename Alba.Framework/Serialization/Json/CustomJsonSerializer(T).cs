@@ -9,6 +9,7 @@ using Alba.Framework.Common;
 using Alba.Framework.IO;
 using Alba.Framework.Logs;
 using Alba.Framework.Sys;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -113,7 +114,7 @@ namespace Alba.Framework.Serialization.Json
                     catch (Exception e) {
                         if (!e.IsIOException())
                             throw;
-                        Log.Warning(string.Format(ErrorRemoveBackupFile, backupFileName), e);
+                        Log.Warning(ErrorRemoveBackupFile.Fmt(backupFileName), e);
                     }
                 }
                 return true;
@@ -121,7 +122,7 @@ namespace Alba.Framework.Serialization.Json
             catch (Exception e) {
                 if (!e.IsIOException())
                     throw;
-                ProcessIOException(e, throwOnError, string.Format(ErrorSaveFile, fileName));
+                ProcessIOException(e, throwOnError, ErrorSaveFile.Fmt(fileName));
                 return false;
             }
         }
@@ -161,7 +162,7 @@ namespace Alba.Framework.Serialization.Json
             catch (Exception e) {
                 if (!e.IsIOException())
                     throw;
-                ProcessIOException(e, throwOnError, string.Format(ErrorOpenFile, fileName));
+                ProcessIOException(e, throwOnError, ErrorOpenFile.Fmt(fileName));
                 return false;
             }
         }
@@ -194,7 +195,7 @@ namespace Alba.Framework.Serialization.Json
             catch (Exception e) {
                 if (!e.IsIOException())
                     throw;
-                ProcessIOException(e, throwOnError, string.Format(ErrorOpenFile, fileName));
+                ProcessIOException(e, throwOnError, ErrorOpenFile.Fmt(fileName));
                 return default(T);
             }
         }

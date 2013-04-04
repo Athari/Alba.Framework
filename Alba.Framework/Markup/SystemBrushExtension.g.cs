@@ -1,5 +1,6 @@
 using System;
 using System.Windows;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Markup
 {
@@ -77,7 +78,7 @@ namespace Alba.Framework.Markup
                 case SystemBrushKey.InactiveSelectionHighlightText:
                     return SystemColors.InactiveSelectionHighlightTextBrushKey;
                 default:
-                    throw new ArgumentException(string.Format("Unexpected colorKey value: {0}", colorKey));
+                    throw new ArgumentException("Unexpected colorKey value: {0}".Fmt(colorKey));
             }
         }
     }

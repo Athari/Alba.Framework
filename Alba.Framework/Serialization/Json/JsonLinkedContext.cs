@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Alba.Framework.Common;
 using Newtonsoft.Json;
+using Alba.Framework.Collections;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -92,7 +93,7 @@ namespace Alba.Framework.Serialization.Json
 
         public string StackString
         {
-            get { return String.Join(">", Stack.Select(o => o.GetType().Name)); }
+            get { return Stack.Select(o => o.GetType().Name).JoinString(">"); }
         }
     }
 }

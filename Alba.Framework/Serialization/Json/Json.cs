@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Alba.Framework.Logs;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -21,7 +22,7 @@ namespace Alba.Framework.Serialization.Json
         public static bool PopulateFromFile (object obj, string fileName)
         {
             if (!File.Exists(fileName)) {
-                Log.Info(string.Format("File '{0}' does not exist, loading skipped.", fileName));
+                Log.Info("File '{0}' does not exist, loading skipped.".Fmt(fileName));
                 return false;
             }
 
@@ -33,7 +34,7 @@ namespace Alba.Framework.Serialization.Json
                 }
             }
             catch (Exception e) {
-                Log.Error(string.Format("Failed to load file '{0}'.", fileName), e);
+                Log.Error("Failed to load file '{0}'.".Fmt(fileName), e);
             }
             return true;
         }
@@ -61,7 +62,7 @@ namespace Alba.Framework.Serialization.Json
                     File.Move(tempFileName, fileName);
             }
             catch (Exception e) {
-                Log.Error(string.Format("Failed to save file '{0}'.", fileName), e);
+                Log.Error("Failed to save file '{0}'.".Fmt(fileName), e);
             }
         }
 

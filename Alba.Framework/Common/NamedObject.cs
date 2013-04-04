@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Common
@@ -18,7 +17,7 @@ namespace Alba.Framework.Common
         public override string ToString ()
         {
             if (_name[0] != '{')
-                _name = string.Format(CultureInfo.InvariantCulture, "{{{0}}}", _name);
+                _name = "{{{0}}}".FmtInvariant(_name);
             return _name;
         }
     }

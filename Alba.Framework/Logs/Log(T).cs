@@ -94,7 +94,7 @@ namespace Alba.Framework.Logs
                 };
                 if (hasMessage && hasException) {
                     entry.Message = message.AppendSentence(exception.GetFullMessage());
-                    entry.DetailedMessage = string.Format("Exception: {0}", exception);
+                    entry.DetailedMessage = "Exception: {0}".Fmt(exception);
                 }
                 else if (hasMessage && hasDetailedMessage) {
                     entry.Message = message;
@@ -105,13 +105,13 @@ namespace Alba.Framework.Logs
                 }
                 else if (hasException) {
                     entry.Message = exception.GetFullMessage();
-                    entry.DetailedMessage = string.Format("Exception: {0}", exception);
+                    entry.DetailedMessage = "Exception: {0}".Fmt(exception);
                 }
                 else if (hasDetailedMessage) {
                     entry.Message = detailedMessage;
                 }
                 else {
-                    entry.Message = string.Format("{0} message in {1}", eventType, TypeName);
+                    entry.Message = "{0} message in {1}".Fmt(eventType, TypeName);
                 }
                 _source.TraceData(eventType, entry);
             }

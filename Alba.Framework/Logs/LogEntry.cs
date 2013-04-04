@@ -1,4 +1,5 @@
 ﻿using System;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Logs
 {
@@ -12,7 +13,7 @@ namespace Alba.Framework.Logs
 
         public override string ToString ()
         {
-            return string.Format("{{LogEntry Message='{0}'}}", Message);
+            return "{{LogEntry Message='{0}'}}".Fmt(Message);
         }
     }
 }

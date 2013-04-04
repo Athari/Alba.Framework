@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Markup
 {
@@ -10,13 +11,12 @@ namespace Alba.Framework.Markup
         public AncestorBinding (string path) : base(path)
         {
             if (!IsPropertyReference(path))
-                throw new ArgumentException(string.Format("Ancestor type not specified in path '{0}'.", path), "path");
+                throw new ArgumentException("Ancestor type not specified in path '{0}'.".Fmt(path), "path");
             string propRef = path.Substring(1, path.IndexOf(')') - 1);
             string ownerTypeName = propRef.Substring(0, propRef.LastIndexOf('.')).Trim();
             Type ownerType = GetTypeFromName(Path, ownerTypeName);
             if (ownerType == null)
-                throw new ArgumentException(string.Format("Ancestor type '{0}' not found using path '{1}'.",
-                    ownerTypeName, path), "path");
+                throw new ArgumentException("Ancestor type '{0}' not found using path '{1}'.".Fmt(ownerTypeName, path), "path");
             RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor, ownerType, 1);
         }
 

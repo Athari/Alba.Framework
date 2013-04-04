@@ -20,6 +20,7 @@
 #>
 using System;
 using System.Windows;
+using Alba.Framework.Text;
 
 namespace <#=Namespace#>
 {
@@ -37,7 +38,7 @@ namespace <#=Namespace#>
                     return SystemColors.<#=name#><#=kind#>Key;
 <#+           } #>
                 default:
-                    throw new ArgumentException(string.Format("Unexpected colorKey value: {0}", colorKey));
+                    throw new ArgumentException("Unexpected colorKey value: {0}".Fmt(colorKey));
             }
         }
     }

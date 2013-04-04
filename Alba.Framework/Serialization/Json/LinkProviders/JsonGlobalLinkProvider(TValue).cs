@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Common;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
+using Alba.Framework.Collections;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -34,9 +36,8 @@ namespace Alba.Framework.Serialization.Json
         public override void ValidateLinksResolved ()
         {
             if (_unresolvedLinks.Any()) {
-                throw new JsonException(string.Format(
-                    "JSON global link provider for {0} contains unresolved links: '{1}'.",
-                    typeof(TValue).Name, string.Join("', '", _unresolvedLinks)));
+                throw new JsonException("JSON global link provider for {0} contains unresolved links: '{1}'."
+                    .Fmt(typeof(TValue).Name, _unresolvedLinks.JoinString("', '")));
             }
         }
 

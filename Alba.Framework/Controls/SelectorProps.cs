@@ -7,6 +7,7 @@ using System.Windows.Controls.Primitives;
 using Alba.Framework.Events;
 using Alba.Framework.Sys;
 using Alba.Framework.Collections;
+using Alba.Framework.Text;
 
 // ReSharper disable MemberCanBePrivate.Local
 namespace Alba.Framework.Controls
@@ -61,14 +62,14 @@ namespace Alba.Framework.Controls
                     var listBox = Selector as ListBox;
                     if (listBox != null)
                         return listBox.SelectedItems;
-                    throw new InvalidOperationException(string.Format(ErrorUnsupportedSelectorType, Selector.GetTypeFullName()));
+                    throw new InvalidOperationException(ErrorUnsupportedSelectorType.Fmt(Selector.GetTypeFullName()));
                 }
             }
 
             public SelectedItemsSync (Selector selector, IList modelSelectedItems)
             {
                 if (!(selector is MultiSelector) && !(selector is ListBox))
-                    throw new ArgumentException(string.Format(ErrorUnsupportedSelectorType, Selector.GetTypeFullName()), "selector");
+                    throw new ArgumentException(ErrorUnsupportedSelectorType.Fmt(Selector.GetTypeFullName()), "selector");
                 if (modelSelectedItems != null && !(modelSelectedItems is INotifyCollectionChanged))
                     throw new ArgumentException("Selected items collection must implement INotifyCollectionChanged", "modelSelectedItems");
                 Selector = selector;

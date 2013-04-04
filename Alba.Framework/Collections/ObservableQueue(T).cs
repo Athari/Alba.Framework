@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Alba.Framework.Text;
 using NcChangedAction = System.Collections.Specialized.NotifyCollectionChangedAction;
 using NcChangedEventArgs = System.Collections.Specialized.NotifyCollectionChangedEventArgs;
 
@@ -320,8 +321,8 @@ namespace Alba.Framework.Collections
 
         private Exception ThrowNotSupported ([CallerMemberName] string callerName = null)
         {
-            return new NotSupportedException(string.Format("Operation {0} is not supported for {1}.",
-                callerName, GetType().Name));
+            return new NotSupportedException("Operation {0} is not supported for {1}."
+                .Fmt(callerName, GetType().Name));
         }
 
         internal class ObservableQueue_DebugView

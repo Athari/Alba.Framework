@@ -47,13 +47,12 @@ namespace Alba.Framework.Serialization
         public override Type BindToType (string assemblyName, string typeName)
         {
             if (!assemblyName.IsNullOrEmpty())
-                throw new InvalidOperationException(string.Format("Type '{1}' (assembly={0}) not found.",
-                    typeName, assemblyName));
+                throw new InvalidOperationException("Type '{1}' (assembly={0}) not found.".Fmt(typeName, assemblyName));
             try {
                 return _nameToType[typeName];
             }
             catch (KeyNotFoundException e) {
-                throw new KeyNotFoundException(string.Format("Type '{0}' not found.", typeName), e);
+                throw new KeyNotFoundException("Type '{0}' not defined.".Fmt(typeName), e);
             }
         }
 

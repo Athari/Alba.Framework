@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Linq;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Interop
 {
@@ -41,7 +42,7 @@ namespace Alba.Framework.Interop
 
             int result = MAPISendMail(IntPtr.Zero, IntPtr.Zero, msg, MAPI_LOGON_UI | MAPI_DIALOG, 0);
             if (result > 1)
-                throw new Exception(string.Format("Failed to send mail: {0}.", GetErrorMessage(result)));
+                throw new Exception("Failed to send mail: {0}.".Fmt(GetErrorMessage(result)));
             Cleanup(msg);
         }
 
@@ -79,7 +80,7 @@ namespace Alba.Framework.Interop
 
         public string GetErrorMessage (int result)
         {
-            return result < ErrorMessages.Length ? ErrorMessages[result] : string.Format("MAPI error [{0}]", result);
+            return result < ErrorMessages.Length ? ErrorMessages[result] : "MAPI error [{0}]".Fmt(result);
         }
 
         private const int MAPI_LOGON_UI = 0x00000001;

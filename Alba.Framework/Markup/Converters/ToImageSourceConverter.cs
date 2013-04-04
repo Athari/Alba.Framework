@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Markup.Converters
 {
@@ -12,7 +13,7 @@ namespace Alba.Framework.Markup.Converters
             var str = value.ToString();
             var strParam = parameter as string;
             if (strParam != null)
-                str = string.Format(culture, strParam, str);
+                str = strParam.Fmt(culture, str);
             return new BitmapImage(new Uri(str, UriKind.RelativeOrAbsolute));
         }
 

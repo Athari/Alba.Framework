@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Markup.Converters
 {
@@ -45,9 +46,9 @@ namespace Alba.Framework.Markup.Converters
                 suffix = "EB";
                 readable = i >> 50;
             }
-            readable = readable/1024;
+            readable = readable / 1024;
 
-            return string.Format(culture, readable < 10 ? "{0:0.00} {1}" : "{0:0.0} {1}", readable, suffix);
+            return (readable < 10 ? "{0:0.00} {1}" : "{0:0.0} {1}").Fmt(culture, readable, suffix);
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

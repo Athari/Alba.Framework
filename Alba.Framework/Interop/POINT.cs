@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Interop
 {
@@ -43,7 +44,7 @@ namespace Alba.Framework.Interop
 
         public override string ToString ()
         {
-            return string.Format("{{X = {0}, Y = {1}}}", X, Y);
+            return "{{X = {0}, Y = {1}}}".Fmt(X, Y);
         }
     }
 }

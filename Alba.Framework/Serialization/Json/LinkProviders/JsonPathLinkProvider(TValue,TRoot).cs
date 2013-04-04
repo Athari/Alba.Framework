@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
@@ -57,7 +58,8 @@ namespace Alba.Framework.Serialization.Json
                 if (root != null)
                     return root;
             }
-            throw new InvalidOperationException("Root not found.");
+            throw new InvalidOperationException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
+                .Fmt(context.Stack.JoinString("; ")));
         }
 
         private static string GenerateLink (JsonLinkedContext context)
@@ -70,7 +72,7 @@ namespace Alba.Framework.Serialization.Json
                     path.Add(idable.Id);
             }
             path.Reverse();
-            return string.Join(JsonLinkedContext.LinkPathSeparator, path);
+            return path.JoinString(JsonLinkedContext.LinkPathSeparator);
         }
 
         private class RootLinkData
@@ -93,8 +95,8 @@ namespace Alba.Framework.Serialization.Json
                     return _valueToPath[value];
                 }
                 catch (KeyNotFoundException e) {
-                    throw new KeyNotFoundException(string.Format("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object.",
-                        value, value.GetType(), value.Id), e);
+                    throw new KeyNotFoundException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
+                        .Fmt(value, value.GetType(), value.Id), e);
                 }
             }
 
@@ -143,16 +145,15 @@ namespace Alba.Framework.Serialization.Json
                     _valueToPath.Add(value, path);
                 }
                 catch (ArgumentException e) {
-                    throw new ArgumentException(string.Format("Duplicate value '{0}' (id={1})", value, value.Id), e);
+                    throw new ArgumentException("Duplicate origin value '{0}' (id={1}).".Fmt(value, value.Id), e);
                 }
             }
 
             public void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonException(string.Format(
-                        "JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'.",
-                        typeof(TValue).Name, typeof(TRoot).Name, _root, string.Join("', '", _unresolvedLinks)));
+                    throw new JsonException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                        .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }
         }

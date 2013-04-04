@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Markup
 {
@@ -24,7 +25,7 @@ namespace Alba.Framework.Markup
             if (Converter != null)
                 value = Converter.Convert(value, typeof(object), ConverterParameter, CultureInfo.CurrentCulture);
             if (StringFormat != null)
-                value = string.Format(CultureInfo.CurrentCulture, StringFormat, value);
+                value = StringFormat.Fmt(value);
             return value;
         }
     }

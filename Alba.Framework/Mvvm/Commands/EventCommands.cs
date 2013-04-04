@@ -8,6 +8,7 @@ using Alba.Framework.Events;
 using Alba.Framework.Linq;
 using Alba.Framework.Mvvm.Models;
 using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Mvvm.Commands
 {
@@ -91,8 +92,8 @@ namespace Alba.Framework.Mvvm.Commands
         {
             return (s, a) => {
                 if (a.Parameter != null && !(a.Parameter is TParam))
-                    throw new ArgumentException(string.Format(ErrorUnexpectedCommandParam,
-                        command.Name, typeof(TParam).FullName, a.Parameter.GetTypeFullName()));
+                    throw new ArgumentException(ErrorUnexpectedCommandParam
+                        .Fmt(command.Name, typeof(TParam).FullName, a.Parameter.GetTypeFullName()));
                 handler(a);
             };
         }

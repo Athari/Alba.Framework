@@ -11,7 +11,7 @@ namespace Alba.Framework.Serialization
             string assemblyName;
             string typeName;
             @this.BindToName(serializedType, out assemblyName, out typeName);
-            return assemblyName.IsNullOrEmpty() ? typeName : string.Format("{0}, {1}", typeName, assemblyName);
+            return assemblyName.IsNullOrEmpty() ? typeName : "{0}, {1}".Fmt(typeName, assemblyName);
         }
 
         public static Type BindToType (this SerializationBinder @this, string typeName)
