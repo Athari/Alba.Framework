@@ -214,6 +214,7 @@
     <Compile Include="Serialization\SerializationBinderExts.cs" />
     <Compile Include="Sys\ConvertibleExts.cs" />
     <Compile Include="Sys\DoubleExts.cs" />
+    <Compile Include="Sys\EnumExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />

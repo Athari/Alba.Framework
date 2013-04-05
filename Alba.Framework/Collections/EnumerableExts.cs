@@ -18,6 +18,16 @@ namespace Alba.Framework.Collections
             yield return value;
         }
 
+        public static IEnumerable<TResult> Intersect<T, TResult> (this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
+        {
+            var dic = second.ToDictionary(i => i, comparer);
+            foreach (T item in first) {
+                T value;
+                if (dic.TryGetValue(item, out value))
+                    yield return resultSelector(item, value);
+            }
+        }
+
         public static string JoinString<T> (this IEnumerable<T> @this, string separator)
         {
             return string.Join(separator, @this);
