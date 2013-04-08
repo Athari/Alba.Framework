@@ -14,8 +14,8 @@ namespace Alba.Framework.Logs
 {
     public class RollingFileTraceListener : TextWriterTraceListener
     {
-        private const int SourceNameFormatLen = 10;
-        private const int TypeNameFormatLen = 30;
+        private const int SourceNameFormatLen = 20;
+        private const int TypeNameFormatLen = 40;
         private static readonly string SourceTypeNamesFormat = string.Format("{{0,{0}}}:{{1,{1}}}",
             SourceNameFormatLen, TypeNameFormatLen);
 

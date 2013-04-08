@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Logs;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 
+// ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
     public class JsonPathLinkProvider<TValue, TRoot> : JsonLinkProvider<TValue>
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonPathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
         public JsonPathLinkProvider (string idProp) :
             base(idProp)
         {}
+
+        private static ILog Log
+        {
+            get { return _log.Value; }
+        }
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {
@@ -106,14 +115,14 @@ namespace Alba.Framework.Serialization.Json
                 string path = GenerateLink(resolveContext.Context) + JsonLinkedContext.LinkPathSeparator + untypedId;
                 TValue value;
                 if (!_pathToValue.TryGetValue(path, out value)) {
-                    Console.WriteLine("  {0} - created origin in {1}", path, resolveContext.Context.StackString);
+                    Log.Trace("  {0} - created origin in {1}".Fmt(path, resolveContext.Context.StackString));
                     value = (TValue)resolveContext.CreateEmpty(id);
                     _pathToValue[path] = value;
                     _valueToPath[value] = path;
                 }
                 else {
                     _unresolvedLinks.Remove(path);
-                    Console.WriteLine("  {0} - resolved origin in {1}", path, resolveContext.Context.StackString);
+                    Log.Trace("  {0} - resolved origin in {1}".Fmt(path, resolveContext.Context.StackString));
                 }
                 return value;
             }
@@ -123,14 +132,14 @@ namespace Alba.Framework.Serialization.Json
                 string untypedPath = GetUntypedLink(path);
                 TValue value;
                 if (!_pathToValue.TryGetValue(untypedPath, out value)) {
-                    Console.WriteLine("  {0} - created link in {1}", path, resolveContext.Context.StackString);
+                    Log.Trace("  {0} - created link in {1}".Fmt(path, resolveContext.Context.StackString));
                     value = (TValue)resolveContext.CreateEmpty(path);
                     _pathToValue[untypedPath] = value;
                     _valueToPath[value] = untypedPath;
                     _unresolvedLinks.Add(untypedPath);
                 }
                 else {
-                    Console.WriteLine("  {0} - resolved link in {1}", path, resolveContext.Context.StackString);
+                    Log.Trace("  {0} - resolved link in {1}".Fmt(path, resolveContext.Context.StackString));
                 }
                 return value;
             }

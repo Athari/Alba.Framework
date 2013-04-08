@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+using Alba.Framework.Collections;
 using Alba.Framework.Sys;
 using Alba.Framework.Text;
 
@@ -12,6 +14,16 @@ namespace Alba.Framework.Logs
         private static readonly string TypeName = typeof(T).Name;
         private readonly TraceSource _source;
         private readonly SimpleMonitor _reentrancyMonitor = new SimpleMonitor();
+
+        static Log ()
+        {
+            int genericGrave = FullTypeName.IndexOf('`');
+            if (genericGrave != -1) {
+                FullTypeName = "{0}<{1}>".Fmt(
+                    FullTypeName.Sub(0, genericGrave),
+                    typeof(T).GenericTypeArguments.Select(t => t.Name).JoinString(","));
+            }
+        }
 
         public Log (TraceSource source)
         {
