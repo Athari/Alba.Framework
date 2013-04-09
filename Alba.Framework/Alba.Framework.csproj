@@ -139,6 +139,7 @@
     <Compile Include="IO\Streams.cs" />
     <Compile Include="IO\TeeOutputStream.cs" />
     <Compile Include="Logs\AlbaFrameworkTraceSources.cs" />
+    <Compile Include="Logs\CallbackTraceFilter.cs" />
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
     <Compile Include="Serialization\DictionarySerializationBinder.cs" />
