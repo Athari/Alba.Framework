@@ -13,7 +13,7 @@ namespace Alba.Framework.Collections
     /// Allows to override methods of Dictionary.
     /// </summary>
     [Serializable, ComVisible (false)]
-    [DebuggerDisplay ("Count = {Count}"), DebuggerTypeProxy (typeof(MapDebugView<,>))]
+    [DebuggerDisplay ("Count = {Count}"), DebuggerTypeProxy (typeof(DictionaryDebugView<,>))]
     public class Map<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>
     {
         private readonly IDictionary<TKey, TValue> _dictionary;
@@ -175,29 +175,6 @@ namespace Alba.Framework.Collections
         private static Exception NewNotSupportedReadOnlyException ()
         {
             return new NotSupportedException("Dictionary is read-only.");
-        }
-
-        internal sealed class MapDebugView<K, V>
-        {
-            private readonly IDictionary<K, V> _dictionary;
-
-            [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
-            public KeyValuePair<K, V>[] Items
-            {
-                get
-                {
-                    var array = new KeyValuePair<K, V>[_dictionary.Count];
-                    _dictionary.CopyTo(array, 0);
-                    return array;
-                }
-            }
-
-            public MapDebugView (IDictionary<K, V> dictionary)
-            {
-                if (dictionary == null)
-                    throw new ArgumentNullException("dictionary");
-                _dictionary = dictionary;
-            }
         }
     }
 }

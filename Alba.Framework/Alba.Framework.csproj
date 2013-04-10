@@ -66,6 +66,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
+    <Compile Include="Collections\BiDictionary%28TFirst,TSecond%29.cs" />
+    <Compile Include="Collections\DictionaryDebugView%28TKey,TValue%29.cs" />
     <Compile Include="Collections\EnumerableExts.cs" />
     <Compile Include="Collections\Map.cs" />
     <Compile Include="Collections\ObservableQueue%28T%29.cs" />
@@ -217,6 +219,7 @@
     <Compile Include="Sys\DoubleExts.cs" />
     <Compile Include="Sys\EnumExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
+    <Compile Include="Sys\KeyValuePairExts.cs" />
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
