@@ -18,5 +18,11 @@ namespace Alba.Framework.Serialization
         {
             return @this.BindToType("", typeName);
         }
+
+        public static Type BindToType (this SerializationBinder @this, Type baseType, string typeName)
+        {
+            var contextualBinder = @this as DictionarySerializationBinder;
+            return contextualBinder != null ? contextualBinder.ContextualBindToType(baseType, "", typeName) : @this.BindToType("", typeName);
+        }
     }
 }

@@ -28,17 +28,17 @@ namespace Alba.Framework.Serialization.Json
             get { return Context.Options.GetLinkProvider(Type).IdProp; }
         }
 
-        public void UpdateTypeFromTypeProperty (string typeName)
+        public void UpdateTypeFromTypeProperty (Type baseType, string typeName)
         {
             if (typeName == null)
                 return;
-            Type = Serializer.Binder.BindToType(typeName);
+            Type = Serializer.Binder.BindToType(baseType, typeName);
         }
 
         public object CreateEmpty (string link)
         {
             int typeSeparatorPos = link.IndexOf(JsonLinkedContext.LinkTypeSeparator);
-            Type type = typeSeparatorPos == -1 ? Type : Serializer.Binder.BindToType(link.Substring(0, typeSeparatorPos));
+            Type type = typeSeparatorPos == -1 ? Type : Serializer.Binder.BindToType(Type, link.Substring(0, typeSeparatorPos));
             return Serializer.Create(type);
         }
     }

@@ -2,6 +2,7 @@
 using Alba.Framework.Common;
 using Newtonsoft.Json;
 
+// TODO Modify Json.Net to make JsonConverter.WriteJson include container property type argument (also in JsonOriginConverter)
 namespace Alba.Framework.Serialization.Json
 {
     public class JsonLinkConverter : JsonConverter
