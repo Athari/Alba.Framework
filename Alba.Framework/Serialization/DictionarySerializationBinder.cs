@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Alba.Framework.Collections;
 using Alba.Framework.Sys;
@@ -95,20 +96,21 @@ namespace Alba.Framework.Serialization
                 throw new InvalidOperationException("Type '{1}' (assembly={0}) not defined. Using types from arbitrary assemblies not allowed.".Fmt(typeName, assemblyName));
             Type serializedType;
             BiDictionary<Type, string> typeToName;
-            foreach (Type type in baseType.TraverseList(t => t.BaseType))
+            foreach (Type type in baseType.GetInterfaces().Concat(baseType.TraverseList(t => t.BaseType)))
                 if (_baseTypeToTypeToName.TryGetValue(type, out typeToName) && typeToName.Reverse.TryGetValue(typeName, out serializedType))
                     return serializedType;
-            throw new KeyNotFoundException("Type '{0}' not defined.".Fmt(typeName));
+            throw new KeyNotFoundException("Type with id '{0}' not registered.".Fmt(typeName));
         }
 
         public override void BindToName (Type serializedType, out string assemblyName, out string typeName)
         {
             assemblyName = null;
             BiDictionary<Type, string> typeToName;
-            foreach (Type type in serializedType.TraverseList(t => t.BaseType))
+            foreach (Type type in serializedType.GetInterfaces().Concat(serializedType.TraverseList(t => t.BaseType)))
                 if (_baseTypeToTypeToName.TryGetValue(type, out typeToName) && typeToName.TryGetValue(serializedType, out typeName))
                     return;
             typeName = null;
+            //throw new KeyNotFoundException("Type '{0}' not registered.".Fmt(serializedType.GetFullSharpName()));
         }
     }
 }
