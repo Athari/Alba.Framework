@@ -8,14 +8,14 @@ namespace Alba.Framework.Sys
     /// </summary>
     public static class EnumExts
     {
-        public static bool HasAny<T> (T @this, T flags)
+        public static bool HasAny<T> (this T @this, T flags)
             where T : struct, IComparable, IFormattable, IConvertible //, Enum
         {
             ulong uthis = ToUInt64(@this), uflags = ToUInt64(flags);
             return (uthis & uflags) != 0;
         }
 
-        public static bool HasAll<T> (T @this, T flags)
+        public static bool HasAll<T> (this T @this, T flags)
             where T : struct, IComparable, IFormattable, IConvertible //, Enum
         {
             ulong uthis = ToUInt64(@this), uflags = ToUInt64(flags);
