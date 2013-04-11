@@ -11,9 +11,17 @@ namespace Alba.Framework.Collections
             return enumerables.SelectMany(e => e);
         }
 
+        public static IEnumerable<T> Concat<T> (this IEnumerable<T> @this, params T[] values)
+        {
+            foreach (T item in @this)
+                yield return item;
+            foreach (T value in values)
+                yield return value;
+        }
+
         public static IEnumerable<T> Concat<T> (this IEnumerable<T> @this, T value)
         {
-            foreach (var item in @this)
+            foreach (T item in @this)
                 yield return item;
             yield return value;
         }

@@ -35,7 +35,7 @@ namespace Alba.Framework.Serialization.Json
         {
             var serializer = new JsonSerializer {
                 DefaultValueHandling = DefaultValueHandling.Ignore,
-                TypeNameHandling = TypeNameHandling.Auto,
+                TypeNameHandling = TypeNameHandling.None,
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 ContractResolver = GetContractResolver(),
