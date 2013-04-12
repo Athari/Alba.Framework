@@ -37,9 +37,7 @@ namespace Alba.Framework.Serialization.Json
                     var collection = value as ICollection;
                     return collection == null || collection.Count != 0;
                 };
-                property.ShouldSerialize = property.ShouldSerialize != null
-                    ? obj => property.ShouldSerialize(obj) && shouldSerialize(obj)
-                    : shouldSerialize;
+                property.ShouldSerialize = property.ShouldSerialize.Merge(shouldSerialize, (a, b) => a && b);
             }
             return property;
         }
