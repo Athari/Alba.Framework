@@ -33,5 +33,20 @@ namespace Alba.Framework.Sys
         {
             return @this == null ? "" : @this.ToString();
         }
+
+        public static bool IsAnyType (this object @this, params Type[] types)
+        {
+            return @this == null || types.Any(@this.GetType().IsAssignableTo);
+        }
+
+        public static bool IsAnyType<T1> (this object @this)
+        {
+            return @this is T1;
+        }
+
+        public static bool IsAnyType<T1, T2> (this object @this)
+        {
+            return @this is T1 || @this is T2;
+        }
     }
 }

@@ -28,5 +28,10 @@ namespace Alba.Framework.Sys
             }
             return name;
         }
+
+        public static bool IsAssignableTo (this Type @this, Type type)
+        {
+            return type.IsAssignableFrom(@this);
+        }
     }
 }
