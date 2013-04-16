@@ -3,9 +3,19 @@ using System.Globalization;
 
 namespace Alba.Framework.Sys
 {
-    public static class ConvertibleExts
+    public static partial class ConvertibleExts
     {
-        public static string ToStringInvariant (this IConvertible @this)
+        public static Object ToType (this IConvertible @this, Type conversionType)
+        {
+            return @this.ToType(conversionType, CultureInfo.CurrentCulture);
+        }
+
+        public static Object ToTypeInv (this IConvertible @this, Type conversionType)
+        {
+            return @this.ToType(conversionType, CultureInfo.InvariantCulture);
+        }
+
+        public static String ToStringInv (this IConvertible @this)
         {
             return @this.ToString(CultureInfo.InvariantCulture);
         }

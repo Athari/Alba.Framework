@@ -1,0 +1,25 @@
+﻿<#@ template hostspecific="true" debug="true" #><#@ output extension="g.cs" #>
+<#@ assembly name="PresentationFramework" #>
+<#@ import namespace="System.Windows" #>
+<#@ include file="$(SolutionDir)\Alba.Framework.CodeGeneration\T4\Common.ttinclude" #>
+using System;
+using System.Globalization;
+
+namespace <#=Namespace#>
+{
+    public static partial class ConvertibleExts
+    {
+<#    foreach (string type in new[] { "Boolean", "Char", "SByte", "Byte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double", "Decimal", "DateTime" }) { #>
+        public static <#=type#> To<#=type#> (this IConvertible @this)
+        {
+            return @this.To<#=type#>(CultureInfo.CurrentCulture);
+        }
+
+        public static <#=type#> To<#=type#>Inv (this IConvertible @this)
+        {
+            return @this.To<#=type#>(CultureInfo.InvariantCulture);
+        }
+
+<#    } #>
+    }
+}
