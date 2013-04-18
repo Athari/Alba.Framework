@@ -213,7 +213,7 @@
     <Compile Include="Serialization\Json\JsonLinkedOptions.cs" />
     <Compile Include="Serialization\Json\LinkProviders\JsonLinkProvider%28TValue%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonOriginConverter.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonPathLinkProvider%28TValue,TRoot%29.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonRootPathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\JsonResolveLinkContext.cs" />
     <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
     <Compile Include="Serialization\SerializationBinderExts.cs" />

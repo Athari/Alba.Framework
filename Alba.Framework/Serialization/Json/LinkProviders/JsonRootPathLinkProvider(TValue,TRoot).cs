@@ -10,15 +10,15 @@ using Newtonsoft.Json;
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public class JsonPathLinkProvider<TValue, TRoot> : JsonLinkProvider<TValue>
+    public class JsonRootPathLinkProvider<TValue, TRoot> : JsonLinkProvider<TValue>
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonPathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonRootPathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
 
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        public JsonPathLinkProvider (string idProp) :
+        public JsonRootPathLinkProvider (string idProp) :
             base(idProp)
         {}
 
