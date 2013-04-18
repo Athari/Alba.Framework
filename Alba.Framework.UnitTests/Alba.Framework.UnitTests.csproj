@@ -52,19 +52,26 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AssemblySetup.cs" />
     <Compile Include="Serialization\Json\EnumFlagsConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonRootPathLinkProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
       <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
       <Name>Newtonsoft.Json.Net40</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Alba.Framework.Testing\Alba.Framework.Testing.csproj">
+      <Project>{D4A932D6-F7BE-4EE4-89F4-F72BD270286B}</Project>
+      <Name>Alba.Framework.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Alba.Framework\Alba.Framework.csproj">
       <Project>{62730B23-450C-4B93-8D5C-F7037DB6D263}</Project>
       <Name>Alba.Framework</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
