@@ -44,8 +44,12 @@ namespace Alba.Framework.Serialization.Json
                     new JsonLinkedContext(linkProviders: GetLinkProviders())),
             };
             serializer.Converters.AddRange(GetConverters());
+            SetOptions(serializer);
             return serializer;
         }
+
+        protected virtual void SetOptions (JsonSerializer serializer)
+        {}
 
         protected virtual IContractResolver GetContractResolver ()
         {
