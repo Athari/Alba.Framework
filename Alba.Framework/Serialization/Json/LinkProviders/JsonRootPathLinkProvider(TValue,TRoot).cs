@@ -77,11 +77,14 @@ namespace Alba.Framework.Serialization.Json
             IList<object> stack = context.Stack;
             for (int i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
                 var idable = stack[i] as IIdentifiable<string>;
-                if (idable != null)
-                    path.Add(idable.Id);
+                if (idable == null)
+                    continue;
+                string id = idable.Id;
+                if (id != null)
+                    path.Add(id);
             }
             path.Reverse();
-            return path.JoinString(JsonLinkedContext.LinkPathSeparator);
+            return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
         }
 
         private class RootLinkData
@@ -112,7 +115,8 @@ namespace Alba.Framework.Serialization.Json
             public TValue ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
             {
                 string untypedId = GetUntypedLink(id);
-                string path = GenerateLink(resolveContext.Context) + JsonLinkedContext.LinkPathSeparator + untypedId;
+                string path = GenerateLink(resolveContext.Context);
+                path = !path.IsNullOrEmpty() ? path + JsonLinkedContext.LinkPathSeparator + untypedId : untypedId;
                 TValue value;
                 if (!_pathToValue.TryGetValue(path, out value)) {
                     Log.Trace("  {0} - created origin in {1}".Fmt(path, resolveContext.Context.StackString));
@@ -150,6 +154,8 @@ namespace Alba.Framework.Serialization.Json
                     throw new ArgumentNullException("value");
                 string path = GenerateLink(context);
                 try {
+                    if (path == null)
+                        return;
                     _pathToValue.Add(path, value);
                     _valueToPath.Add(value, path);
                 }
