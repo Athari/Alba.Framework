@@ -37,7 +37,7 @@ namespace Alba.Framework.Serialization.Json
                 DefaultValueHandling = DefaultValueHandling.Ignore,
                 TypeNameHandling = TypeNameHandling.None,
                 ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 ContractResolver = GetContractResolver(),
                 Binder = BindTypeNameInternal(new DictionarySerializationBinder()),
                 Context = new StreamingContext(StreamingContextStates.All,
