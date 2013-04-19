@@ -47,5 +47,14 @@ namespace Alba.Framework.Collections
                 @this[key] = value = getDefaultValue();
             return value;
         }
+
+        public static TValue GetOrAdd<TKey, TValue> (this IDictionary<TKey, TValue> @this, TKey key)
+            where TValue : new()
+        {
+            TValue value;
+            if (!@this.TryGetValue(key, out value))
+                @this[key] = value = new TValue();
+            return value;
+        }
     }
 }
