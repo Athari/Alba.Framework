@@ -67,7 +67,7 @@ namespace Alba.Framework.Serialization.Json
                 if (root != null)
                     return root;
             }
-            throw new InvalidOperationException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
+            throw new JsonException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
                 .Fmt(context.Stack.JoinString("; ")));
         }
 
@@ -107,7 +107,7 @@ namespace Alba.Framework.Serialization.Json
                     return _valueToPath[value];
                 }
                 catch (KeyNotFoundException e) {
-                    throw new KeyNotFoundException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
+                    throw new JsonException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
                         .Fmt(value, value.GetType(), value.Id), e);
                 }
             }
@@ -161,13 +161,13 @@ namespace Alba.Framework.Serialization.Json
                     _pathToValue.Add(path, value);
                 }
                 catch (ArgumentException e) {
-                    throw new ArgumentException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
+                    throw new JsonException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
                 }
                 try {
                     _valueToPath.Add(value, path);
                 }
                 catch (ArgumentException e) {
-                    throw new ArgumentException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
+                    throw new JsonException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
                 }
             }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Alba.Framework.Attributes;
 using Alba.Framework.Common;
@@ -14,6 +15,84 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
     public class JsonRootPathLinkProviderTests
     {
         public TestContext TestContext { get; set; }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonException))]
+        public void Serialize_WrongRoot_Error ()
+        {
+            var ser = new SerializerWrongRoot();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            ser.SerializeToString(value);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonException))]
+        public void Deserialize_WrongRoot_Error ()
+        {
+            var ser = new SerializerWrongRoot();
+            ser.DeserializeFromString(@"{Walls:[{Bricks:[{Id:1,Touches:[""2""]},{Id:2}]}]}");
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonException))]
+        public void Serialize_UnownedOrigin_Error ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        UnownedBricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            value[0].UnownedBricks[0].Touches = new List<Brick> { value[0].UnownedBricks[1] };
+            Trace.WriteLine(ser.SerializeToString(value));
+        }
+
+        [TestMethod, Ignore] // it somehow manages to work, but it's unnecessary
+        [ExpectedException (typeof(JsonException))]
+        public void Deserialize_UnownedOrigin_Error ()
+        {
+            var ser = new Serializer();
+            ser.DeserializeFromString(@"{Walls:[{UnownedBricks:[{Id:1,Touches:[""2""]},{Id:2}]}]}");
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonException))]
+        public void Serialize_DuplicatePath_Error ()
+        {
+            var ser = new SerializerWrongRoot();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 1 } }
+                    }
+                }
+            };
+            ser.SerializeToString(value);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonException))]
+        public void Serialize_DuplicateValue_Error ()
+        {
+            var ser = new SerializerWrongRoot();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 } }
+                    }
+                }
+            };
+            value[0].Bricks.Add(value[0][0]);
+            ser.SerializeToString(value);
+        }
 
         [TestMethod]
         public void SerializeDeserialize_Simple ()
@@ -513,6 +592,14 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             }
         }
 
+        private class SerializerWrongRoot : Serializer
+        {
+            protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
+            {
+                yield return new JsonRootPathLinkProvider<Brick, Serializer>("Id");
+            }
+        }
+
         [JsonObject (MemberSerialization.OptIn), UsedImplicitly (ImplicitUseTargetFlags.WithMembers)]
         private class Owner : IOwner
         {
@@ -540,6 +627,9 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         {
             [JsonProperty (ItemConverterType = typeof(JsonOriginConverter))]
             public List<Brick> Bricks { get; set; }
+
+            [JsonProperty (ItemConverterType = typeof(JsonOriginConverter))]
+            public List<Brick> UnownedBricks { get; set; }
 
             IEnumerable<object> IOwner.Owned
             {
