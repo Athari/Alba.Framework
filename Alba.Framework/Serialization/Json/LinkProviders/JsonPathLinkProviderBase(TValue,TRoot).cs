@@ -108,7 +108,8 @@ namespace Alba.Framework.Serialization.Json
             {
                 var path = new List<string>();
                 IList<object> stack = context.Stack;
-                for (int i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
+                int i;
+                for (i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
                     var idable = stack[i] as IIdentifiable<string>;
                     if (idable == null)
                         continue;
@@ -116,6 +117,8 @@ namespace Alba.Framework.Serialization.Json
                     if (id != null)
                         path.Add(id);
                 }
+                if (i == -1)
+                    throw new JsonException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
                 path.Reverse();
                 return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
             }
