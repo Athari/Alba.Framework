@@ -1,0 +1,124 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Alba.Framework.Collections;
+using Alba.Framework.Common;
+using Alba.Framework.Logs;
+using Alba.Framework.Text;
+using Newtonsoft.Json;
+
+// ReSharper disable StaticFieldInGenericType
+namespace Alba.Framework.Serialization.Json
+{
+    public abstract class JsonPathLinkProviderBase<TValue, TRoot> : JsonLinkProvider<TValue>
+        where TValue : class, IIdentifiable<string>
+        where TRoot : class
+    {
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonPathLinkProviderBase<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+
+        protected JsonPathLinkProviderBase (string idProp) : base(idProp)
+        {}
+
+        private static ILog Log
+        {
+            get { return _log.Value; }
+        }
+
+        protected abstract class LinkData
+        {
+            private readonly IDictionary<string, TValue> _pathToValue = new Dictionary<string, TValue>();
+            private readonly IDictionary<TValue, string> _valueToPath = new Dictionary<TValue, string>();
+            protected readonly ISet<string> _unresolvedLinks = new HashSet<string>();
+
+            public string GetLink (TValue value)
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                try {
+                    return _valueToPath[value];
+                }
+                catch (KeyNotFoundException e) {
+                    throw new JsonException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
+                        .Fmt(value, value.GetType(), value.Id), e);
+                }
+            }
+
+            public TValue ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
+            {
+                string untypedId = GetUntypedLink(id);
+                string path = GenerateLink(resolveContext.Context);
+                path = !path.IsNullOrEmpty() ? path + JsonLinkedContext.LinkPathSeparator + untypedId : untypedId;
+                TValue value;
+                if (!_pathToValue.TryGetValue(path, out value)) {
+                    Log.Trace("  {0} - created origin in {1}".Fmt(path, resolveContext.Context.StackString));
+                    value = (TValue)resolveContext.CreateEmpty(id);
+                    _pathToValue[path] = value;
+                    _valueToPath[value] = path;
+                }
+                else {
+                    _unresolvedLinks.Remove(path);
+                    Log.Trace("  {0} - resolved origin in {1}".Fmt(path, resolveContext.Context.StackString));
+                }
+                return value;
+            }
+
+            public TValue ResolveLink (string path, JsonResolveLinkContext resolveContext)
+            {
+                string untypedPath = GetUntypedLink(path);
+                TValue value;
+                if (!_pathToValue.TryGetValue(untypedPath, out value)) {
+                    Log.Trace("  {0} - created link in {1}".Fmt(path, resolveContext.Context.StackString));
+                    value = (TValue)resolveContext.CreateEmpty(path);
+                    _pathToValue[untypedPath] = value;
+                    _valueToPath[value] = untypedPath;
+                    _unresolvedLinks.Add(untypedPath);
+                }
+                else {
+                    Log.Trace("  {0} - resolved link in {1}".Fmt(path, resolveContext.Context.StackString));
+                }
+                return value;
+            }
+
+            public void RememberOriginLink (TValue value, JsonLinkedContext context)
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                if (value.Id == null)
+                    return;
+                string path = GenerateLink(context);
+                if (path == null)
+                    return;
+                try {
+                    _pathToValue.Add(path, value);
+                }
+                catch (ArgumentException e) {
+                    throw new JsonException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
+                }
+                try {
+                    _valueToPath.Add(value, path);
+                }
+                catch (ArgumentException e) {
+                    throw new JsonException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
+                }
+            }
+
+            public abstract void ValidateLinksResolved ();
+
+            private static string GenerateLink (JsonLinkedContext context)
+            {
+                var path = new List<string>();
+                IList<object> stack = context.Stack;
+                for (int i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
+                    var idable = stack[i] as IIdentifiable<string>;
+                    if (idable == null)
+                        continue;
+                    string id = idable.Id;
+                    if (id != null)
+                        path.Add(id);
+                }
+                path.Reverse();
+                return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
+            }
+        }
+    }
+}
