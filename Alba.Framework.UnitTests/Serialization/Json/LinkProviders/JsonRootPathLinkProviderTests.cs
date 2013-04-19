@@ -67,7 +67,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         [ExpectedException (typeof(JsonException))]
         public void Serialize_DuplicatePath_Error ()
         {
-            var ser = new SerializerWrongRoot();
+            var ser = new Serializer();
             var value = new Owner {
                 Walls = new List<Wall> {
                     new Wall {
@@ -82,7 +82,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         [ExpectedException (typeof(JsonException))]
         public void Serialize_DuplicateValue_Error ()
         {
-            var ser = new SerializerWrongRoot();
+            var ser = new Serializer();
             var value = new Owner {
                 Walls = new List<Wall> {
                     new Wall {
