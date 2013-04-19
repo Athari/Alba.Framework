@@ -287,6 +287,93 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);
         }
 
+        [TestMethod]
+        public void SerializeDeserialize_LinksOriginsMixed_Deeper ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> {
+                            new Brick {
+                                Id = 1,
+                                Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                            },
+                            new Brick {
+                                Id = 2,
+                                Bricks = new List<Brick> {
+                                    new Brick {
+                                        Id = 1,
+                                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            value[0][0].Touches = new List<Brick> { value[0][1][0][0], value[0][1][0][1] }; // 1 -> 2/1/1, 2/1/2
+            value[0][1].Touches = new List<Brick> { value[0][1][0][0], value[0][0][0] }; // 2 -> 2/1/1, 1/1
+            value[0][1][0][0].Touches = new List<Brick> { value[0][0], value[0][0][1], value[0][1][0][1] }; // 2/1/1 -> 1, 1/2, 2/1/2
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[" +
+                @"{Id:1,Touches:[""2/1/1"",""2/1/2""],Bricks:[{Id:1},{Id:2}]}," +
+                @"{Id:2,Touches:[""2/1/1"",""1/1""]," +
+                @"Bricks:[{Id:1,Bricks:[" +
+                @"{Id:1,Touches:[""1"",""1/2"",""2/1/2""]},{Id:2}]}]}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][1][0][0], copy[0][0].Touches[0]);
+            Assert.AreSame(copy[0][1][0][1], copy[0][0].Touches[1]);
+            Assert.AreSame(copy[0][1][0][0], copy[0][1].Touches[0]);
+            Assert.AreSame(copy[0][0][0], copy[0][1].Touches[1]);
+            Assert.AreSame(copy[0][0], copy[0][1][0][0].Touches[0]);
+            Assert.AreSame(copy[0][0][1], copy[0][1][0][0].Touches[1]);
+            Assert.AreSame(copy[0][1][0][1], copy[0][1][0][0].Touches[2]);
+        }
+
+        [TestMethod]
+        public void SerializeDeserialize_LinksOriginsMixed_Deeper_MissingIds ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> {
+                            new Brick {
+                                Id = 1,
+                                Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                            },
+                            new Brick {
+                                Id = 2,
+                                Bricks = new List<Brick> {
+                                    new Brick {
+                                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            value[0][0].Touches = new List<Brick> { value[0][1][0][0], value[0][1][0][1] }; // 1 -> 2/1*/1, 2/1*/2
+            value[0][1].Touches = new List<Brick> { value[0][1][0][0], value[0][0][0] }; // 2 -> 2/1*/1, 1/1
+            value[0][1][0][0].Touches = new List<Brick> { value[0][0], value[0][0][1], value[0][1][0][1] }; // 2/1*/1 -> 1, 1/2, 2/1*/2
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[" +
+                @"{Id:1,Touches:[""2/1"",""2/2""],Bricks:[{Id:1},{Id:2}]}," +
+                @"{Id:2,Touches:[""2/1"",""1/1""]," +
+                @"Bricks:[{Bricks:[" +
+                @"{Id:1,Touches:[""1"",""1/2"",""2/2""]},{Id:2}]}]}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][1][0][0], copy[0][0].Touches[0]);
+            Assert.AreSame(copy[0][1][0][1], copy[0][0].Touches[1]);
+            Assert.AreSame(copy[0][1][0][0], copy[0][1].Touches[0]);
+            Assert.AreSame(copy[0][0][0], copy[0][1].Touches[1]);
+            Assert.AreSame(copy[0][0], copy[0][1][0][0].Touches[0]);
+            Assert.AreSame(copy[0][0][1], copy[0][1][0][0].Touches[1]);
+            Assert.AreSame(copy[0][1][0][1], copy[0][1][0][0].Touches[2]);
+        }
+
         private class Serializer : CustomJsonSerializer<Owner>
         {
             protected override void SetOptions (JsonSerializer serializer)

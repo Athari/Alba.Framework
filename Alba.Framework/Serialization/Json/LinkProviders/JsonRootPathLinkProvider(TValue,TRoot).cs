@@ -152,15 +152,22 @@ namespace Alba.Framework.Serialization.Json
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
+                if (value.Id == null)
+                    return;
                 string path = GenerateLink(context);
+                if (path == null)
+                    return;
                 try {
-                    if (path == null)
-                        return;
                     _pathToValue.Add(path, value);
+                }
+                catch (ArgumentException e) {
+                    throw new ArgumentException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
+                }
+                try {
                     _valueToPath.Add(value, path);
                 }
                 catch (ArgumentException e) {
-                    throw new ArgumentException("Duplicate origin value '{0}' (id={1}).".Fmt(value, value.Id), e);
+                    throw new ArgumentException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
                 }
             }
 
