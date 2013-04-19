@@ -17,7 +17,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         public TestContext TestContext { get; set; }
 
         [TestMethod]
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_WrongRoot_Error ()
         {
             var ser = new SerializerWrongRoot();
@@ -32,7 +32,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Deserialize_WrongRoot_Error ()
         {
             var ser = new SerializerWrongRoot();
@@ -40,7 +40,15 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
+        public void Deserialize_UnresolvedLink_Error ()
+        {
+            var ser = new SerializerWrongRoot();
+            ser.DeserializeFromString(@"{Walls:[{Bricks:[{Id:1,Touches:[""3""]},{Id:2}]}]}");
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_UnownedOrigin_Error ()
         {
             var ser = new Serializer();
@@ -56,7 +64,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod, Ignore] // it somehow manages to work, but it's unnecessary
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Deserialize_UnownedOrigin_Error ()
         {
             var ser = new Serializer();
@@ -64,7 +72,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_DuplicatePath_Error ()
         {
             var ser = new Serializer();
@@ -79,7 +87,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException (typeof(JsonException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_DuplicateValue_Error ()
         {
             var ser = new Serializer();
