@@ -47,7 +47,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonException("JSON path link provider for {0} (root={1}) contains unresolved links: '{2}'."
+                    throw new JsonLinkProviderException("JSON path link provider for {0} (root={1}) contains unresolved links: '{2}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _unresolvedLinks.JoinString("', '")));
                 }
             }

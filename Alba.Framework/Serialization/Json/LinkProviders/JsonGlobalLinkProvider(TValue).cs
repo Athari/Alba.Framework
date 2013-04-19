@@ -29,7 +29,10 @@ namespace Alba.Framework.Serialization.Json
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {
-            return value.Id;
+            string id = value.Id;
+            if (id == null)
+                throw new JsonLinkProviderException("Id of origin '{0}' not specified.".Fmt(value));
+            return id;
         }
 
         public override object ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
@@ -45,7 +48,7 @@ namespace Alba.Framework.Serialization.Json
         public override void ValidateLinksResolved ()
         {
             if (_unresolvedLinks.Any()) {
-                throw new JsonException("JSON global link provider for {0} contains unresolved links: '{1}'."
+                throw new JsonLinkProviderException("JSON global link provider for {0} contains unresolved links: '{1}'."
                     .Fmt(typeof(TValue).Name, _unresolvedLinks.JoinString("', '")));
             }
         }
@@ -56,7 +59,6 @@ namespace Alba.Framework.Serialization.Json
             TValue value;
             if (!_links.TryGetValue(untypedLink, out value)) {
                 Log.Trace("  {0} - created  ({1})".Fmt(link, resolveContext.Context.StackString));
-                Console.WriteLine();
                 _links[untypedLink] = value = (TValue)resolveContext.CreateEmpty(link);
                 if (!isOrigin)
                     _unresolvedLinks.Add(untypedLink);

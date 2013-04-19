@@ -58,7 +58,7 @@ namespace Alba.Framework.Serialization.Json
                 if (root != null)
                     return root;
             }
-            throw new JsonException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
+            throw new JsonLinkProviderException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
                 .Fmt(context.Stack.JoinString("; ")));
         }
 
@@ -74,7 +74,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                    throw new JsonLinkProviderException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }

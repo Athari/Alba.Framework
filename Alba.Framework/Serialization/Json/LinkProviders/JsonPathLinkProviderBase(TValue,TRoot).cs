@@ -38,7 +38,7 @@ namespace Alba.Framework.Serialization.Json
                     return _valueToPath[value];
                 }
                 catch (KeyNotFoundException e) {
-                    throw new JsonException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
+                    throw new JsonLinkProviderException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
                         .Fmt(value, value.GetType(), value.Id), e);
                 }
             }
@@ -92,13 +92,13 @@ namespace Alba.Framework.Serialization.Json
                     _pathToValue.Add(path, value);
                 }
                 catch (ArgumentException e) {
-                    throw new JsonException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
+                    throw new JsonLinkProviderException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
                 }
                 try {
                     _valueToPath.Add(value, path);
                 }
                 catch (ArgumentException e) {
-                    throw new JsonException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
+                    throw new JsonLinkProviderException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
                 }
             }
 
@@ -118,7 +118,7 @@ namespace Alba.Framework.Serialization.Json
                         path.Add(id);
                 }
                 if (i == -1)
-                    throw new JsonException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
+                    throw new JsonLinkProviderException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
                 path.Reverse();
                 return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
             }
