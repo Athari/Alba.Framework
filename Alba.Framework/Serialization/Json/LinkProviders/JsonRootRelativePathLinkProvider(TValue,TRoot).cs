@@ -21,7 +21,8 @@ namespace Alba.Framework.Serialization.Json
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {
-            return GetRelativeLink(GetRootLinkData(context).GetLink(value), GenerateLink(context, true) ?? "");
+            string link = GetRootLinkData(context).GetLink(value);
+            return GetRelativeLink(link, GenerateLink(context, true));
         }
 
         public override object ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
@@ -31,6 +32,7 @@ namespace Alba.Framework.Serialization.Json
 
         public override object ResolveLink (string link, JsonResolveLinkContext resolveContext)
         {
+            link = GetAbsoluteLink(link, GenerateLink(resolveContext.Context/*, true*/));
             return GetRootLinkData(resolveContext.Context).ResolveLink(link, resolveContext);
         }
 
@@ -63,21 +65,29 @@ namespace Alba.Framework.Serialization.Json
                 .Fmt(context.Stack.JoinString("; ")));
         }
 
-        private static string GetRelativeLink (string linkTo, string linkFrom)
+        private static string GetRelativeLink (string linkToAbs, string linkFrom)
         {
-            if (linkFrom == "")
-                return linkTo;
-            if (linkTo == null)
-                return null;
-            /*if (linkTo.StartsWith(linkFrom + "/"))
-                return linkTo.Sub(linkFrom.Length + 1);*/
-
-            string[] partsTo = linkTo.Split(JsonLinkedContext.LinkPathSeparatorChar);
+            if (linkFrom.IsNullOrEmpty())
+                return linkToAbs;
+            string[] partsTo = linkToAbs.Split(JsonLinkedContext.LinkPathSeparatorChar);
             string[] partsFrom = linkFrom.Split(JsonLinkedContext.LinkPathSeparatorChar);
-            int iCommon, maxCommon = Math.Min(partsTo.Length, partsFrom.Length);
-            for (iCommon = 0; iCommon < maxCommon && partsTo[iCommon] == partsFrom[iCommon]; iCommon++) {}
-            return new string(JsonLinkedContext.LinkPathSeparatorChar, partsFrom.Length - iCommon) + 
-                partsTo.TakeLast(partsTo.Length - iCommon).JoinString(JsonLinkedContext.LinkPathSeparator);
+            int nCommon, maxCommon = Math.Min(partsTo.Length, partsFrom.Length);
+            for (nCommon = 0; nCommon < maxCommon && partsTo[nCommon] == partsFrom[nCommon]; nCommon++) {}
+            return new string(JsonLinkedContext.LinkPathSeparatorChar, partsFrom.Length - nCommon) +
+                partsTo.TakeLast(partsTo.Length - nCommon).JoinString(JsonLinkedContext.LinkPathSeparator);
+        }
+
+        private static string GetAbsoluteLink (string linkToRel, string linkFrom)
+        {
+            if (linkFrom.IsNullOrEmpty())
+                return linkToRel;
+            int posSep = linkFrom.LastIndexOf(JsonLinkedContext.LinkPathSeparatorChar);
+            if (posSep == -1)
+                return linkToRel;
+            int iRel;
+            for (iRel = 0; iRel < linkToRel.Length && linkToRel[iRel] == JsonLinkedContext.LinkPathSeparatorChar; iRel++)
+                posSep = linkFrom.LastIndexOf(JsonLinkedContext.LinkPathSeparatorChar, posSep);
+            return linkFrom.Remove(posSep) + JsonLinkedContext.LinkPathSeparatorChar + linkToRel.Substring(iRel);
         }
 
         protected class RootLinkData : LinkData
