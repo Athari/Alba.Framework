@@ -34,6 +34,13 @@ namespace Alba.Framework.Text
             return @this.Remove(@this.Length - postfix.Length);
         }
 
+        public static string RemovePrefix (this string @this, string prefix)
+        {
+            if (!@this.StartsWith(prefix))
+                throw new ArgumentException("String '{0}' does not contain prefix '{1}'.".Fmt(@this, prefix), "prefix");
+            return @this.Substring(prefix.Length);
+        }
+
         public static string SingleLine (this string @this)
         {
             return _reNewlines.Replace(@this, " ");

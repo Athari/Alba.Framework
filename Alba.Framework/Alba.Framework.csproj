@@ -150,6 +150,7 @@
     <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
     <Compile Include="Serialization\Json\CustomJsonSerializer%28T%29.cs" />
     <Compile Include="Serialization\Json\ICustomJsonSerializer%28T%29.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonRootRelativePathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\JsonGlobalPathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\IJsonLinkProvider.cs" />
     <Compile Include="Serialization\Json\Json.cs" />

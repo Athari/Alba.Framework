@@ -55,6 +55,7 @@
     <Compile Include="AssemblySetup.cs" />
     <Compile Include="Serialization\Json\EnumFlagsConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\JsonRootRelativePathLinkProviderTests.cs" />
     <Compile Include="Serialization\Json\LinkProviders\JsonGlobalLinkProviderTests.cs" />
     <Compile Include="Serialization\Json\LinkProviders\JsonGlobalPathLinkProviderTests.cs" />
     <Compile Include="Serialization\Json\LinkProviders\JsonRootPathLinkProviderTests.cs" />

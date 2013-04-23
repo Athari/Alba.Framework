@@ -7,6 +7,7 @@ using Alba.Framework.Logs;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 
+// TODO JsonRootLinkProvider<TValue, TRoot>: names unique within the root
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {

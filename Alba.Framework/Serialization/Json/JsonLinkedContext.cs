@@ -12,6 +12,7 @@ namespace Alba.Framework.Serialization.Json
     {
         public const string TypePropName = "$type";
         public const string LinkPathSeparator = "/";
+        public const char LinkPathSeparatorChar = '/';
         public const char LinkTypeSeparator = ':';
 
         internal IList<object> Stack { get; private set; }

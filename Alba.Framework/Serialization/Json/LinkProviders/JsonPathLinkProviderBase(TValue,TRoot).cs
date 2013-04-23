@@ -5,7 +5,6 @@ using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Logs;
 using Alba.Framework.Text;
-using Newtonsoft.Json;
 
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
@@ -22,6 +21,27 @@ namespace Alba.Framework.Serialization.Json
         private static ILog Log
         {
             get { return _log.Value; }
+        }
+
+        protected static string GenerateLink (JsonLinkedContext context, bool skipTop = false)
+        {
+            var path = new List<string>();
+            IList<object> stack = context.Stack;
+            int i;
+            for (i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
+                var idable = stack[i] as IIdentifiable<string>;
+                if (idable == null)
+                    continue;
+                string id = idable.Id;
+                if (id != null)
+                    path.Add(id);
+            }
+            if (i == -1)
+                throw new JsonLinkProviderException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
+            path.Reverse();
+            if (skipTop && path.Count >= 1)
+                path.RemoveAt(path.Count - 1);
+            return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
         }
 
         protected abstract class LinkData
@@ -103,25 +123,6 @@ namespace Alba.Framework.Serialization.Json
             }
 
             public abstract void ValidateLinksResolved ();
-
-            private static string GenerateLink (JsonLinkedContext context)
-            {
-                var path = new List<string>();
-                IList<object> stack = context.Stack;
-                int i;
-                for (i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
-                    var idable = stack[i] as IIdentifiable<string>;
-                    if (idable == null)
-                        continue;
-                    string id = idable.Id;
-                    if (id != null)
-                        path.Add(id);
-                }
-                if (i == -1)
-                    throw new JsonLinkProviderException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
-                path.Reverse();
-                return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
-            }
         }
     }
 }
