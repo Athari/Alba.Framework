@@ -63,7 +63,7 @@ namespace Alba.Framework.Logs
             if (Filter == null || Filter.ShouldTrace(eventCache, source, eventType, id, null, null, data, null)) {
                 var entry = data as LogEntry;
                 if (entry != null) {
-                    WriteMessage(eventCache, FormatSource(source, entry.FullTypeName), eventType, id,
+                    WriteMessage(eventCache, FormatSource(source, entry.MediumTypeName), eventType, id,
                         string.Format("{0}\n{1}", entry.Message, entry.DetailedMessage));
                     return;
                 }

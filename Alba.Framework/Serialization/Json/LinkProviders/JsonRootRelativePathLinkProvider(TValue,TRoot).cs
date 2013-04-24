@@ -75,7 +75,7 @@ namespace Alba.Framework.Serialization.Json
 
         private static string GetRelativeLink (string linkToAbs, string linkFromParent)
         {
-            Log.Trace("Resolving relative link from linkToAbs='{0}' linkFrom='{1}'.".Fmt(linkToAbs, linkFromParent));
+            Log.Trace("Resolving relative link from linkToAbs='{0}' linkFromParent='{1}'.".Fmt(linkToAbs, linkFromParent));
             if (linkFromParent.IsNullOrEmpty())
                 return linkToAbs;
             if (linkToAbs == linkFromParent)
