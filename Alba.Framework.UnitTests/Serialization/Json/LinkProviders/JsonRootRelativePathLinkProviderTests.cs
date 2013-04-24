@@ -369,6 +369,37 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
+        public void SerializeDeserialize_LinkBeforeOrigin_Deep_LinkDeeperYet ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> {
+                            new Brick {
+                                Id = 1,
+                                Bricks = new List<Brick> {
+                                    new Brick {
+                                        Id = 1,
+                                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                                    },
+                                    new Brick { Id = 2 }
+                                }
+                            },
+                            new Brick { Id = 2 },
+                        }
+                    },
+                }
+            };
+            value[0][0][0][0].Touches = new List<Brick> { value[0][1] };
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""//2""]},{Id:2}]},{Id:2}]},{Id:2}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][1], copy[0][0][0][0].Touches[0]);
+            Assert.AreNotSame(copy[0][0][1], copy[0][1]);
+        }
+
+        [TestMethod]
         public void SerializeDeserialize_LinkAfterOrigin ()
         {
             var ser = new Serializer();
@@ -469,7 +500,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             };
             value[0][0][1].Touches = new List<Brick> { value[0][0] };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""/""]}]},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""""]}]},{Id:2}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0], copy[0][0][1].Touches[0]);
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);

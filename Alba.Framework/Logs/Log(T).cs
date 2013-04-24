@@ -10,7 +10,8 @@ namespace Alba.Framework.Logs
 {
     public class Log<T> : ILog
     {
-        private static readonly string FullTypeName = typeof(T).FullName;
+        private static readonly string FullTypeName = typeof(T).GetFullSharpName();
+        private static readonly string MediumTypeName = typeof(T).GetMediumName();
         private static readonly string TypeName = typeof(T).Name;
         private readonly TraceSource _source;
         private readonly SimpleMonitor _reentrancyMonitor = new SimpleMonitor();
@@ -102,6 +103,7 @@ namespace Alba.Framework.Logs
                 var entry = new LogEntry {
                     Exception = exception,
                     TypeName = TypeName,
+                    MediumTypeName = MediumTypeName,
                     FullTypeName = FullTypeName,
                 };
                 if (hasMessage && hasException) {

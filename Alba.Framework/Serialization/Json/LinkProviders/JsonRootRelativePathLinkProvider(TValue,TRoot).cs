@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Logs;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 
@@ -13,11 +14,18 @@ namespace Alba.Framework.Serialization.Json
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonRootRelativePathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
         public JsonRootRelativePathLinkProvider (string idProp) :
             base(idProp)
         {}
+
+        private static ILog Log
+        {
+            get { return _log.Value; }
+        }
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {
@@ -32,7 +40,7 @@ namespace Alba.Framework.Serialization.Json
 
         public override object ResolveLink (string link, JsonResolveLinkContext resolveContext)
         {
-            link = GetAbsoluteLink(link, GenerateLink(resolveContext.Context/*, true*/));
+            link = GetAbsoluteLink(link, GenerateLink(resolveContext.Context));
             return GetRootLinkData(resolveContext.Context).ResolveLink(link, resolveContext);
         }
 
@@ -65,12 +73,15 @@ namespace Alba.Framework.Serialization.Json
                 .Fmt(context.Stack.JoinString("; ")));
         }
 
-        private static string GetRelativeLink (string linkToAbs, string linkFrom)
+        private static string GetRelativeLink (string linkToAbs, string linkFromParent)
         {
-            if (linkFrom.IsNullOrEmpty())
+            Log.Trace("Resolving relative link from linkToAbs='{0}' linkFrom='{1}'.".Fmt(linkToAbs, linkFromParent));
+            if (linkFromParent.IsNullOrEmpty())
                 return linkToAbs;
+            if (linkToAbs == linkFromParent)
+                return "";
             string[] partsTo = linkToAbs.Split(JsonLinkedContext.LinkPathSeparatorChar);
-            string[] partsFrom = linkFrom.Split(JsonLinkedContext.LinkPathSeparatorChar);
+            string[] partsFrom = linkFromParent.Split(JsonLinkedContext.LinkPathSeparatorChar);
             int nCommon, maxCommon = Math.Min(partsTo.Length, partsFrom.Length);
             for (nCommon = 0; nCommon < maxCommon && partsTo[nCommon] == partsFrom[nCommon]; nCommon++) {}
             return new string(JsonLinkedContext.LinkPathSeparatorChar, partsFrom.Length - nCommon) +
@@ -79,15 +90,20 @@ namespace Alba.Framework.Serialization.Json
 
         private static string GetAbsoluteLink (string linkToRel, string linkFrom)
         {
+            Log.Trace("Resolving absolute link from linkToRel='{0}' linkFrom='{1}'.".Fmt(linkToRel, linkFrom));
             if (linkFrom.IsNullOrEmpty())
                 return linkToRel;
             int posSep = linkFrom.LastIndexOf(JsonLinkedContext.LinkPathSeparatorChar);
             if (posSep == -1)
                 return linkToRel;
+            if (linkToRel.IsNullOrEmpty())
+                return linkFrom.Remove(posSep);
             int iRel;
             for (iRel = 0; iRel < linkToRel.Length && linkToRel[iRel] == JsonLinkedContext.LinkPathSeparatorChar; iRel++)
-                posSep = linkFrom.LastIndexOf(JsonLinkedContext.LinkPathSeparatorChar, posSep);
-            return linkFrom.Remove(posSep) + JsonLinkedContext.LinkPathSeparatorChar + linkToRel.Substring(iRel);
+                posSep = linkFrom.LastIndexOf(JsonLinkedContext.LinkPathSeparatorChar, posSep - 1);
+            return posSep == -1
+                ? linkToRel.Substring(iRel)
+                : linkFrom.Remove(posSep) + JsonLinkedContext.LinkPathSeparatorChar + linkToRel.Substring(iRel);
         }
 
         protected class RootLinkData : LinkData
