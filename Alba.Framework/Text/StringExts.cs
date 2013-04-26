@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,7 @@ namespace Alba.Framework.Text
     {
         private static readonly Regex _reNewlines = new Regex("@\r?\n", RegexOptions.Compiled);
 
+        [Pure]
         public static string AppendSentence (this string @this, string sentence)
         {
             var sb = new StringBuilder(@this, @this.Length + sentence.Length + 2);
@@ -17,16 +19,19 @@ namespace Alba.Framework.Text
             return sb.ToString();
         }
 
+        [Pure]
         public static bool IsNullOrEmpty (this string @this)
         {
             return string.IsNullOrEmpty(@this);
         }
 
+        [Pure]
         public static bool IsNullOrWhitespace (this string @this)
         {
             return string.IsNullOrWhiteSpace(@this);
         }
 
+        [Pure]
         public static string RemovePostfix (this string @this, string postfix)
         {
             if (!@this.EndsWith(postfix))
@@ -34,6 +39,7 @@ namespace Alba.Framework.Text
             return @this.Remove(@this.Length - postfix.Length);
         }
 
+        [Pure]
         public static string RemovePrefix (this string @this, string prefix)
         {
             if (!@this.StartsWith(prefix))
@@ -41,11 +47,13 @@ namespace Alba.Framework.Text
             return @this.Substring(prefix.Length);
         }
 
+        [Pure]
         public static string SingleLine (this string @this)
         {
             return _reNewlines.Replace(@this, " ");
         }
 
+        [Pure]
         public static string SubstringEnd (this string @this, int length)
         {
             return @this.Length < length ? @this : @this.Substring(@this.Length - length, length);
@@ -57,29 +65,31 @@ namespace Alba.Framework.Text
             @this.Append(sentence);
         }
 
-        [StringFormatMethod ("format")]
+        [Pure, StringFormatMethod ("format")]
         public static string Fmt (this string format, IFormatProvider provider, params object[] args)
         {
             return string.Format(provider, format, args);
         }
 
-        [StringFormatMethod ("format")]
+        [Pure, StringFormatMethod ("format")]
         public static string Fmt (this string format, params object[] args)
         {
             return string.Format(format, args);
         }
 
-        [StringFormatMethod ("format")]
+        [Pure, StringFormatMethod ("format")]
         public static string FmtInvariant (this string format, params object[] args)
         {
             return string.Format(CultureInfo.InvariantCulture, format, args);
         }
 
+        [Pure]
         public static bool Contains (this string @this, string value, StringComparison comparisonType)
         {
             return @this.IndexOf(value, comparisonType) >= 0;
         }
 
+        [Pure]
         public static string Sub (this string @this, int startIndex, int length)
         {
             return startIndex >= 0
@@ -91,6 +101,7 @@ namespace Alba.Framework.Text
                     : @this.Substring(@this.Length + startIndex, @this.Length + startIndex + length));
         }
 
+        [Pure]
         public static string Sub (this string @this, int startIndex)
         {
             return startIndex >= 0
