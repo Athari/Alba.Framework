@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Alba.Framework.Collections
@@ -54,6 +55,35 @@ namespace Alba.Framework.Collections
         public static string ConcatString (this IEnumerable<string> @this)
         {
             return string.Concat(@this);
+        }
+
+        public static IReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
+            Func<T, TKey> keySelector)
+        {
+            return new ReadOnlyDictionary<TKey, T>(@this.ToDictionary(keySelector));
+        }
+
+        public static IReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
+            Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            return new ReadOnlyDictionary<TKey, T>(@this.ToDictionary(keySelector, comparer));
+        }
+
+        public static IReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
+            Func<T, TKey> keySelector, Func<T, T> elementSelector)
+        {
+            return new ReadOnlyDictionary<TKey, T>(@this.ToDictionary(keySelector, elementSelector));
+        }
+
+        public static IReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
+            Func<T, TKey> keySelector, Func<T, T> elementSelector, IEqualityComparer<TKey> comparer)
+        {
+            return new ReadOnlyDictionary<TKey, T>(@this.ToDictionary(keySelector, elementSelector, comparer));
+        }
+
+        public static IReadOnlyList<T> ToReadOnlyList<T> (this IEnumerable<T> @this)
+        {
+            return new ReadOnlyCollection<T>(@this.ToList());
         }
 
         public static IEnumerable<T> TraverseList<T> (this T root, Func<T, T> getNext) where T : class

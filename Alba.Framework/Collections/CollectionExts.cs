@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -39,6 +40,11 @@ namespace Alba.Framework.Collections
                         @this.Remove(wr);
                 }
             }
+        }
+
+        public static IReadOnlyList<T> ToTyped<T> (this ICollection @this)
+        {
+            return new TypedCollection<T>(@this);
         }
     }
 }
