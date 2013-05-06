@@ -60,7 +60,7 @@ namespace Alba.Framework.Collections
 
         public IEnumerator<T> GetEnumerator ()
         {
-            return _collection.GetEnumerator().ToTyped<T>();
+            return _collection.GetEnumerator().Cast<T>();
         }
 
         IEnumerator IEnumerable.GetEnumerator ()

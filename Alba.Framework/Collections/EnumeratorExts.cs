@@ -5,9 +5,10 @@ namespace Alba.Framework.Collections
 {
     public static class EnumeratorExts
     {
-        public static IEnumerator<T> ToTyped<T> (this IEnumerator @this)
+        public static IEnumerator<T> Cast<T> (this IEnumerator @this)
         {
-            return new TypedEnumerator<T>(@this);
+            while (@this.MoveNext())
+                yield return (T)@this.Current;
         }
     }
 }

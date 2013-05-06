@@ -79,7 +79,6 @@
     <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
     <Compile Include="Collections\StackExts.cs" />
     <Compile Include="Collections\TypedCollection%28T%29.cs" />
-    <Compile Include="Collections\TypedEnumerator%28T%29.cs" />
     <Compile Include="Common\BoolMonitor.cs" />
     <Compile Include="Common\IIdentifiable.cs" />
     <Compile Include="Common\IOwned.cs" />
