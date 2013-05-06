@@ -146,6 +146,8 @@
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
     <Compile Include="Serialization\DictionarySerializationBinder.cs" />
+    <Compile Include="Serialization\Json\Converters\ConcreteTypeConverter%28T%29.cs" />
+    <Compile Include="Serialization\Json\Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonTypedObjectConverter.cs" />
     <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
     <Compile Include="Serialization\Json\CustomJsonSerializer%28T%29.cs" />

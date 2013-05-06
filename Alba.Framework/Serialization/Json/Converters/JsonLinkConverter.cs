@@ -17,7 +17,7 @@ namespace Alba.Framework.Serialization.Json
             if (reader.TokenType != JsonToken.String)
                 throw new Exception("Link value must be a string.");
             var resolveContext = new JsonResolveLinkContext(type, serializer, reader as IJsonLineInfo);
-            return JsonLinkedContext.Get(serializer.Context).ResolveLink(reader.Value.ToString(), resolveContext);
+            return resolveContext.Context.ResolveLink(reader.Value.ToString(), resolveContext);
         }
 
         public override bool CanConvert (Type type)
