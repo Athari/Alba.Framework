@@ -13,7 +13,7 @@ namespace Alba.Framework.Serialization.Json
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        protected ScopedUniqueLinkProvider (string idProp)
+        public ScopedUniqueLinkProvider (string idProp)
             : base(idProp)
         {}
 

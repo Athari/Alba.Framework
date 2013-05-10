@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 {
     [TestClass]
-    public class JsonGlobalLinkProviderTests
+    public class ScopedUniqueLinkProviderTests
     {
         public TestContext TestContext { get; set; }
 
@@ -31,6 +31,29 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             var copy = ser.DeserializeFromString(str);
             Assert.AreEqual(1, copy[0][0].Id);
             Assert.AreEqual(2, copy[0][1].Id);
+        }
+
+        [TestMethod]
+        public void SerializeDeserialize_Simple_MultiRoot ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    },
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1},{Id:2}]},{Bricks:[{Id:1},{Id:2}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreEqual(1, copy[0][0].Id);
+            Assert.AreEqual(2, copy[0][1].Id);
+            Assert.AreEqual(1, copy[1][0].Id);
+            Assert.AreEqual(2, copy[1][1].Id);
         }
 
         [TestMethod]
@@ -120,6 +143,30 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
+        public void SerializeDeserialize_LinkBeforeOrigin_MultiRoot ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    },
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            value[0][0].Touches = new List<Brick> { value[0][1] };
+            value[1][0].Touches = new List<Brick> { value[1][1] };
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Touches:[""2""]},{Id:2}]},{Bricks:[{Id:1,Touches:[""2""]},{Id:2}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][1], copy[0][0].Touches[0]);
+            Assert.AreSame(copy[1][1], copy[1][0].Touches[0]);
+            Assert.AreNotSame(copy[0][0].Touches[0], copy[1][0].Touches[0]);
+        }
+
+        [TestMethod]
         [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_LinkBeforeOrigin_MissingLinkId ()
         {
@@ -151,6 +198,30 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1},{Id:2,Touches:[""1""]}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0], copy[0][1].Touches[0]);
+        }
+
+        [TestMethod]
+        public void SerializeDeserialize_LinkAfterOrigin_MultiRoot ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    },
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            value[0][1].Touches = new List<Brick> { value[0][0] };
+            value[1][1].Touches = new List<Brick> { value[1][0] };
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1},{Id:2,Touches:[""1""]}]},{Bricks:[{Id:1},{Id:2,Touches:[""1""]}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][0], copy[0][1].Touches[0]);
+            Assert.AreSame(copy[1][0], copy[1][1].Touches[0]);
+            Assert.AreNotSame(copy[0][1].Touches[0], copy[1][1].Touches[0]);
         }
 
         [TestMethod]
@@ -190,6 +261,35 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
+        public void SerializeDeserialize_LinksOriginsMixed_MultiRoot ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    },
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            value[0][0].Touches = new List<Brick> { value[0][1] };
+            value[0][1].Touches = new List<Brick> { value[0][0] };
+            value[1][0].Touches = new List<Brick> { value[1][1] };
+            value[1][1].Touches = new List<Brick> { value[1][0] };
+            string str = ser.SerializeToString(value);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Touches:[""2""]},{Id:2,Touches:[""1""]}]},{Bricks:[{Id:1,Touches:[""2""]},{Id:2,Touches:[""1""]}]}]}", str);
+            var copy = ser.DeserializeFromString(str);
+            Assert.AreSame(copy[0][1], copy[0][0].Touches[0]);
+            Assert.AreSame(copy[0][0], copy[0][1].Touches[0]);
+            Assert.AreNotSame(copy[0][0].Touches[0], copy[0][1].Touches[0]);
+            Assert.AreSame(copy[1][1], copy[1][0].Touches[0]);
+            Assert.AreSame(copy[1][0], copy[1][1].Touches[0]);
+            Assert.AreNotSame(copy[1][0].Touches[0], copy[1][1].Touches[0]);
+        }
+
+        [TestMethod]
         public void SerializeDeserialize_LinksOriginsMixed_MissingIds ()
         {
             var ser = new Serializer();
@@ -218,7 +318,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new UniqueLinkProvider<Brick>("Id");
+                yield return new ScopedUniqueLinkProvider<Brick, Wall>("Id");
             }
         }
 

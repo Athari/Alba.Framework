@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 {
     [TestClass]
-    public class JsonRootRelativePathLinkProviderTests
+    public class RelativePathLinkProviderTests
     {
         public TestContext TestContext { get; set; }
 

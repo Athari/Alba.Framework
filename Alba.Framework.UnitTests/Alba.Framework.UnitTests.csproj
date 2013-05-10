@@ -55,10 +55,11 @@
     <Compile Include="AssemblySetup.cs" />
     <Compile Include="Serialization\Json\EnumFlagsConverterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonRootRelativePathLinkProviderTests.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonGlobalLinkProviderTests.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonGlobalPathLinkProviderTests.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonRootPathLinkProviderTests.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\ScopedUniqueLinkProviderTests.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\RelativePathLinkProviderTests.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\UniqueLinkProviderTests.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\PathLinkProviderTests.cs" />
+    <Compile Include="Serialization\Json\LinkProviders\ScopedPathLinkProviderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Libs\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
