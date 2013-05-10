@@ -8,13 +8,13 @@ using Newtonsoft.Json;
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public class JsonRootPathLinkProvider<TValue, TRoot> : JsonPathLinkProviderBase<TValue, TRoot>
+    public class ScopedPathLinkProvider<TValue, TRoot> : PathLinkProviderBase<TValue, TRoot>
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        public JsonRootPathLinkProvider (string idProp) :
+        public ScopedPathLinkProvider (string idProp) :
             base(idProp)
         {}
 
@@ -62,7 +62,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonLinkProviderException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                    throw new JsonLinkProviderException("JSON scoped path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }

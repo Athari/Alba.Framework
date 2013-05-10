@@ -9,13 +9,13 @@ using Alba.Framework.Text;
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public abstract class JsonPathLinkProviderBase<TValue, TRoot> : JsonLinkProvider<TValue>
+    public abstract class PathLinkProviderBase<TValue, TRoot> : JsonLinkProvider<TValue>
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonPathLinkProviderBase<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<PathLinkProviderBase<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
 
-        protected JsonPathLinkProviderBase (string idProp) : base(idProp)
+        protected PathLinkProviderBase (string idProp) : base(idProp)
         {}
 
         private static ILog Log

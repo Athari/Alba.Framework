@@ -10,15 +10,15 @@ using Newtonsoft.Json;
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public class JsonRootRelativePathLinkProvider<TValue, TRoot> : JsonPathLinkProviderBase<TValue, TRoot>
+    public class RelativePathLinkProvider<TValue, TRoot> : PathLinkProviderBase<TValue, TRoot>
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonRootRelativePathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<RelativePathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
 
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        public JsonRootRelativePathLinkProvider (string idProp) :
+        public RelativePathLinkProvider (string idProp) :
             base(idProp)
         {}
 
@@ -57,20 +57,8 @@ namespace Alba.Framework.Serialization.Json
 
         private RootLinkData GetRootLinkData (JsonLinkedContext context)
         {
-            TRoot root = GetRoot(context);
+            var root = GetRoot<TRoot>(context);
             return _roots.GetOrAdd(root, () => new RootLinkData(root));
-        }
-
-        private static TRoot GetRoot (JsonLinkedContext context)
-        {
-            IList<object> stack = context.Stack;
-            for (int i = stack.Count - 1; i >= 0; i--) {
-                var root = stack[i] as TRoot;
-                if (root != null)
-                    return root;
-            }
-            throw new JsonLinkProviderException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
-                .Fmt(context.Stack.JoinString("; ")));
         }
 
         private static string GetRelativeLink (string linkToAbs, string linkFromParent)
@@ -118,7 +106,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonLinkProviderException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                    throw new JsonLinkProviderException("JSON relative path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }

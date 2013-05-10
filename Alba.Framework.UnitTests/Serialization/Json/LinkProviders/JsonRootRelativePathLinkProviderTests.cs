@@ -627,7 +627,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new JsonRootRelativePathLinkProvider<Brick, Wall>("Id");
+                yield return new RelativePathLinkProvider<Brick, Wall>("Id");
             }
         }
 
@@ -635,7 +635,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         {
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new JsonRootRelativePathLinkProvider<Brick, Serializer>("Id");
+                yield return new RelativePathLinkProvider<Brick, Serializer>("Id");
             }
         }
 

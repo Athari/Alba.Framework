@@ -218,7 +218,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new JsonGlobalLinkProvider<Brick>("Id");
+                yield return new UniqueLinkProvider<Brick>("Id");
             }
         }
 

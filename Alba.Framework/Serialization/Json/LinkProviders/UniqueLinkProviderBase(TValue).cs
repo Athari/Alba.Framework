@@ -8,12 +8,12 @@ using Newtonsoft.Json;
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public abstract class JsonUniqueLinkProviderBase<TValue> : JsonLinkProvider<TValue>
+    public abstract class UniqueLinkProviderBase<TValue> : JsonLinkProvider<TValue>
         where TValue : IIdentifiable<string>
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<JsonUniqueLinkProviderBase<TValue>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<UniqueLinkProviderBase<TValue>>(AlbaFrameworkTraceSources.Serialization));
 
-        protected JsonUniqueLinkProviderBase (string idProp)
+        protected UniqueLinkProviderBase (string idProp)
             : base(idProp)
         {}
 

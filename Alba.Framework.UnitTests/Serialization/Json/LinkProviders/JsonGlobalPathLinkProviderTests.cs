@@ -40,7 +40,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException(typeof(JsonLinkProviderException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Deserialize_UnresolvedLink_Error ()
         {
             var ser = new SerializerWrongRoot();
@@ -144,7 +144,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         }
 
         [TestMethod]
-        [ExpectedException(typeof(JsonLinkProviderException))]
+        [ExpectedException (typeof(JsonLinkProviderException))]
         public void Serialize_Simple_MultiRoot_Duplicate ()
         {
             var ser = new Serializer();
@@ -614,7 +614,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new JsonGlobalPathLinkProvider<Brick, Wall>("Id");
+                yield return new PathLinkProvider<Brick, Wall>("Id");
             }
         }
 
@@ -622,7 +622,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         {
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new JsonGlobalPathLinkProvider<Brick, Serializer>("Id");
+                yield return new PathLinkProvider<Brick, Serializer>("Id");
             }
         }
 

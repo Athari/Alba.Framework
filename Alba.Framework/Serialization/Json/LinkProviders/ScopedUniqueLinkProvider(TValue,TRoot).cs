@@ -7,13 +7,13 @@ using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
 {
-    public class JsonRootLinkProvider<TValue, TRoot> : JsonUniqueLinkProviderBase<TValue>
+    public class ScopedUniqueLinkProvider<TValue, TRoot> : UniqueLinkProviderBase<TValue>
         where TValue : IIdentifiable<string>
         where TRoot : class
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        protected JsonRootLinkProvider (string idProp)
+        protected ScopedUniqueLinkProvider (string idProp)
             : base(idProp)
         {}
 
@@ -56,7 +56,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonLinkProviderException("JSON root link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                    throw new JsonLinkProviderException("JSON scoped unique link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }
