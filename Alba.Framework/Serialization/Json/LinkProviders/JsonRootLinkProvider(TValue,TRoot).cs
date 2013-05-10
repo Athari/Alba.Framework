@@ -5,22 +5,21 @@ using Alba.Framework.Common;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 
-// ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
-    public class JsonRootPathLinkProvider<TValue, TRoot> : JsonPathLinkProviderBase<TValue, TRoot>
-        where TValue : class, IIdentifiable<string>
+    public class JsonRootLinkProvider<TValue, TRoot> : JsonUniqueLinkProviderBase<TValue>
+        where TValue : IIdentifiable<string>
         where TRoot : class
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
-        public JsonRootPathLinkProvider (string idProp) :
-            base(idProp)
+        protected JsonRootLinkProvider (string idProp)
+            : base(idProp)
         {}
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {
-            return GetRootLinkData(context).GetLink(value);
+            return GetRootLinkData(context).GetLink(value, serializer, context);
         }
 
         public override object ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
@@ -37,11 +36,6 @@ namespace Alba.Framework.Serialization.Json
         {
             foreach (RootLinkData linkData in _roots.Values)
                 linkData.ValidateLinksResolved();
-        }
-
-        public override void RememberOriginLink (TValue value, JsonLinkedContext context)
-        {
-            GetRootLinkData(context).RememberOriginLink(value, context);
         }
 
         private RootLinkData GetRootLinkData (JsonLinkedContext context)
@@ -62,7 +56,7 @@ namespace Alba.Framework.Serialization.Json
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {
-                    throw new JsonLinkProviderException("JSON path link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
+                    throw new JsonLinkProviderException("JSON root link provider for {0} (root={1}) contains unresolved links within root {2}: '{3}'."
                         .Fmt(typeof(TValue).Name, typeof(TRoot).Name, _root, _unresolvedLinks.JoinString("', '")));
                 }
             }

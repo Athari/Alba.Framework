@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
@@ -18,6 +21,19 @@ namespace Alba.Framework.Serialization.Json
         {
             int typeSeparatorPos = link.IndexOf(JsonLinkedContext.LinkTypeSeparator);
             return typeSeparatorPos == -1 ? link : link.Substring(typeSeparatorPos + 1);
+        }
+
+        protected static TRoot GetRoot<TRoot> (JsonLinkedContext context)
+            where TRoot : class
+        {
+            IList<object> stack = context.Stack;
+            for (int i = stack.Count - 1; i >= 0; i--) {
+                var root = stack[i] as TRoot;
+                if (root != null)
+                    return root;
+            }
+            throw new JsonLinkProviderException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
+                .Fmt(context.Stack.JoinString("; ")));
         }
 
         public virtual bool CanLink (Type type)

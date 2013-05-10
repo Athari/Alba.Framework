@@ -4,7 +4,6 @@ using Alba.Framework.Common;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 
-// ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
     public class JsonGlobalPathLinkProvider<TValue, TRoot> : JsonPathLinkProviderBase<TValue, TRoot>
