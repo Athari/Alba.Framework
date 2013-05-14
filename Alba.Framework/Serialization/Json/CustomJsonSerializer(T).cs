@@ -24,12 +24,7 @@ namespace Alba.Framework.Serialization.Json
         private const string ErrorSaveFile = "Failed to save JSON file '{0}'.";
         private const string ErrorOpenFile = "Failed to open JSON file '{0}'.";
 
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<CustomJsonSerializer<T>>(AlbaFrameworkTraceSources.Serialization));
-
-        private static ILog Log
-        {
-            get { return _log.Value; }
-        }
+        private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<CustomJsonSerializer<T>>();
 
         protected virtual JsonSerializer CreateJsonSerializer ()
         {

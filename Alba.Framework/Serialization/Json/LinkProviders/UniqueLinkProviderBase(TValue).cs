@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Alba.Framework.Common;
 using Alba.Framework.Logs;
 using Alba.Framework.Text;
@@ -11,16 +10,11 @@ namespace Alba.Framework.Serialization.Json
     public abstract class UniqueLinkProviderBase<TValue> : JsonLinkProvider<TValue>
         where TValue : IIdentifiable<string>
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<UniqueLinkProviderBase<TValue>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<UniqueLinkProviderBase<TValue>>();
 
         protected UniqueLinkProviderBase (string idProp)
             : base(idProp)
         {}
-
-        private static ILog Log
-        {
-            get { return _log.Value; }
-        }
 
         protected abstract class LinkData
         {

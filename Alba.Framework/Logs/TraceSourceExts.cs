@@ -104,5 +104,10 @@ namespace Alba.Framework.Logs
         {
             @this.TraceData(TraceEventType.Error, 0, data);
         }
+
+        public static ILog GetLog<T> (this TraceSource @this)
+        {
+            return new Log<T>(@this);
+        }
     }
 }

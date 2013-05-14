@@ -13,15 +13,10 @@ namespace Alba.Framework.Serialization.Json
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<PathLinkProviderBase<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<PathLinkProviderBase<TValue, TRoot>>();
 
         protected PathLinkProviderBase (string idProp) : base(idProp)
         {}
-
-        private static ILog Log
-        {
-            get { return _log.Value; }
-        }
 
         protected static string GenerateLink (JsonLinkedContext context, bool skipTop = false)
         {

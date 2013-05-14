@@ -14,18 +14,13 @@ namespace Alba.Framework.Serialization.Json
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private static readonly Lazy<ILog> _log = new Lazy<ILog>(() => new Log<RelativePathLinkProvider<TValue, TRoot>>(AlbaFrameworkTraceSources.Serialization));
+        private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<RelativePathLinkProvider<TValue, TRoot>>();
 
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();
 
         public RelativePathLinkProvider (string idProp) :
             base(idProp)
         {}
-
-        private static ILog Log
-        {
-            get { return _log.Value; }
-        }
 
         public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
         {

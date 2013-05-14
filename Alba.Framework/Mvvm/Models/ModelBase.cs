@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
-using Alba.Framework.Linq;
 using Alba.Framework.Events;
+using Alba.Framework.Linq;
+using Alba.Framework.Logs;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Mvvm.Models
@@ -154,6 +156,11 @@ namespace Alba.Framework.Mvvm.Models
         string IDataErrorInfo.Error
         {
             get { return null; }
+        }
+
+        protected static ILog GetLog (TraceSource traceSource)
+        {
+            return new Log<TSelf>(traceSource);
         }
 
         protected static string GetName<T> (Expression<Func<T>> propExpr)
