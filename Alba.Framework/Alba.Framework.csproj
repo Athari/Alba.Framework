@@ -89,6 +89,10 @@
     <Compile Include="Common\NamedObject.cs" />
     <Compile Include="Common\OwnerExts.cs" />
     <Compile Include="Common\Undefined.cs" />
+    <Compile Include="Controls\AnimProps.cs" />
+    <Compile Include="Controls\AnimProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
@@ -259,7 +263,9 @@
     <Compile Include="Text\Wildcards\WildcardPatternParser.cs" />
     <Compile Include="Text\Wildcards\WildcardPatternToRegexParser.cs" />
     <Compile Include="Threading\AsyncLock.cs" />
+    <Compile Include="Wpf\ColorExts.cs" />
     <Compile Include="Wpf\DependencyPropertyExts.cs" />
+    <Compile Include="Wpf\HslColor.cs" />
     <Compile Include="Wpf\ItemsControlExts.cs" />
     <Compile Include="Wpf\RoutedEventArgsExts.cs" />
     <Compile Include="Wpf\StoryboardExts.cs" />
@@ -308,12 +314,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libs\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net40.csproj">
-      <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
-      <Name>Newtonsoft.Json.Net40</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />

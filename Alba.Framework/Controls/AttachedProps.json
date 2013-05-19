@@ -8,6 +8,14 @@
         "Alba.Framework.Events"
     ],
     classes: {
+        AnimProps: {
+            using: [
+                "System.Windows.Media.Animation"
+            ],
+            attached: {
+                "string Target": { for: "Timeline", changed: 1 },
+            }
+        },
         ButtonProps: {
             attached: {
                 "ImageSource Icon": { for: "Button" },
