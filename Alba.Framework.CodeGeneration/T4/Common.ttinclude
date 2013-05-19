@@ -1,0 +1,28 @@
+﻿<#@   assembly name="$(SolutionDir)\bin\Debug\Newtonsoft.Json.dll"
+#><#@ import namespace="System.Runtime.Remoting.Messaging"
+#><#@ import namespace="System.Text.RegularExpressions"
+#><#@ import namespace="Newtonsoft.Json.Linq"
+#><#@ include file="MultipleOutputHelper.ttinclude"
+#><#+
+    Manager GetT4() {
+        return Manager.Create(Host, GenerationEnvironment);
+    }
+
+    JObject LoadJson (string fileName = null) {
+        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, "json"));
+        string text = File.ReadAllText(fileName, Encoding.UTF8);
+        return JObject.Parse(text.StartsWith("_=") ? text.Substring(2) : text);
+    }
+
+    string Namespace {
+        get { return (string)CallContext.LogicalGetData("NamespaceHint"); }
+    }
+
+    static string IfFormat (string format, object value) {
+        return value != null ? string.Format(format, value) : "";
+    }
+
+    static string F (string format, params object[] args) {
+        return string.Format(format, args);
+    }
+#>

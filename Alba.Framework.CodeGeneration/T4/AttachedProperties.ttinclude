@@ -1,0 +1,73 @@
+﻿<#@ include file="Common.ttinclude" #>
+<#+
+    void GenerateAttachedProperties () {
+        var T4 = GetT4();
+        var data = LoadJson();
+        foreach (JProperty pcls in data["classes"]) {
+            T4.StartFile(pcls.Name + ".g.cs");
+            GenerateAttachedProperties_Class(data, pcls.Value, pcls.Name);
+        }
+        T4.Process();
+    }
+
+    void GenerateAttachedProperties_Class(JObject data, JToken cls, string clsName) {
+
+#>
+// ReSharper disable RedundantUsingDirective
+// ReSharper disable RedundantCast
+<#+ foreach (JValue use in data["using"]) { #>
+using <#=use#>;
+<#+ } #>
+<#+ if (cls["using"] != null) foreach (JValue use in cls["using"]) { #>
+using <#=use#>;
+<#+ } #>
+using FPM = System.Windows.FrameworkPropertyMetadata;
+using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
+
+namespace <#=Namespace#>
+{
+    public static partial class <#=clsName#>
+    {
+<#+   foreach (JProperty pprop in cls["attached"]) {
+        var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
+            propType = propTypeName[0],
+            propName = propTypeName[1],
+            propDefault = prop["default"] != null ? F("({0}){1}", propType, prop["default"]) : F("default({0})", propType),
+            propFlags = prop["flags"] != null ? F("FPMO.{0}", ((string)prop["flags"]).Replace("|", " | FPMO.")) : null,
+            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
+            propVis = (string)prop["vis"] ?? "public"; #>
+        <#=propVis#> static readonly DependencyProperty <#=propName#>Property = DependencyProperty.RegisterAttached(
+            "<#=propName#>", typeof(<#=propType#>), typeof(<#=clsName#>),
+            new FPM(<#=propDefault#><#=IfFormat(", {0}", propFlags)#><#=IfFormat(", {0}", propChanged)#>));
+
+<#+   } #>
+
+<#+   foreach (JProperty pprop in cls["attached"]) {
+        var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
+            propType = propTypeName[0],
+            propName = propTypeName[1],
+            propFor = (string)prop["for"] ?? "DependencyObject",
+            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
+            propVis = (string)prop["vis"] ?? "public"; #>
+        <#=propVis#> static <#=propType#> Get<#=propName#> (<#=propFor#> d)
+        {
+            return (<#=propType#>)d.GetValue(<#=propName#>Property);
+        }
+
+        <#=propVis#> static void Set<#=propName#> (<#=propFor#> d, <#=propType#> value)
+        {
+            d.SetValue(<#=propName#>Property, value);
+        }
+
+<#+     if (propChanged != null) { #>
+        private static void <#=propChanged#> (DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            <#=propChanged#>((<#=propFor#>)d, new DpChangedEventArgs<<#=propType#>>(args));
+        }
+
+<#+     } #>
+<#+   } #>
+    }
+}
+<#+
+    } #>
