@@ -4,9 +4,9 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Alba.Framework.Collections;
 using Alba.Framework.Events;
 using Alba.Framework.Sys;
-using Alba.Framework.Collections;
 using Alba.Framework.Text;
 
 // ReSharper disable MemberCanBePrivate.Local
@@ -84,7 +84,7 @@ namespace Alba.Framework.Controls
                 if (ModelSelectedItems == null)
                     return;
                 ((INotifyCollectionChanged)ModelSelectedItems).CollectionChanged += ModelSelectedItems_CollectionChanged;
-                ListSelectedItems.Replace(ModelSelectedItems);
+                ListSelectedItems.ReplaceUntyped(ModelSelectedItems);
 
                 Selector.SelectionChanged += Selector_SelectionChanged;
             }
@@ -117,7 +117,7 @@ namespace Alba.Framework.Controls
                     foreach (Object item in e.OldItems)
                         ListSelectedItems.Remove(item);
                 if (e.Action == NotifyCollectionChangedAction.Reset)
-                    ListSelectedItems.Replace(ModelSelectedItems);
+                    ListSelectedItems.ReplaceUntyped(ModelSelectedItems);
 
                 Selector.SelectionChanged += Selector_SelectionChanged;
             }

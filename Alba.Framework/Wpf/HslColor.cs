@@ -9,18 +9,59 @@ namespace Alba.Framework.Wpf
 
         public HslColor (float alpha, float hue, float saturation, float lightness)
         {
-            _alpha = alpha;
-            _hue = hue;
-            _saturation = saturation;
-            _lightness = lightness;
+            Alpha = alpha;
+            Hue = hue;
+            Saturation = saturation;
+            Lightness = lightness;
         }
 
         public HslColor (float hue, float saturation, float lightness)
         {
+            Alpha = 1;
+            Hue = hue;
+            Saturation = saturation;
+            Lightness = lightness;
+        }
+
+        public HslColor (double alpha, double hue, double saturation, double lightness)
+        {
+            Alpha = (float)alpha;
+            Hue = (float)hue;
+            Saturation = (float)saturation;
+            Lightness = (float)lightness;
+        }
+
+        public HslColor (double hue, double saturation, double lightness)
+        {
+            Alpha = 1;
+            Hue = (float)hue;
+            Saturation = (float)saturation;
+            Lightness = (float)lightness;
+        }
+
+        public static HslColor From255 (int alpha, int hue, int saturation, int lightness)
+        {
+            return new HslColor {
+                Alpha = alpha / 255f,
+                Hue = hue / 255f,
+                Saturation = saturation / 255f,
+                Lightness = lightness / 255f,
+            };
+        }
+
+        public static HslColor From255 (int hue, int saturation, int lightness)
+        {
+            return new HslColor {
+                Alpha = 1,
+                Hue = hue / 255f,
+                Saturation = saturation / 255f,
+                Lightness = lightness / 255f,
+            };
+        }
+
+        public HslColor ()
+        {
             _alpha = 1;
-            _hue = hue;
-            _saturation = saturation;
-            _lightness = lightness;
         }
 
         public HslColor (Color rgb)

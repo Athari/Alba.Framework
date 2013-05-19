@@ -8,6 +8,8 @@ namespace Alba.Framework.Collections
 {
     public static class EnumerableExts
     {
+        private static readonly Random _rnd = new Random();
+
         public static IEnumerable<T> Concat<T> (params IEnumerable<T>[] enumerables)
         {
             return enumerables.SelectMany(e => e);
@@ -36,6 +38,20 @@ namespace Alba.Framework.Collections
                 if (dic.TryGetValue(item, out value))
                     yield return resultSelector(item, value);
             }
+        }
+
+        public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this)
+        {
+            return @this.OrderBy(i => _rnd.NextDouble());
+        }
+
+        public static IEnumerable<TResult> Zip<T1, T2, T3, TResult> (this IEnumerable<T1> source, IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> selector)
+        {
+            using (var e1 = source.GetEnumerator())
+            using (var e2 = second.GetEnumerator())
+            using (var e3 = third.GetEnumerator())
+                while (e1.MoveNext() && e2.MoveNext() && e3.MoveNext())
+                    yield return selector(e1.Current, e2.Current, e3.Current);
         }
 
         public static string JoinString<T> (this IEnumerable<T> @this, string separator)
