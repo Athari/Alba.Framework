@@ -176,6 +176,7 @@ namespace Alba.Framework.Wpf
                 double m = 2 * l - v, vsf = v * ((v - m) / v) * (h - sextant);
                 switch (sextant) {
                     case 0:
+                    case 6:
                         r = v;
                         g = m + vsf;
                         b = m;

@@ -169,5 +169,15 @@ namespace Alba.Framework.Collections
                 stack.PushRange(getChildren(item));
             }
         }
+
+        public static IEnumerable<int> Range (this int count)
+        {
+            return Enumerable.Range(0, count);
+        }
+
+        public static IEnumerable<int> Range (this int start, int count)
+        {
+            return Enumerable.Range(start, count);
+        }
     }
 }
