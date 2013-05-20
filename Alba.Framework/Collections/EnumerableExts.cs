@@ -45,6 +45,11 @@ namespace Alba.Framework.Collections
             return @this.OrderBy(i => _rnd.NextDouble());
         }
 
+        public static IEnumerable<T> SelectMany<T> (this IEnumerable<IEnumerable<T>> source)
+        {
+            return source.SelectMany(item => item);
+        }
+
         public static IEnumerable<TResult> Zip<T1, T2, T3, TResult> (this IEnumerable<T1> source, IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> selector)
         {
             using (var e1 = source.GetEnumerator())
