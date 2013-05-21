@@ -162,6 +162,7 @@
     <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
     <Compile Include="Serialization\Json\CustomJsonSerializer%28T%29.cs" />
     <Compile Include="Serialization\Json\ICustomJsonSerializer%28T%29.cs" />
+    <Compile Include="Serialization\Json\JsonTextWriterEx.cs" />
     <Compile Include="Serialization\Json\LinkProviders\ScopedUniqueLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\UniqueLinkProvider%28TValue%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\RelativePathLinkProvider%28TValue,TRoot%29.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Serialization\Json\LinkProviders\ScopedPathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\JsonResolveLinkContext.cs" />
     <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
+    <Compile Include="Serialization\Json\QuoteNameHandling.cs" />
     <Compile Include="Serialization\SerializationBinderExts.cs" />
     <Compile Include="Sys\ConvertibleExts.g.cs">
       <AutoGen>True</AutoGen>

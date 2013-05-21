@@ -42,7 +42,7 @@ namespace Alba.Framework.Serialization.Json
             try {
                 using (var fileStream = File.Open(tempFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
                 using (var streamWriter = new StreamWriter(fileStream))
-                using (var jsonWriter = new JsonTextWriter(streamWriter)) {
+                using (var jsonWriter = new JsonTextWriterEx(streamWriter)) {
                     jsonWriter.Formatting = Formatting.Indented;
                     jsonWriter.Indentation = 2;
                     jsonWriter.QuoteNameHandling = QuoteNameHandling.Auto;

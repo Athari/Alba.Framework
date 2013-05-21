@@ -46,6 +46,9 @@ namespace Alba.Framework.Serialization.Json
         protected virtual void SetOptions (JsonSerializer serializer)
         {}
 
+        protected virtual void SetWriterOptions (JsonTextWriterEx writer)
+        {}
+
         protected virtual IContractResolver GetContractResolver ()
         {
             return new JsonLinkedContractResolver(shareCache: true) {
@@ -140,10 +143,11 @@ namespace Alba.Framework.Serialization.Json
             var context = JsonLinkedContext.Get(serializer.Context);
             RememberLinks(value, context);
 
-            using (var jsonWriter = new JsonTextWriter(textWriter)) {
+            using (var jsonWriter = new JsonTextWriterEx(textWriter)) {
                 jsonWriter.Formatting = Formatting.Indented;
                 jsonWriter.Indentation = 2;
                 jsonWriter.QuoteNameHandling = QuoteNameHandling.Auto;
+                SetWriterOptions(jsonWriter);
 
                 serializer.Serialize(jsonWriter, value);
                 //await streamWriter.FlushAsync().ConfigureAwait(false);
