@@ -63,7 +63,7 @@
     <Compile Include="Generators\Registrator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Build\Alba.snk">
+    <None Include="..\..\Build\Alba.snk">
       <Link>Alba.snk</Link>
     </None>
     <None Include="T4\AttachedProperties.ttinclude" />
