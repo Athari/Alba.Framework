@@ -14,6 +14,8 @@
             ],
             attached: {
                 "string Target": { for: "Timeline", changed: 1 },
+                "bool Animate": { for: "FrameworkElement", changed: 1 },
+                "AnimationCollection Animations": { for: "FrameworkElement" },
             }
         },
         ButtonProps: {
