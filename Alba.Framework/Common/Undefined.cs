@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Alba.Framework.Common
 {
+    [StructLayout (LayoutKind.Sequential, Size = 1)]
     public struct Undefined : IEquatable<Undefined>
     {
         private static readonly object _default = new Undefined();
