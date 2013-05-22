@@ -52,5 +52,10 @@ namespace Alba.Framework.Sys
         {
             return type.IsAssignableFrom(@this);
         }
+
+        public static string GetShortAssemblyName (this Type @this)
+        {
+            return @this.Assembly.GetName().Name;
+        }
     }
 }

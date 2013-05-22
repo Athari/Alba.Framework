@@ -30,6 +30,26 @@ namespace Alba.Framework.Collections
             yield return value;
         }
 
+        public static IEnumerable<T> Flatten<T> (this IEnumerable<IEnumerable<T>> @this)
+        {
+            return @this.SelectMany(i => i);
+        }
+
+        public static IEnumerable<T> Flatten<TKey, T> (this IEnumerable<IDictionary<TKey, T>> @this)
+        {
+            return @this.SelectMany(i => i.Values);
+        }
+
+        public static IEnumerable<T> Flatten<TKey, T> (this IDictionary<TKey, IEnumerable<T>> @this)
+        {
+            return @this.Values.SelectMany(i => i);
+        }
+
+        public static IEnumerable<T> Flatten<TKey1, TKey2, T> (this IDictionary<TKey1, IDictionary<TKey2, T>> @this)
+        {
+            return @this.Values.SelectMany(i => i.Values);
+        }
+
         public static IEnumerable<TResult> Intersect<T, TResult> (this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
         {
             var dic = second.ToDictionary(i => i, comparer);
@@ -43,11 +63,6 @@ namespace Alba.Framework.Collections
         public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this)
         {
             return @this.OrderBy(i => _rnd.NextDouble());
-        }
-
-        public static IEnumerable<T> SelectMany<T> (this IEnumerable<IEnumerable<T>> source)
-        {
-            return source.SelectMany(item => item);
         }
 
         public static IEnumerable<TResult> Zip<T1, T2, T3, TResult> (this IEnumerable<T1> source, IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> selector)
