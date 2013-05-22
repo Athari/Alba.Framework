@@ -153,8 +153,10 @@
     <Compile Include="IO\TeeOutputStream.cs" />
     <Compile Include="Logs\AlbaFrameworkTraceSources.cs" />
     <Compile Include="Logs\CallbackTraceFilter.cs" />
+    <Compile Include="Markup\BlurEffectExtension.cs" />
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
+    <Compile Include="Markup\DropShadowEffectExtension.cs" />
     <Compile Include="Serialization\DictionarySerializationBinder.cs" />
     <Compile Include="Serialization\Json\Converters\ConcreteTypeConverter%28T%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />

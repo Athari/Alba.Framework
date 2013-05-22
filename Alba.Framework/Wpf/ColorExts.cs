@@ -23,5 +23,18 @@ namespace Alba.Framework.Wpf
         {
             return new HslColor(@this).Lighter(percent).ToColor();
         }
+
+        public static GradientStopCollection Add (this GradientStopCollection collection, Color color, double offset)
+        {
+            collection.Add(new GradientStop(color, offset));
+            return collection;
+        }
+
+        public static TBrush Add<TBrush> (this TBrush brush, Color color, double offset)
+            where TBrush : GradientBrush
+        {
+            brush.GradientStops.Add(new GradientStop(color, offset));
+            return brush;
+        }
     }
 }
