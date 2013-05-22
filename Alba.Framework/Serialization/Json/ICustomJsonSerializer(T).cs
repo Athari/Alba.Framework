@@ -1,4 +1,6 @@
-﻿namespace Alba.Framework.Serialization.Json
+﻿using System;
+
+namespace Alba.Framework.Serialization.Json
 {
     public interface ICustomJsonSerializer<T>
     {
@@ -8,5 +10,6 @@
         void PopulateFromString (T value, string source);
         T DeserializeFromFile (string fileName, bool throwOnError = true);
         T DeserializeFromString (string source);
+        Func<object, string> GetGlobalLinks (T value);
     }
 }

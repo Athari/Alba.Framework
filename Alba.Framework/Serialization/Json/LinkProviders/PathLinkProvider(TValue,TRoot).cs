@@ -2,7 +2,6 @@
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Text;
-using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -16,7 +15,7 @@ namespace Alba.Framework.Serialization.Json
             base(idProp)
         {}
 
-        public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
+        public override string GetLink (TValue value, JsonLinkedContext context)
         {
             return _linkData.GetLink(value);
         }

@@ -36,7 +36,7 @@ namespace Alba.Framework.Serialization.Json
                 ContractResolver = GetContractResolver(),
                 Binder = BindTypeNameInternal(new DictionarySerializationBinder()),
                 Context = new StreamingContext(StreamingContextStates.All,
-                    new JsonLinkedContext(linkProviders: GetLinkProviders())),
+                    new JsonLinkedContext(GetLinkProviders())),
             };
             serializer.Converters.AddRange(GetConverters());
             SetOptions(serializer);
@@ -231,6 +231,13 @@ namespace Alba.Framework.Serialization.Json
                 throw new IOException(message, e);
             else
                 Log.Error(message, e);
+        }
+
+        public Func<object, string> GetGlobalLinks (T value)
+        {
+            var context = new JsonLinkedContext(GetLinkProviders().Where(p => !p.IsScoped));
+            RememberLinks((object)value, context);
+            return v => v == null ? null : context.Options.GetLinkProvider(v.GetType()).GetLink(v, context);
         }
     }
 }

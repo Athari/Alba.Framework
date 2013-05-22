@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
+using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Newtonsoft.Json;
-using Alba.Framework.Collections;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -53,7 +53,7 @@ namespace Alba.Framework.Serialization.Json
         {
             if (value == null)
                 return null;
-            string linkName = Options.GetLinkProvider(value.GetType()).GetLink(value, serializer, this);
+            string linkName = Options.GetLinkProvider(value.GetType()).GetLink(value, this);
             string typeName = serializer.Binder.BindToName(value.GetType());
             return typeName == null ? linkName : typeName + LinkTypeSeparator + linkName;
         }

@@ -2,7 +2,6 @@
 using Alba.Framework.Common;
 using Alba.Framework.Logs;
 using Alba.Framework.Text;
-using Newtonsoft.Json;
 
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
@@ -21,7 +20,7 @@ namespace Alba.Framework.Serialization.Json
             private readonly IDictionary<string, TValue> _links = new Dictionary<string, TValue>();
             protected readonly ISet<string> _unresolvedLinks = new HashSet<string>();
 
-            public string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
+            public string GetLink (TValue value, JsonLinkedContext context)
             {
                 string id = value.Id;
                 if (id == null)

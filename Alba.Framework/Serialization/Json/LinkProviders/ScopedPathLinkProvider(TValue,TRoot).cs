@@ -3,7 +3,6 @@ using System.Linq;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Text;
-using Newtonsoft.Json;
 
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
@@ -18,7 +17,12 @@ namespace Alba.Framework.Serialization.Json
             base(idProp)
         {}
 
-        public override string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context)
+        public override bool IsScoped
+        {
+            get { return true; }
+        }
+
+        public override string GetLink (TValue value, JsonLinkedContext context)
         {
             return GetRootLinkData(context).GetLink(value);
         }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Text;
-using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -15,6 +14,11 @@ namespace Alba.Framework.Serialization.Json
         protected JsonLinkProvider (string idProp)
         {
             IdProp = idProp;
+        }
+
+        public virtual bool IsScoped
+        {
+            get { return false; }
         }
 
         protected static string GetUntypedLink (string link)
@@ -41,12 +45,12 @@ namespace Alba.Framework.Serialization.Json
             return typeof(TValue).IsAssignableFrom(type);
         }
 
-        string IJsonLinkProvider.GetLink (object value, JsonSerializer serializer, JsonLinkedContext context)
+        string IJsonLinkProvider.GetLink (object value, JsonLinkedContext context)
         {
-            return GetLink((TValue)value, serializer, context);
+            return GetLink((TValue)value, context);
         }
 
-        public abstract string GetLink (TValue value, JsonSerializer serializer, JsonLinkedContext context);
+        public abstract string GetLink (TValue value, JsonLinkedContext context);
 
         public abstract object ResolveOrigin (string id, JsonResolveLinkContext resolveContext);
 
