@@ -8,5 +8,10 @@ namespace Alba.Framework.Sys
         {
             return Math.Min(max, Math.Max(min, value));
         }
+
+        public static double MinMax (this double value, double min, double max)
+        {
+            return Math.Min(max, Math.Max(min, value));
+        }
     }
 }
