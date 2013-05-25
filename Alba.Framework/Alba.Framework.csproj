@@ -96,6 +96,7 @@
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OutlinedTextBlock.cs" />
     <Compile Include="Controls\ProgressBarProps.cs" />
     <Compile Include="Controls\ProgressBarProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
