@@ -12,6 +12,7 @@ using Alba.Framework.Events;
 using Alba.Framework.Linq;
 using Alba.Framework.Logs;
 using Alba.Framework.Text;
+using Newtonsoft.Json;
 
 namespace Alba.Framework.Mvvm.Models
 {
@@ -26,19 +27,23 @@ namespace Alba.Framework.Mvvm.Models
         public event PropertyChangedEventHandler PropertyChanged;
         public event EventHandler IsLoadingChanged;
 
+        private bool _isLoading;
+
         protected ModelBase ()
         {
             Dispatcher = Dispatcher.CurrentDispatcher;
         }
 
+        [JsonIgnore]
         public Dispatcher Dispatcher { get; protected set; }
 
+        [JsonIgnore]
         public bool IsValid
         {
             get { return ValidatedProps.All(propName => ValidateProp(propName).IsNullOrEmpty()); }
         }
 
-        private bool _isLoading;
+        [JsonIgnore]
         public bool IsLoading
         {
             get { return Get(ref _isLoading); }
