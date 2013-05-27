@@ -96,12 +96,16 @@
     <Compile Include="Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OutlinedTextBlock.cs" />
     <Compile Include="Controls\ProgressBarProps.cs" />
     <Compile Include="Controls\ProgressBarProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
     <Compile Include="Controls\ProgressSpinner.xaml.cs">
       <DependentUpon>ProgressSpinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RangeProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
     <Compile Include="Controls\SelectorProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
@@ -114,6 +118,7 @@
     <Compile Include="Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Controls\SelectorProps.cs" />
+    <Compile Include="Controls\RangeProps.cs" />
     <Compile Include="Controls\TooltipPopup.xaml.cs">
       <DependentUpon>TooltipPopup.xaml</DependentUpon>
     </Compile>
@@ -157,6 +162,7 @@
     <Compile Include="Markup\Converters\ErrorContentConverter.cs" />
     <Compile Include="Markup\DefaultStyleExtension.cs" />
     <Compile Include="Markup\DropShadowEffectExtension.cs" />
+    <Compile Include="Markup\LinearGradientBrush2Extension.cs" />
     <Compile Include="Serialization\DictionarySerializationBinder.cs" />
     <Compile Include="Serialization\Json\Converters\ConcreteTypeConverter%28T%29.cs" />
     <Compile Include="Serialization\Json\Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />
@@ -254,6 +260,7 @@
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
     <Compile Include="Sys\TypeExts.cs" />
+    <Compile Include="Sys\ValueExts.cs" />
     <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\MatchExts.cs" />
     <Compile Include="Text\StringExts.cs" />

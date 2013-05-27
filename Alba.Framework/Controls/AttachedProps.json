@@ -35,6 +35,12 @@
                 "SelectedItemsSync SelectedItemsSync": { for: "Selector", vis: "private" },
             }
         },
+        RangeProps: {
+            attached: {
+                "int MinInt": { for: "RangeBase", changed: 1, flags: "BindsTwoWayByDefault" },
+                "int MaxInt": { for: "RangeBase", changed: 1, flags: "BindsTwoWayByDefault" },
+            }
+        },
         TreeViewProps: {
             attached: {
                 "object SelectedItem": { for: "TreeView", changed: 1 },
