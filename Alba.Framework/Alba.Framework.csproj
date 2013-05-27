@@ -255,11 +255,11 @@
     <Compile Include="Sys\Shell.cs" />
     <Compile Include="Sys\TypeExts.cs" />
     <Compile Include="Text\Encodings.cs" />
+    <Compile Include="Text\MatchExts.cs" />
     <Compile Include="Text\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
     <Compile Include="Sys\DispatcherExts.cs" />
     <Compile Include="Sys\WellKnownSidTypeExts.cs" />
-    <Compile Include="Sys\WpfExts.cs" />
     <Compile Include="Text\Wildcards\WildcardOptions.cs" />
     <Compile Include="Text\Wildcards\WildcardPattern.cs" />
     <Compile Include="Text\Wildcards\WildcardPatternException.cs" />
@@ -273,6 +273,7 @@
     <Compile Include="Wpf\ItemsControlExts.cs" />
     <Compile Include="Wpf\RoutedEventArgsExts.cs" />
     <Compile Include="Wpf\StoryboardExts.cs" />
+    <Compile Include="Wpf\VisualExts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Controls\AttachedProps.json">

@@ -5,7 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using Alba.Framework.Controls;
 using Alba.Framework.Events;
-using Alba.Framework.Sys;
+using Alba.Framework.Wpf;
 
 namespace Alba.Framework.Mvvm.Dialogs
 {
