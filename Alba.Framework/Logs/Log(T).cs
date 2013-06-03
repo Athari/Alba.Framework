@@ -10,7 +10,7 @@ namespace Alba.Framework.Logs
 {
     public class Log<T> : ILog
     {
-        private static readonly string FullTypeName = typeof(T).GetFullSharpName();
+        private static readonly string FullTypeName = typeof(T).GetFullName();
         private static readonly string MediumTypeName = typeof(T).GetMediumName();
         private static readonly string TypeName = typeof(T).Name;
         private readonly TraceSource _source;
