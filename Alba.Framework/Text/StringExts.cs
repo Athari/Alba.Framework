@@ -84,6 +84,18 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static bool Contains (this string @this, char value)
+        {
+            return @this.IndexOf(value) >= 0;
+        }
+
+        [Pure]
+        public static bool Contains (this string @this, char value, StringComparison comparisonType)
+        {
+            return @this.IndexOf(new string(value, 1), comparisonType) >= 0;
+        }
+
+        [Pure]
         public static bool Contains (this string @this, string value, StringComparison comparisonType)
         {
             return @this.IndexOf(value, comparisonType) >= 0;
