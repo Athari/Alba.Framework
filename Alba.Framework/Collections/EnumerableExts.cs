@@ -50,6 +50,50 @@ namespace Alba.Framework.Collections
             return @this.Values.SelectMany(i => i.Values);
         }
 
+        public static int IndexOf<T> (this IEnumerable<T> @this, T value)
+        {
+            int i = 0;
+            foreach (T item in @this) {
+                if (Equals(item, value))
+                    return i;
+                i++;
+            }
+            return -1;
+        }
+
+        public static int IndexOf<T> (this IEnumerable<T> @this, Func<T, bool> predicate)
+        {
+            int i = 0;
+            foreach (T item in @this) {
+                if (predicate(item))
+                    return i;
+                i++;
+            }
+            return -1;
+        }
+
+        public static int LastIndexOf<T> (this IEnumerable<T> @this, T value)
+        {
+            int i = 0, index = -1;
+            foreach (T item in @this) {
+                if (Equals(item, value))
+                    index = i;
+                i++;
+            }
+            return index;
+        }
+
+        public static int LastIndexOf<T> (this IEnumerable<T> @this, Func<T, bool> predicate)
+        {
+            int i = 0, index = -1;
+            foreach (T item in @this) {
+                if (predicate(item))
+                    index = i;
+                i++;
+            }
+            return index;
+        }
+
         public static IEnumerable<TResult> Intersect<T, TResult> (this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
         {
             var dic = second.ToDictionary(i => i, comparer);
