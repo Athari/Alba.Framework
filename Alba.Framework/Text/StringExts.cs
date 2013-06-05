@@ -9,7 +9,7 @@ namespace Alba.Framework.Text
 {
     public static class StringExts
     {
-        private static readonly Regex _reNewlines = new Regex("@\r?\n", RegexOptions.Compiled);
+        private static readonly Regex ReNewlines = new Regex("@\r?\n", RegexOptions.Compiled);
 
         [Pure]
         public static string AppendSentence (this string @this, string sentence)
@@ -50,7 +50,7 @@ namespace Alba.Framework.Text
         [Pure]
         public static string SingleLine (this string @this)
         {
-            return _reNewlines.Replace(@this, " ");
+            return ReNewlines.Replace(@this, " ");
         }
 
         [Pure]
@@ -78,7 +78,7 @@ namespace Alba.Framework.Text
         }
 
         [Pure, StringFormatMethod ("format")]
-        public static string FmtInvariant (this string format, params object[] args)
+        public static string FmtInv (this string format, params object[] args)
         {
             return string.Format(CultureInfo.InvariantCulture, format, args);
         }
@@ -102,6 +102,30 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static string RegexReplace (this string @this, string pattern, string replacement)
+        {
+            return Regex.Replace(@this, pattern, replacement);
+        }
+
+        [Pure]
+        public static string RegexReplace (this string @this, string pattern, string replacement, RegexOptions options)
+        {
+            return Regex.Replace(@this, pattern, replacement, options);
+        }
+
+        [Pure]
+        public static string RegexReplace (this string @this, string pattern, MatchEvaluator evaluator)
+        {
+            return Regex.Replace(@this, pattern, evaluator);
+        }
+
+        [Pure]
+        public static string RegexReplace (this string @this, string pattern, MatchEvaluator evaluator, RegexOptions options)
+        {
+            return Regex.Replace(@this, pattern, evaluator, options);
+        }
+
+        [Pure]
         public static string Sub (this string @this, int startIndex, int length)
         {
             return startIndex >= 0
@@ -119,6 +143,17 @@ namespace Alba.Framework.Text
             return startIndex >= 0
                 ? @this.Substring(startIndex)
                 : @this.Substring(@this.Length + startIndex);
+        }
+
+        [Pure]
+        public static string Unindent (this string @this)
+        {
+            return UnindentInternal(@this, "*");
+        }
+
+        private static string UnindentInternal (this string @this, string num)
+        {
+            return @this.RegexReplace(@"(?m)^\s{0}(.*)$".Fmt(num), "$1");
         }
     }
 }

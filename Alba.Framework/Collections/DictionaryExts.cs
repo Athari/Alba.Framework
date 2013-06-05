@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 
 namespace Alba.Framework.Collections
@@ -55,6 +56,15 @@ namespace Alba.Framework.Collections
             if (!@this.TryGetValue(key, out value))
                 @this[key] = value = new TValue();
             return value;
+        }
+
+        public static ExpandoObject ToExpando<TValue> (this IDictionary<string, TValue> @this)
+        {
+            var expando = new ExpandoObject();
+            var dic = expando as IDictionary<string, object>;
+            foreach (KeyValuePair<string, TValue> kvp in @this)
+                dic.Add(kvp.Key, kvp.Value);
+            return expando;
         }
     }
 }

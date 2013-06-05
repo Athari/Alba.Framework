@@ -17,7 +17,7 @@ namespace Alba.Framework.Common
         public override string ToString ()
         {
             if (_name[0] != '{')
-                _name = "{{{0}}}".FmtInvariant(_name);
+                _name = "{{{0}}}".FmtInv(_name);
             return _name;
         }
     }

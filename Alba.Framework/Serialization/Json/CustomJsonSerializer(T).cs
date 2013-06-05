@@ -131,7 +131,7 @@ namespace Alba.Framework.Serialization.Json
 
         public string SerializeToString (T value)
         {
-            using (var stringWriter = Streams.WriteInvariantString()) {
+            using (var stringWriter = Streams.WriteStringInv()) {
                 SerializeToStream(value, stringWriter);
                 return stringWriter.ToString();
             }
