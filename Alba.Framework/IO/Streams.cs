@@ -71,12 +71,12 @@ namespace Alba.Framework.IO
             return new StringReader(value);
         }
 
-        public static StringWriter WriteStringBuilder (StringBuilder sb, IFormatProvider formatProvider = null)
+        public static StringWriter WriteString (StringBuilder sb, IFormatProvider formatProvider = null)
         {
             return new StringWriter(sb, formatProvider ?? CultureInfo.CurrentCulture);
         }
 
-        public static StringWriter WriteInvariantStringBuilder (StringBuilder sb)
+        public static StringWriter WriteInvariantString (StringBuilder sb)
         {
             return new StringWriter(sb, CultureInfo.InvariantCulture);
         }
@@ -86,14 +86,14 @@ namespace Alba.Framework.IO
             return new MemoryStream(capacity);
         }
 
-        public static MemoryStream WriteMemory (byte[] buffer, int index = 0, int count = -1)
+        public static MemoryStream WriteMemory (byte[] buffer, int index = 0, int count = int.MaxValue)
         {
-            return new MemoryStream(buffer, index, count != -1 ? count : buffer.Length - index, true);
+            return new MemoryStream(buffer, index, count != int.MaxValue ? count : buffer.Length - index, true);
         }
 
-        public static MemoryStream ReadMemory (byte[] buffer, int index = 0, int count = -1)
+        public static MemoryStream ReadMemory (byte[] buffer, int index = 0, int count = int.MaxValue)
         {
-            return new MemoryStream(buffer, index, count != -1 ? count : buffer.Length - index, false);
+            return new MemoryStream(buffer, index, count != int.MaxValue ? count : buffer.Length - index, false);
         }
     }
 }
