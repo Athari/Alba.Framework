@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Alba.Framework.Common;
 
 namespace Alba.Framework.Collections
 {
@@ -183,9 +184,19 @@ namespace Alba.Framework.Collections
                 yield return current;
         }
 
+        public static IEnumerable<T> TraverseList<T> (this T root) where T : class, IOwner<T>
+        {
+            return root.TraverseList(i => i.Owned.SingleOrDefault());
+        }
+
         public static IEnumerable<T> TraverseTree<T> (this T root, Func<T, IEnumerable<T>> getChildren)
         {
             return TraverseTreeDepth(root, getChildren);
+        }
+
+        public static IEnumerable<T> TraverseTree<T> (this T root) where T : IOwner<T>
+        {
+            return TraverseTree(root, i => i.Owned);
         }
 
         public static IEnumerable<T> TraverseTreeDepth<T> (this T root, Func<T, IEnumerable<T>> getChildren)
@@ -196,9 +207,14 @@ namespace Alba.Framework.Collections
             while (stack.Count != 0) {
                 T item = stack.Pop();
                 yield return item;
-                foreach (var child in getChildren(item))
+                foreach (var child in getChildren(item).Reverse())
                     stack.Push(child);
             }
+        }
+
+        public static IEnumerable<T> TraverseTreeDepth<T> (this T root) where T : IOwner<T>
+        {
+            return root.TraverseTreeDepth(i => i.Owned);
         }
 
         public static IEnumerable<T> TraverseTreeBreadth<T> (this T root, Func<T, IEnumerable<T>> getChildren)
@@ -211,6 +227,11 @@ namespace Alba.Framework.Collections
                 yield return item;
                 queue.EnqueueRange(getChildren(item));
             }
+        }
+
+        public static IEnumerable<T> TraverseTreeBreadth<T> (this T root) where T : IOwner<T>
+        {
+            return root.TraverseTreeBreadth(i => i.Owned);
         }
 
         public static IEnumerable<T> TraverseGraph<T> (this T root, Func<T, IEnumerable<T>> getChildren)
@@ -227,6 +248,11 @@ namespace Alba.Framework.Collections
                 yield return item;
                 stack.PushRange(getChildren(item));
             }
+        }
+
+        public static IEnumerable<T> TraverseGraph<T> (this T root) where T : IOwner<T>
+        {
+            return root.TraverseGraph(i => i.Owned);
         }
 
         public static IEnumerable<int> Range (this int count)
