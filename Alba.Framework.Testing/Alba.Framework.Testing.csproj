@@ -40,8 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionMatch.cs" />
+    <Compile Include="ExpectedExceptionMessageAttribute.cs" />
     <Compile Include="TraceRedirectTraceListener.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Alba.Framework\Alba.Framework.csproj">
+      <Project>{62730B23-450C-4B93-8D5C-F7037DB6D263}</Project>
+      <Name>Alba.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(SolutionDir)\Build\CommonUnitTests.targets" Condition="Exists('$(SolutionDir)\Build\CommonUnitTests.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

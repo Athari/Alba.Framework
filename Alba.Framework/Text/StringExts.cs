@@ -40,11 +40,23 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static string RemovePostfixSafe (this string @this, string postfix)
+        {
+            return @this.EndsWith(postfix) ? @this.Remove(@this.Length - postfix.Length) : @this;
+        }
+
+        [Pure]
         public static string RemovePrefix (this string @this, string prefix)
         {
             if (!@this.StartsWith(prefix))
                 throw new ArgumentException("String '{0}' does not contain prefix '{1}'.".Fmt(@this, prefix), "prefix");
             return @this.Substring(prefix.Length);
+        }
+
+        [Pure]
+        public static string RemovePrefixSafe (this string @this, string prefix)
+        {
+            return @this.StartsWith(prefix) ? @this.Substring(prefix.Length) : @this;
         }
 
         [Pure]
