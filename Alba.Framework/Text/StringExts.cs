@@ -114,27 +114,57 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
-        public static string RegexReplace (this string @this, string pattern, string replacement)
+        public static string ReEscape (this string @this)
         {
-            return Regex.Replace(@this, pattern, replacement);
+            return Regex.Escape(@this);
         }
 
         [Pure]
-        public static string RegexReplace (this string @this, string pattern, string replacement, RegexOptions options)
+        public static string ReEscapeReplacement (this string @this)
+        {
+            return @this.Replace("$", "$$");
+        }
+
+        [Pure]
+        public static bool IsReMatch (this string @this, string pattern, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.IsMatch(@this, pattern, options);
+        }
+
+        [Pure]
+        public static Match ReMatch (this string @this, string pattern, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Match(@this, pattern, options);
+        }
+
+        [Pure]
+        public static MatchCollection ReMatches (this string @this, string pattern, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Matches(@this, pattern, options);
+        }
+
+        [Pure]
+        public static string ReReplace (this string @this, string pattern, string replacement, RegexOptions options = RegexOptions.None)
         {
             return Regex.Replace(@this, pattern, replacement, options);
         }
 
         [Pure]
-        public static string RegexReplace (this string @this, string pattern, MatchEvaluator evaluator)
+        public static string ReReplace (this string @this, string pattern, MatchEvaluator evaluator, RegexOptions options = RegexOptions.None)
         {
-            return Regex.Replace(@this, pattern, evaluator);
+            return Regex.Replace(@this, pattern, evaluator, options);
         }
 
         [Pure]
-        public static string RegexReplace (this string @this, string pattern, MatchEvaluator evaluator, RegexOptions options)
+        public static string[] ReSplit (this string @this, string pattern, string replacement, RegexOptions options = RegexOptions.None)
         {
-            return Regex.Replace(@this, pattern, evaluator, options);
+            return Regex.Split(@this, pattern, options);
+        }
+
+        [Pure]
+        public static string ReUnescape (this string @this)
+        {
+            return Regex.Unescape(@this);
         }
 
         [Pure]
@@ -158,14 +188,32 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
-        public static string Unindent (this string @this)
+        public static string Indent (this string @this, string indentStr)
         {
-            return UnindentInternal(@this, "*");
+            return @this.ReReplace("(?m)^(.*)$", indentStr.ReEscapeReplacement() + "$1");
         }
 
-        private static string UnindentInternal (this string @this, string num)
+        [Pure]
+        public static string Unindent (this string @this)
         {
-            return @this.RegexReplace(@"(?m)^\s{0}(.*)$".Fmt(num), "$1");
+            return UnindentInternal(@this, @"\s*");
+        }
+
+        [Pure]
+        public static string Unindent (this string @this, int indentLength)
+        {
+            return UnindentInternal(@this, @"\s{0}".FmtInv(indentLength));
+        }
+
+        [Pure]
+        public static string Unindent (this string @this, string indentStr)
+        {
+            return UnindentInternal(@this, indentStr.ReEscape());
+        }
+
+        private static string UnindentInternal (this string @this, string indentPattern)
+        {
+            return @this.ReReplace("(?m)^{0}(.*)$".Fmt(indentPattern), "$1");
         }
     }
 }
