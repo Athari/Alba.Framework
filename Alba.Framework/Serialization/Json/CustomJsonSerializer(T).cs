@@ -237,7 +237,14 @@ namespace Alba.Framework.Serialization.Json
         {
             var context = new JsonLinkedContext(GetLinkProviders().Where(p => !p.IsScoped));
             RememberLinks((object)value, context);
-            return v => v == null ? null : context.Options.GetLinkProvider(v.GetType()).GetLink(v, context);
+            return v => {
+                if (v == null)
+                    return null;
+                var idable = v as IIdentifiable<string>;
+                if (idable != null && idable.Id == null)
+                    return null;
+                return context.Options.GetLinkProvider(v.GetType()).GetLink(v, context);
+            };
         }
     }
 }
