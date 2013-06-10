@@ -188,6 +188,30 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static byte[] ToBytes (this string @this, Encoding encoding = null)
+        {
+            return (encoding ?? Encodings.Utf16NoBom).GetBytes(@this);
+        }
+
+        [Pure]
+        public static byte[] ToAsciiBytes (this string @this)
+        {
+            return Encoding.ASCII.GetBytes(@this);
+        }
+
+        [Pure]
+        public static byte[] ToUtf8Bytes (this string @this)
+        {
+            return Encodings.Utf8NoBom.GetBytes(@this);
+        }
+
+        [Pure]
+        public static byte[] ToUtf16Bytes (this string @this)
+        {
+            return Encodings.Utf16NoBom.GetBytes(@this);
+        }
+
+        [Pure]
         public static string Indent (this string @this, string indentStr)
         {
             return @this.ReReplace("(?m)^(.*)$", indentStr.ReEscapeReplacement() + "$1");
