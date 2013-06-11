@@ -255,6 +255,11 @@ namespace Alba.Framework.Collections
             return root.TraverseGraph(i => i.Owned);
         }
 
+        public static IEnumerable<T> ReturnEnumerable<T> (this T item)
+        {
+            yield return item;
+        }
+
         public static IEnumerable<int> Range (this int count)
         {
             return Enumerable.Range(0, count);
