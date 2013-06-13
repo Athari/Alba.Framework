@@ -262,6 +262,7 @@
     <Compile Include="Sys\TypeExts.cs" />
     <Compile Include="Sys\ValueExts.cs" />
     <Compile Include="Sys\WebUtils.cs" />
+    <Compile Include="Text\MatchCollectionExts.cs" />
     <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\MatchExts.cs" />
     <Compile Include="Text\StringExts.cs" />

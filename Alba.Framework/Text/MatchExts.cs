@@ -4,7 +4,7 @@ namespace Alba.Framework.Text
 {
     public static class MatchExts
     {
-        public static string Get (this Match @this, int groupNum)
+        public static string Get (this Match @this, int groupNum = 1)
         {
             return @this.Groups[groupNum].Value;
         }

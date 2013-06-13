@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Text;
@@ -132,9 +133,45 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static bool IsReMatch (this string @this, Regex regex)
+        {
+            return regex.IsMatch(@this);
+        }
+
+        [Pure]
         public static Match ReMatch (this string @this, string pattern, RegexOptions options = RegexOptions.None)
         {
             return Regex.Match(@this, pattern, options);
+        }
+
+        [Pure]
+        public static string ReMatchGet (this string @this, string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Match(@this, pattern, options).Get(groupNum);
+        }
+
+        [Pure]
+        public static string ReMatchGet (this string @this, string pattern, string groupName, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Match(@this, pattern, options).Get(groupName);
+        }
+
+        [Pure]
+        public static Match ReMatch (this string @this, Regex regex)
+        {
+            return regex.Match(@this);
+        }
+
+        [Pure]
+        public static string ReMatchGet (this string @this, Regex regex, int groupNum = 1)
+        {
+            return regex.Match(@this).Get(groupNum);
+        }
+
+        [Pure]
+        public static string ReMatchGet (this string @this, Regex regex, string groupName)
+        {
+            return regex.Match(@this).Get(groupName);
         }
 
         [Pure]
@@ -144,9 +181,45 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static IEnumerable<string> ReMatchesGet (this string @this, string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Matches(@this, pattern, options).Get(groupNum);
+        }
+
+        [Pure]
+        public static IEnumerable<string> ReMatchesGet (this string @this, string pattern, string groupName, RegexOptions options = RegexOptions.None)
+        {
+            return Regex.Matches(@this, pattern, options).Get(groupName);
+        }
+
+        [Pure]
+        public static MatchCollection ReMatches (this string @this, Regex regex)
+        {
+            return regex.Matches(@this);
+        }
+
+        [Pure]
+        public static IEnumerable<string> ReMatchesGet (this string @this, Regex regex, int groupNum = 1)
+        {
+            return regex.Matches(@this).Get(groupNum);
+        }
+
+        [Pure]
+        public static IEnumerable<string> ReMatchesGet (this string @this, Regex regex, string groupName)
+        {
+            return regex.Matches(@this).Get(groupName);
+        }
+
+        [Pure]
         public static string ReReplace (this string @this, string pattern, string replacement, RegexOptions options = RegexOptions.None)
         {
             return Regex.Replace(@this, pattern, replacement, options);
+        }
+
+        [Pure]
+        public static string ReReplace (this string @this, Regex regex, string replacement)
+        {
+            return regex.Replace(@this, replacement);
         }
 
         [Pure]
@@ -156,9 +229,21 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
-        public static string[] ReSplit (this string @this, string pattern, string replacement, RegexOptions options = RegexOptions.None)
+        public static string ReReplace (this string @this, Regex regex, MatchEvaluator evaluator)
+        {
+            return regex.Replace(@this, evaluator);
+        }
+
+        [Pure]
+        public static string[] ReSplit (this string @this, string pattern, RegexOptions options = RegexOptions.None)
         {
             return Regex.Split(@this, pattern, options);
+        }
+
+        [Pure]
+        public static string[] ReSplit (this string @this, Regex regex)
+        {
+            return regex.Split(@this);
         }
 
         [Pure]
