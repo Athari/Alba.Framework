@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using Alba.Framework.Attributes;
@@ -323,6 +324,26 @@ namespace Alba.Framework.Text
         private static string UnindentInternal (this string @this, string indentPattern)
         {
             return @this.ReReplace("(?m)^{0}(.*)$".Fmt(indentPattern), "$1");
+        }
+
+        public static string HtmlEncode (this string @this)
+        {
+            return WebUtility.HtmlEncode(@this);
+        }
+
+        public static string HtmlDecode (this string @this)
+        {
+            return WebUtility.HtmlDecode(@this);
+        }
+
+        public static string UrlEncode (this string @this)
+        {
+            return WebUtility.UrlEncode(@this);
+        }
+
+        public static string UrlDecode (this string @this)
+        {
+            return WebUtility.UrlDecode(@this);
         }
     }
 }
