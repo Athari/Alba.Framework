@@ -27,7 +27,7 @@ namespace Alba.Framework.Serialization.Json
         protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
         {
             JsonProperty property = base.CreateProperty(member, memberSerialization);
-            if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).HasAny(DefaultValueHandling.Ignore)
+            if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).Has(DefaultValueHandling.Ignore)
                 && !typeof(string).IsAssignableFrom(property.PropertyType)
                 && typeof(IEnumerable).IsAssignableFrom(property.PropertyType)) {
                 var memberProp = member as PropertyInfo;

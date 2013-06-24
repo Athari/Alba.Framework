@@ -8,6 +8,13 @@ namespace Alba.Framework.Sys
     /// </summary>
     public static class EnumExts
     {
+        public static bool Has<T> (this T @this, T flags)
+            where T : struct, IComparable, IFormattable, IConvertible //, Enum
+        {
+            // TODO Contract check: number of flags in `flags` equals 1
+            return @this.HasAll(flags);
+        }
+
         public static bool HasAny<T> (this T @this, T flags)
             where T : struct, IComparable, IFormattable, IConvertible //, Enum
         {
