@@ -105,6 +105,19 @@ namespace Alba.Framework.Collections
             }
         }
 
+        public static IEnumerable<T> Inverse<T> (this IEnumerable<T> @this)
+        {
+            var list = @this as IList<T>;
+            if (list != null) {
+                for (int i = list.Count - 1; i >= 0; i--)
+                    yield return list[i];
+            }
+            else {
+                foreach (T item in @this.Reverse())
+                    yield return item;
+            }
+        }
+
         public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this)
         {
             return @this.OrderBy(i => _rnd.NextDouble());
@@ -207,7 +220,7 @@ namespace Alba.Framework.Collections
             while (stack.Count != 0) {
                 T item = stack.Pop();
                 yield return item;
-                foreach (var child in getChildren(item).Reverse())
+                foreach (var child in getChildren(item).Inverse())
                     stack.Push(child);
             }
         }

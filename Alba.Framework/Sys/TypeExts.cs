@@ -25,7 +25,7 @@ namespace Alba.Framework.Sys
         public static string GetName (this Type @this)
         {
             return @this.IsNested
-                ? @this.TraverseList(t => t.DeclaringType).Select(t => t.Name).Reverse().JoinString(".")
+                ? @this.TraverseList(t => t.DeclaringType).Select(t => t.Name).Inverse().JoinString(".")
                 : @this.Name;
         }
 
