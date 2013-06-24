@@ -23,6 +23,7 @@ namespace Alba.Framework.Testing
         {
             Type = type;
             Message = message;
+            InnerType = TypeNone;
         }
 
         protected override string NoExceptionMessage
