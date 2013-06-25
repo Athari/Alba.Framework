@@ -87,6 +87,7 @@
     <Compile Include="Common\IOwned.cs" />
     <Compile Include="Common\IOwner.cs" />
     <Compile Include="Common\NamedObject.cs" />
+    <Compile Include="Common\OwnedExts.cs" />
     <Compile Include="Common\OwnerExts.cs" />
     <Compile Include="Common\Undefined.cs" />
     <Compile Include="Controls\AnimProps.cs" />
