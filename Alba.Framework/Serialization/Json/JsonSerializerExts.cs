@@ -1,5 +1,8 @@
 ﻿using System;
+using Alba.Framework.Sys;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Alba.Framework.Serialization.Json
 {
@@ -12,7 +15,11 @@ namespace Alba.Framework.Serialization.Json
 
         public static object Create (this JsonSerializer serializer, Type type)
         {
-            return serializer.ContractResolver.ResolveContract(type).DefaultCreator();
+            JsonContract contract = serializer.ContractResolver.ResolveContract(type);
+            if (contract.DefaultCreator == null)
+                throw new JsonSerializationException("Unable to find a default constructor to use for type '{0}'."
+                    .Fmt(type.GetFullName()));
+            return contract.DefaultCreator();
         }
     }
 }
