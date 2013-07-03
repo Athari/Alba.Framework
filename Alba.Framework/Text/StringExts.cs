@@ -116,6 +116,42 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static bool EqualsCulture (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.CurrentCulture);
+        }
+
+        [Pure]
+        public static bool EqualsInv (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.InvariantCulture);
+        }
+
+        [Pure]
+        public static bool EqualsOrd (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.Ordinal);
+        }
+
+        [Pure]
+        public static bool EqualsCaseCulture (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.CurrentCultureIgnoreCase);
+        }
+
+        [Pure]
+        public static bool EqualsCaseInv (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        [Pure]
+        public static bool EqualsCaseOrd (this string @this, string other)
+        {
+            return @this.Equals(other, StringComparison.OrdinalIgnoreCase);
+        }
+
+        [Pure]
         public static string ReEscape (this string @this)
         {
             return Regex.Escape(@this);
