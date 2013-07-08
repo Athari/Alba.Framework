@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 using Alba.Framework.Collections;
@@ -43,9 +44,17 @@ namespace Alba.Framework.Sys
 
         /// <summary>Equivalent to "is" keyword.</summary>
         /// <remarks><see cref="Type.IsAssignableFrom"/> is "reverse is" and as such is confusing.</remarks>
+        [Pure]
         public static bool IsAssignableTo (this Type @this, Type type)
         {
             return type.IsAssignableFrom(@this);
+        }
+
+        /// <summary>Equivalent to "is" keyword.</summary>
+        [Pure]
+        public static bool Is<T> (this Type @this)
+        {
+            return @this.IsAssignableTo(typeof(T));
         }
 
         public static string GetShortAssemblyName (this Type @this)
