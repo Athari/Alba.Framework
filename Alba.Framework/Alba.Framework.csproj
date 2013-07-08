@@ -277,6 +277,10 @@
     <Compile Include="Text\Wildcards\WildcardPatternParser.cs" />
     <Compile Include="Text\Wildcards\WildcardPatternToRegexParser.cs" />
     <Compile Include="Threading\AsyncLock.cs" />
+    <Compile Include="Threading\Tasks\Schedulers\ThreadTaskScheduler.cs" />
+    <Compile Include="Threading\Tasks\Schedulers\LimitedConcurrencyTaskScheduler.cs" />
+    <Compile Include="Threading\Tasks\Schedulers\OrderedTaskScheduler.cs" />
+    <Compile Include="Threading\Tasks\Schedulers\ApartmentTaskScheduler.cs" />
     <Compile Include="Wpf\ColorExts.cs" />
     <Compile Include="Wpf\DependencyPropertyExts.cs" />
     <Compile Include="Wpf\HslColor.cs" />
