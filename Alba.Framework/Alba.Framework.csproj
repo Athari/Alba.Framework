@@ -257,6 +257,7 @@
     <Compile Include="Sys\EnumExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Sys\KeyValuePairExts.cs" />
+    <Compile Include="Sys\LazyExts.cs" />
     <Compile Include="Sys\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
