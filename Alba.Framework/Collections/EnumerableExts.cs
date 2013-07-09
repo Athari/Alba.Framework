@@ -2,7 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Collections
 {
@@ -92,6 +95,29 @@ namespace Alba.Framework.Collections
                 i++;
             }
             return index;
+        }
+
+        public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Type exceptionType = null)
+        {
+            Contract.Requires<ArgumentNullException>(@this != null);
+            Contract.Requires<ArgumentNullException>(predicate != null);
+            Contract.Requires<ArgumentException>(exceptionType == null || exceptionType.Is<Exception>());
+            foreach (T item in @this)
+                if (predicate(item))
+                    return item;
+            throw ExceptionExts.Create(exceptionType ?? typeof(InvalidOperationException),
+                "Sequence of '{0}' contains no matching element.".Fmt(typeof(T).GetMediumName()));
+        }
+
+        public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Func<Exception> createException)
+        {
+            Contract.Requires<ArgumentNullException>(@this != null);
+            Contract.Requires<ArgumentNullException>(predicate != null);
+            Contract.Requires<ArgumentNullException>(createException != null);
+            foreach (T item in @this)
+                if (predicate(item))
+                    return item;
+            throw createException();
         }
 
         public static IEnumerable<TResult> Intersect<T, TResult> (this IEnumerable<T> first, IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
