@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B72BF9AF-94B9-4526-9BEA-C08636DF7E06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Alba.Framework</RootNamespace>
+    <AssemblyName>Alba.Framework.Presentation</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=f300afd708cefcd3, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\Controls\AnimProps.cs" />
+    <Compile Include="Windows\Controls\AnimProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\ButtonProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\OutlinedTextBlock.cs" />
+    <Compile Include="Windows\Controls\ProgressBarProps.cs" />
+    <Compile Include="Windows\Controls\ProgressBarProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\ProgressSpinner.xaml.cs">
+      <DependentUpon>ProgressSpinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\RangeProps.cs" />
+    <Compile Include="Windows\Controls\RangeProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\SelectorProps.cs" />
+    <Compile Include="Windows\Controls\SelectorProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\TooltipPopup.xaml.cs">
+      <DependentUpon>TooltipPopup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\TreeViewProps.cs" />
+    <Compile Include="Windows\Controls\TreeViewProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Controls\WindowProps.cs" />
+    <Compile Include="Windows\Controls\WindowProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Interop\Native.cs" />
+    <Compile Include="Windows\Markup\Extensions\AncestorBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\BlurEffectExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\CommandExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\ConvBindingExtension.cs" />
+    <Compile Include="Windows\Markup\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\ChainConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\DictionaryConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\EnumContainsConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\EqualsConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\EqualsParamConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\ErrorContentConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\IsNotNullConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\IsNullConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\NotEqualsParamConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\StringFormatConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\ToByteSizeConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\ToImageSourceConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\YieldConverter.cs" />
+    <Compile Include="Windows\Markup\Extensions\DefaultStyleExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\DropShadowEffectExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\EnumValuesExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\IntExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\LinearGradientBrush2Extension.cs" />
+    <Compile Include="Windows\Markup\Extensions\SelfBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\StaticExtension.cs" />
+    <Compile Include="Windows\Markup\Extensions\SystemBrushExtension.g.cs">
+      <DependentUpon>SystemColorsExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Markup\Extensions\SystemColorExtension.g.cs">
+      <DependentUpon>SystemColorsExtensions.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Markup\Extensions\TemplateBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\ValueExtensionBase.cs" />
+    <Compile Include="Windows\Mvvm\Commands\EventCommand.cs" />
+    <Compile Include="Windows\Mvvm\Commands\EventCommandConverter.cs" />
+    <Compile Include="Windows\Mvvm\Commands\EventCommandDisplay.cs" />
+    <Compile Include="Windows\Mvvm\Commands\EventCommandRef.cs" />
+    <Compile Include="Windows\Mvvm\Commands\EventCommands.cs" />
+    <Compile Include="Windows\Mvvm\Commands\WeakEvents.cs" />
+    <Compile Include="Windows\Mvvm\Dialogs\DialogButton.cs" />
+    <Compile Include="Windows\Mvvm\Dialogs\DialogProps.cs" />
+    <Compile Include="Windows\Mvvm\Dialogs\DialogProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Mvvm\Dialogs\DialogResult%28T%29.cs" />
+    <Compile Include="Windows\Mvvm\Dialogs\ValidationProps.cs" />
+    <Compile Include="Windows\Mvvm\Dialogs\ValidationProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Mvvm\Dialogs\WindowButton.cs" />
+    <Compile Include="Windows\Mvvm\Models\IModel.cs" />
+    <Compile Include="Windows\Mvvm\Models\ModelBase.cs" />
+    <Compile Include="Windows\Mvvm\Models\ViewModelBase.cs" />
+    <Compile Include="Windows\Wpf\ColorExts.cs" />
+    <Compile Include="Windows\Wpf\DependencyPropertyExts.cs" />
+    <Compile Include="Windows\Wpf\DispatcherExts.cs" />
+    <Compile Include="Windows\Wpf\HslColor.cs" />
+    <Compile Include="Windows\Wpf\ItemsControlExts.cs" />
+    <Compile Include="Windows\Wpf\RoutedEventArgsExts.cs" />
+    <Compile Include="Windows\Wpf\StoryboardExts.cs" />
+    <Compile Include="Windows\Wpf\VisualExts.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Alba.Framework\Alba.Framework.csproj">
+      <Project>{62730B23-450C-4B93-8D5C-F7037DB6D263}</Project>
+      <Name>Alba.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Windows\Controls\AttachedProps.json">
+      <Generator>AttachT4</Generator>
+      <LastGenOutput>AttachedProps.tt</LastGenOutput>
+    </None>
+    <None Include="Windows\Controls\AttachedProps.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AttachedProps.json</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="Windows\Markup\Extensions\SystemColorsExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Include="Windows\Mvvm\Dialogs\AttachedProps.json">
+      <Generator>AttachT4</Generator>
+      <LastGenOutput>AttachedProps.tt</LastGenOutput>
+    </None>
+    <None Include="Windows\Mvvm\Dialogs\AttachedProps.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AttachedProps.json</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Windows\Controls\ProgressSpinner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Windows\Controls\TooltipPopup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

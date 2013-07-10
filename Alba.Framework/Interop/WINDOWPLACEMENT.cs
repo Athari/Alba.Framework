@@ -13,7 +13,7 @@ namespace Alba.Framework.Interop
 
         /// <summary>The length of the structure, in bytes. Before calling the GetWindowPlacement or SetWindowPlacement functions, set this member to sizeof(WINDOWPLACEMENT). GetWindowPlacement and SetWindowPlacement fail if this member is not set correctly.</summary>
         [NonSerialized]
-        internal int Length;
+        public int Length;
         /// <summary>Specifies flags that control the position of the minimized window and the method by which the window is restored.</summary>
         public WPF Flags;
         /// <summary>The current show state of the window.</summary>

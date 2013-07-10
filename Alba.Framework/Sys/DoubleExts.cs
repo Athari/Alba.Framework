@@ -14,7 +14,7 @@ namespace Alba.Framework.Sys
         {
             if (value1 == value2)
                 return true;
-            double num2 = (Math.Abs(value1) + Math.Abs(value2) + 10.0)*Epsilon;
+            double num2 = (Math.Abs(value1) + Math.Abs(value2) + 10.0) * Epsilon;
             double num = value1 - value2;
             return -num2 < num && num2 > num;
         }

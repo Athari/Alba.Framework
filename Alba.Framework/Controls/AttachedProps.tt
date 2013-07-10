@@ -1,3 +1,0 @@
-<#@ template hostspecific="true" debug="true" #><#@ output extension="/" #>
-<#@ include file="$(SolutionDir)\Alba.Framework\Alba.Framework.CodeGeneration\T4\AttachedProperties.ttinclude" #>
-<# GenerateAttachedProperties(); #>
