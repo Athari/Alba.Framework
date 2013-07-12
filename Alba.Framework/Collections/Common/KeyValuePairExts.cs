@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Alba.Framework.Sys
+namespace Alba.Framework.Collections
 {
     public static class KeyValuePairExts
     {

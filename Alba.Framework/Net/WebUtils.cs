@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace Alba.Framework.Sys
+namespace Alba.Framework.Net
 {
     public static class WebUtils
     {

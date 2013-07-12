@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
 using Alba.Framework.Diagnostics;
-using Alba.Framework.Linq;
+using Alba.Framework.Reflection;
 using Alba.Framework.Sys;
 using Alba.Framework.Text;
 

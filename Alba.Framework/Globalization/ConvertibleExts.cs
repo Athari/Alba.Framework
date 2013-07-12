@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace Alba.Framework.Sys
+namespace Alba.Framework.Globalization
 {
     public static partial class ConvertibleExts
     {

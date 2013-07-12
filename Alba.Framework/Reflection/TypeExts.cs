@@ -6,7 +6,7 @@ using System.Reflection;
 using Alba.Framework.Collections;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Sys
+namespace Alba.Framework.Reflection
 {
     public static class TypeExts
     {

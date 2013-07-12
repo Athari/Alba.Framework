@@ -1,7 +1,7 @@
 ﻿<#@ template hostspecific="true" debug="true" #><#@ output extension="g.cs" #>
 <#@ assembly name="PresentationFramework" #>
 <#@ import namespace="System.Windows" #>
-<#@ include file="$(SolutionDir)\Alba.Framework.CodeGeneration\T4\Common.ttinclude" #>
+<#@ include file="$(SolutionDir)\Alba.Framework\Alba.Framework.CodeGeneration\T4\Common.ttinclude" #>
 using System;
 using System.Globalization;
 

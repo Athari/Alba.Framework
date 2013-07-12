@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Alba.Framework.Linq;
+using Alba.Framework.Reflection;
 using Alba.Framework.Windows.Threading;
 
 namespace Alba.Framework.Windows.Controls

@@ -10,7 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
-using Alba.Framework.Linq;
+using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Windows.Markup

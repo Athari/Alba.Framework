@@ -1,5 +1,5 @@
 ﻿using System;
-using Alba.Framework.Sys;
+using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

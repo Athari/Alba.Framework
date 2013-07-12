@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Common;
-using Alba.Framework.Sys;
+using Alba.Framework.Reflection;
 using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json

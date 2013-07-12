@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using Alba.Framework.Sys;
+using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

@@ -66,19 +66,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\JetBrainsAnnotations.cs" />
-    <Compile Include="Collections\BiDictionary%28TFirst,TSecond%29.cs" />
+    <Compile Include="Collections\Collections\BiDictionary%28TFirst,TSecond%29.cs" />
     <Compile Include="Collections\Debug\CollectionDebugView.cs" />
     <Compile Include="Collections\Debug\DictionaryDebugView%28TKey,TValue%29.cs" />
-    <Compile Include="Collections\EnumerableExts.cs" />
-    <Compile Include="Collections\EnumeratorExts.cs" />
-    <Compile Include="Collections\Map.cs" />
-    <Compile Include="Collections\ObservableQueue%28T%29.cs" />
-    <Compile Include="Collections\QueueExts.cs" />
-    <Compile Include="Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
-    <Compile Include="Collections\INotifyCollectionItemChanged.cs" />
-    <Compile Include="Collections\NotifyingCollection%28T%29.cs" />
-    <Compile Include="Collections\StackExts.cs" />
-    <Compile Include="Collections\TypedCollection%28T%29.cs" />
+    <Compile Include="Collections\Extensions\EnumerableExts.cs" />
+    <Compile Include="Collections\Extensions\EnumeratorExts.cs" />
+    <Compile Include="Collections\Collections\Map%28TKey,TValue%29.cs" />
+    <Compile Include="Collections\Collections\ObservableQueue%28T%29.cs" />
+    <Compile Include="Collections\Extensions\QueueExts.cs" />
+    <Compile Include="Collections\Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
+    <Compile Include="Collections\Common\INotifyCollectionItemChanged.cs" />
+    <Compile Include="Collections\Collections\NotifyingCollection%28T%29.cs" />
+    <Compile Include="Collections\Extensions\StackExts.cs" />
+    <Compile Include="Collections\Collections\TypedCollection%28T%29.cs" />
     <Compile Include="Common\BoolMonitor.cs" />
     <Compile Include="Common\IOwner%28TOwned%29.cs" />
     <Compile Include="Common\IIdentifiable.cs" />
@@ -88,12 +88,12 @@
     <Compile Include="Common\OwnedExts.cs" />
     <Compile Include="Common\OwnerExts.cs" />
     <Compile Include="Common\Undefined.cs" />
-    <Compile Include="Collections\CollectionExts.cs" />
-    <Compile Include="Collections\ConditionalWeakTableExts.cs" />
-    <Compile Include="Collections\DictionaryExts.cs" />
-    <Compile Include="Collections\ListExts.cs" />
-    <Compile Include="Collections\ObservableCollectionEx%28T%29.cs" />
-    <Compile Include="Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
+    <Compile Include="Collections\Extensions\CollectionExts.cs" />
+    <Compile Include="Collections\Extensions\ConditionalWeakTableExts.cs" />
+    <Compile Include="Collections\Extensions\DictionaryExts.cs" />
+    <Compile Include="Collections\Extensions\ListExts.cs" />
+    <Compile Include="Collections\Collections\ObservableCollectionEx%28T%29.cs" />
+    <Compile Include="Collections\Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
     <Compile Include="Sys\EventArgs%28T%29.cs" />
     <Compile Include="Sys\EventHandlerExts.cs" />
@@ -126,7 +126,7 @@
     <Compile Include="Serialization\Json\LinkProviders\PathLinkProvider%28TValue,TRoot%29.cs" />
     <Compile Include="Serialization\Json\LinkProviders\IJsonLinkProvider.cs" />
     <Compile Include="Serialization\Json\Json.cs" />
-    <Compile Include="Linq\Props.cs" />
+    <Compile Include="Reflection\Props.cs" />
     <Compile Include="Diagnostics\ILog.cs" />
     <Compile Include="Diagnostics\Log%28T%29.cs" />
     <Compile Include="Diagnostics\LogEntry.cs" />
@@ -148,30 +148,30 @@
     <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
     <Compile Include="Serialization\Json\QuoteNameHandling.cs" />
     <Compile Include="Serialization\SerializationBinderExts.cs" />
-    <Compile Include="Sys\ConvertibleExts.g.cs">
+    <Compile Include="Globalization\ConvertibleExts.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConvertibleExts.tt</DependentUpon>
     </Compile>
-    <Compile Include="Sys\ConvertibleExts.cs" />
+    <Compile Include="Globalization\ConvertibleExts.cs" />
     <Compile Include="Sys\DelegateExts.cs" />
     <Compile Include="Sys\DoubleExts.cs" />
     <Compile Include="Sys\EnumExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
-    <Compile Include="Sys\KeyValuePairExts.cs" />
+    <Compile Include="Collections\Common\KeyValuePairExts.cs" />
     <Compile Include="Sys\LazyExts.cs" />
-    <Compile Include="Sys\Paths.cs" />
+    <Compile Include="IO\Paths.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
-    <Compile Include="Sys\TypeExts.cs" />
+    <Compile Include="Reflection\TypeExts.cs" />
     <Compile Include="Sys\ValueExts.cs" />
-    <Compile Include="Sys\WebUtils.cs" />
+    <Compile Include="Net\WebUtils.cs" />
     <Compile Include="Text\MatchCollectionExts.cs" />
     <Compile Include="Text\Encodings.cs" />
     <Compile Include="Text\MatchExts.cs" />
     <Compile Include="Text\StringExts.cs" />
     <Compile Include="Sys\ObjectExts.cs" />
-    <Compile Include="Sys\WellKnownSidTypeExts.cs" />
+    <Compile Include="Security\WellKnownSidTypeExts.cs" />
     <Compile Include="Text\Wildcards\WildcardOptions.cs" />
     <Compile Include="Text\Wildcards\WildcardPattern.cs" />
     <Compile Include="Text\Wildcards\WildcardPatternException.cs" />
@@ -186,7 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Sys\ConvertibleExts.tt">
+    <None Include="Globalization\ConvertibleExts.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConvertibleExts.g.cs</LastGenOutput>
     </None>
