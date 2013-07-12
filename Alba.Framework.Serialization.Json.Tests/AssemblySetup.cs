@@ -3,7 +3,7 @@ using Alba.Framework.Diagnostics;
 using Alba.Framework.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Alba.Framework.UnitTests
+namespace Alba.Framework.Serialization.Json.Tests
 {
     [TestClass]
     public class AssemblySetup

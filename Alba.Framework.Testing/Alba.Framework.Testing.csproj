@@ -51,7 +51,7 @@
       <Name>Alba.Framework</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Build\CommonUnitTests.targets" Condition="Exists('$(SolutionDir)\Build\CommonUnitTests.targets')" />
+  <Import Project="$(SolutionDir)\Build\CommonTests.targets" Condition="Exists('$(SolutionDir)\Build\CommonTests.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

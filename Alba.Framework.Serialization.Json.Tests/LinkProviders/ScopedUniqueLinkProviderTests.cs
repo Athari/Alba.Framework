@@ -3,12 +3,11 @@ using System.Linq;
 using Alba.Framework.Attributes;
 using Alba.Framework.Common;
 using Alba.Framework.Globalization;
-using Alba.Framework.Serialization.Json;
 using Alba.Framework.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
+namespace Alba.Framework.Serialization.Json.Tests
 {
     [TestClass]
     public class ScopedUniqueLinkProviderTests

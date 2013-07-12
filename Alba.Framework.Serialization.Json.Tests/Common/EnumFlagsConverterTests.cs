@@ -1,9 +1,8 @@
 ﻿using System;
-using Alba.Framework.Serialization.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace Alba.Framework.UnitTests.Serialization.Json
+namespace Alba.Framework.Serialization.Json.Tests
 {
     [TestClass]
     public class EnumFlagsConverterTests

@@ -4,15 +4,14 @@ using System.Linq;
 using Alba.Framework.Attributes;
 using Alba.Framework.Common;
 using Alba.Framework.Globalization;
-using Alba.Framework.Serialization.Json;
 using Alba.Framework.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
+namespace Alba.Framework.Serialization.Json.Tests
 {
     [TestClass]
-    public class RelativePathLinkProviderTests
+    public class PathLinkProviderTests
     {
         public TestContext TestContext { get; set; }
 
@@ -130,17 +129,35 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
                         Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
                     },
                     new Wall {
-                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                        Bricks = new List<Brick> { new Brick { Id = 11 }, new Brick { Id = 12 } }
                     }
                 }
             };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1},{Id:2}]},{Bricks:[{Id:1},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1},{Id:2}]},{Bricks:[{Id:11},{Id:12}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreEqual(1, copy[0][0].Id);
             Assert.AreEqual(2, copy[0][1].Id);
-            Assert.AreEqual(1, copy[1][0].Id);
-            Assert.AreEqual(2, copy[1][1].Id);
+            Assert.AreEqual(11, copy[1][0].Id);
+            Assert.AreEqual(12, copy[1][1].Id);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(JsonLinkProviderException))]
+        public void Serialize_Simple_MultiRoot_Duplicate ()
+        {
+            var ser = new Serializer();
+            var value = new Owner {
+                Walls = new List<Wall> {
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    },
+                    new Wall {
+                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
+                    }
+                }
+            };
+            ser.SerializeToString(value);
         }
 
         [TestMethod]
@@ -273,7 +290,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             };
             value[0][0][0].Touches = new List<Brick> { value[0][0][1] };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""2""]},{Id:2}]},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""1/2""]},{Id:2}]},{Id:2}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0][1], copy[0][0][0].Touches[0]);
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);
@@ -297,10 +314,10 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
                     new Wall {
                         Bricks = new List<Brick> {
                             new Brick {
-                                Id = 1,
+                                Id = 11,
                                 Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
                             },
-                            new Brick { Id = 2 }
+                            new Brick { Id = 12 }
                         }
                     }
                 }
@@ -309,8 +326,8 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             value[1][0][0].Touches = new List<Brick> { value[1][0][1] };
             string str = ser.SerializeToString(value);
             Assert.AreEqual(@"{Walls:[" +
-                @"{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""2""]},{Id:2}]},{Id:2}]}," +
-                @"{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""2""]},{Id:2}]},{Id:2}]}]}", str);
+                @"{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""1/2""]},{Id:2}]},{Id:2}]}," +
+                @"{Bricks:[{Id:11,Bricks:[{Id:1,Touches:[""11/2""]},{Id:2}]},{Id:12}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0][1], copy[0][0][0].Touches[0]);
             Assert.AreSame(copy[1][0][1], copy[1][0][0].Touches[0]);
@@ -362,40 +379,9 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             };
             value[0][0][0].Touches = new List<Brick> { value[0][1] };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""/2""]},{Id:2}]},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""2""]},{Id:2}]},{Id:2}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][1], copy[0][0][0].Touches[0]);
-            Assert.AreNotSame(copy[0][0][1], copy[0][1]);
-        }
-
-        [TestMethod]
-        public void SerializeDeserialize_LinkBeforeOrigin_Deep_LinkDeeperYet ()
-        {
-            var ser = new Serializer();
-            var value = new Owner {
-                Walls = new List<Wall> {
-                    new Wall {
-                        Bricks = new List<Brick> {
-                            new Brick {
-                                Id = 1,
-                                Bricks = new List<Brick> {
-                                    new Brick {
-                                        Id = 1,
-                                        Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
-                                    },
-                                    new Brick { Id = 2 }
-                                }
-                            },
-                            new Brick { Id = 2 },
-                        }
-                    },
-                }
-            };
-            value[0][0][0][0].Touches = new List<Brick> { value[0][1] };
-            string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1,Bricks:[{Id:1,Touches:[""//2""]},{Id:2}]},{Id:2}]},{Id:2}]}]}", str);
-            var copy = ser.DeserializeFromString(str);
-            Assert.AreSame(copy[0][1], copy[0][0][0][0].Touches[0]);
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);
         }
 
@@ -436,7 +422,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             };
             value[0][0][1].Touches = new List<Brick> { value[0][0][0] };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1""]}]},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1/1""]}]},{Id:2}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0][0], copy[0][0][1].Touches[0]);
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);
@@ -460,10 +446,10 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
                     new Wall {
                         Bricks = new List<Brick> {
                             new Brick {
-                                Id = 1,
+                                Id = 11,
                                 Bricks = new List<Brick> { new Brick { Id = 1 }, new Brick { Id = 2 } }
                             },
-                            new Brick { Id = 2 }
+                            new Brick { Id = 12 }
                         }
                     }
                 }
@@ -472,8 +458,8 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             value[1][0][1].Touches = new List<Brick> { value[1][0][0] };
             string str = ser.SerializeToString(value);
             Assert.AreEqual(@"{Walls:[" +
-                @"{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1""]}]},{Id:2}]}," +
-                @"{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1""]}]},{Id:2}]}]}", str);
+                @"{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1/1""]}]},{Id:2}]}," +
+                @"{Bricks:[{Id:11,Bricks:[{Id:1},{Id:2,Touches:[""11/1""]}]},{Id:12}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0][0], copy[0][0][1].Touches[0]);
             Assert.AreSame(copy[1][0][0], copy[1][0][1].Touches[0]);
@@ -500,7 +486,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
             };
             value[0][0][1].Touches = new List<Brick> { value[0][0] };
             string str = ser.SerializeToString(value);
-            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""""]}]},{Id:2}]}]}", str);
+            Assert.AreEqual(@"{Walls:[{Bricks:[{Id:1,Bricks:[{Id:1},{Id:2,Touches:[""1""]}]},{Id:2}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][0], copy[0][0][1].Touches[0]);
             Assert.AreNotSame(copy[0][0][1], copy[0][1]);
@@ -564,7 +550,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
                 @"{Id:1,Touches:[""2/1/1"",""2/1/2""],Bricks:[{Id:1},{Id:2}]}," +
                 @"{Id:2,Touches:[""2/1/1"",""1/1""]," +
                 @"Bricks:[{Id:1,Bricks:[" +
-                @"{Id:1,Touches:[""//1"",""//1/2"",""2""]},{Id:2}]}]}]}]}", str);
+                @"{Id:1,Touches:[""1"",""1/2"",""2/1/2""]},{Id:2}]}]}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][1][0][0], copy[0][0].Touches[0]);
             Assert.AreSame(copy[0][1][0][1], copy[0][0].Touches[1]);
@@ -607,7 +593,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
                 @"{Id:1,Touches:[""2/1"",""2/2""],Bricks:[{Id:1},{Id:2}]}," +
                 @"{Id:2,Touches:[""2/1"",""1/1""]," +
                 @"Bricks:[{Bricks:[" +
-                @"{Id:1,Touches:[""/1"",""/1/2"",""2""]},{Id:2}]}]}]}]}", str);
+                @"{Id:1,Touches:[""1"",""1/2"",""2/2""]},{Id:2}]}]}]}]}", str);
             var copy = ser.DeserializeFromString(str);
             Assert.AreSame(copy[0][1][0][0], copy[0][0].Touches[0]);
             Assert.AreSame(copy[0][1][0][1], copy[0][0].Touches[1]);
@@ -627,7 +613,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
 
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new RelativePathLinkProvider<Brick, Wall>("Id");
+                yield return new PathLinkProvider<Brick, Wall>("Id");
             }
         }
 
@@ -635,7 +621,7 @@ namespace Alba.Framework.UnitTests.Serialization.Json.LinkProviders
         {
             protected override IEnumerable<IJsonLinkProvider> GetLinkProviders ()
             {
-                yield return new RelativePathLinkProvider<Brick, Serializer>("Id");
+                yield return new PathLinkProvider<Brick, Serializer>("Id");
             }
         }
 
