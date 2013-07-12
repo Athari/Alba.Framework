@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Media;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class LinearGradientBrush2Extension : MarkupExtension
     {

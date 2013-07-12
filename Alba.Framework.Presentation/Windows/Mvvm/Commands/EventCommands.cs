@@ -4,13 +4,11 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using Alba.Framework.Collections;
-using Alba.Framework.Events;
 using Alba.Framework.Linq;
 using Alba.Framework.Sys;
 using Alba.Framework.Text;
-using Alba.Framework.Windows.Mvvm.Models;
 
-namespace Alba.Framework.Windows.Mvvm.Commands
+namespace Alba.Framework.Windows.Mvvm
 {
     public static class EventCommands
     {

@@ -1,0 +1,20 @@
+﻿_={
+    using: [
+        "System.Collections",
+        "System.Windows",
+        "System.Windows.Controls",
+        "System.Windows.Controls.Primitives",
+        "System.Windows.Media",
+        "System.Windows.Media.Animation",
+        "Alba.Framework.Windows.Controls"
+    ],
+    classes: {
+        AnimProps: {
+            attached: {
+                "string Target": { for: "Timeline", changed: 1 },
+                "bool Animate": { for: "FrameworkElement", changed: 1 },
+                "AnimationCollection Animations": { for: "FrameworkElement" },
+            }
+        },
+    }
+}

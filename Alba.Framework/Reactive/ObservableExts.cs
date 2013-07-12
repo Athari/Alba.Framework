@@ -3,7 +3,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
-using Alba.Framework.Events;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Reactive
 {

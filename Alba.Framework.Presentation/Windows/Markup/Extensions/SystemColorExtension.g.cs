@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class SystemColorExtension : DynamicResourceExtension
     {

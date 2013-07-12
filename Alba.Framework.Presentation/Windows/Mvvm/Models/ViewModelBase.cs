@@ -1,7 +1,6 @@
 using System;
-using Alba.Framework.Windows.Mvvm.Commands;
 
-namespace Alba.Framework.Windows.Mvvm.Models
+namespace Alba.Framework.Windows.Mvvm
 {
     public abstract class ViewModelBase<TSelf> : ModelBase<TSelf>
         where TSelf : ViewModelBase<TSelf>

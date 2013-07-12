@@ -1,6 +1,6 @@
 ﻿using System.Windows.Data;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class SelfBinding : Binding
     {

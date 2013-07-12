@@ -1,0 +1,31 @@
+_={
+    namespace: "Alba.Framework.Windows.Controls",
+    using: [
+        "System.Collections.ObjectModel",
+        "System.Windows",
+        "System.Windows.Controls.Primitives",
+        "System.Windows.Media",
+        "Alba.Framework.Windows.Controls"
+    ],
+    classes: {
+        DialogProps: {
+            attached: {
+                "WindowButton WindowButtons": { for: "Window", default: "WindowButton.Default", changed: 1 },
+                "DialogButton DialogButtons": { for: "Window", changed: 1 },
+                "DialogButton DialogResult": { for: "Window", default: "DialogButton.Cancel" },
+                "bool OkButtonEnabled": { for: "Window", default: "true" },
+                "ObservableCollection<Visual> LeftDialogButtons": { for: "Window" },
+                "DialogButton ButtonResult": { for: "ButtonBase", changed: 1 },
+            }
+        },
+        ValidationProps: {
+            attached: {
+                "FrameworkElement ValidationIcon": { for: "FrameworkElement", default: "null", changed: 1 },
+                "FrameworkElement ValidatesControl": { for: "FrameworkElement", default: "null" },
+                "object Message": { for: "FrameworkElement", default: "null" },
+                "TooltipPopup TooltipPopup": { for: "Window", default: "null", vis: "private" },
+                "FrameworkElement CurrentValidatedControl": { for: "Window", default: "null", vis: "private" },
+            }
+        }
+    }
+}

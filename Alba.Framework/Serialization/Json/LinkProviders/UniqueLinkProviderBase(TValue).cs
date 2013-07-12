@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Alba.Framework.Common;
-using Alba.Framework.Logs;
+using Alba.Framework.Diagnostics;
 using Alba.Framework.Text;
 
 // ReSharper disable StaticFieldInGenericType

@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Data;
-using Alba.Framework.Windows.Mvvm.Commands;
+using Alba.Framework.Windows.Mvvm;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class CommandExtension : Binding
     {

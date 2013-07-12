@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ValueConversion (typeof(int), typeof(string))]
     [ValueConversion (typeof(long), typeof(string))]

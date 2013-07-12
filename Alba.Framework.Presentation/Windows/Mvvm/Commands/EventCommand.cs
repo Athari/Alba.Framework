@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Alba.Framework.Events;
 using Alba.Framework.Sys;
-using Alba.Framework.Windows.Mvvm.Models;
+using Alba.Framework.Windows.Threading;
 
-namespace Alba.Framework.Windows.Mvvm.Commands
+namespace Alba.Framework.Windows.Mvvm
 {
     public class EventCommand
     {

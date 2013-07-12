@@ -52,12 +52,19 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\DpChangedEventArgs%28T%29.cs" />
+    <Compile Include="Windows\Common\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Windows\Controls\AnimProps.cs" />
-    <Compile Include="Windows\Controls\AnimProps.g.cs">
-      <DependentUpon>AttachedProps.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Windows\Interop\GWL.cs" />
+    <Compile Include="Windows\Interop\HWND.cs" />
+    <Compile Include="Windows\Interop\ICON.cs" />
+    <Compile Include="Windows\Interop\SW.cs" />
+    <Compile Include="Windows\Interop\SWP.cs" />
+    <Compile Include="Windows\Interop\WINDOWPLACEMENT.cs" />
+    <Compile Include="Windows\Interop\WM.cs" />
+    <Compile Include="Windows\Interop\WPF.cs" />
+    <Compile Include="Windows\Interop\WS.cs" />
+    <Compile Include="Windows\Interop\WS_EX.cs" />
+    <Compile Include="Windows\Media\Animation\AnimProps.cs" />
     <Compile Include="Windows\Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
@@ -122,34 +129,37 @@
     </Compile>
     <Compile Include="Windows\Markup\Extensions\TemplateBinding.cs" />
     <Compile Include="Windows\Markup\Extensions\ValueExtensionBase.cs" />
+    <Compile Include="Windows\Media\Animation\AnimProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Mvvm\Commands\EventCommand.cs" />
     <Compile Include="Windows\Mvvm\Commands\EventCommandConverter.cs" />
     <Compile Include="Windows\Mvvm\Commands\EventCommandDisplay.cs" />
     <Compile Include="Windows\Mvvm\Commands\EventCommandRef.cs" />
     <Compile Include="Windows\Mvvm\Commands\EventCommands.cs" />
     <Compile Include="Windows\Mvvm\Commands\WeakEvents.cs" />
-    <Compile Include="Windows\Mvvm\Dialogs\DialogButton.cs" />
-    <Compile Include="Windows\Mvvm\Dialogs\DialogProps.cs" />
-    <Compile Include="Windows\Mvvm\Dialogs\DialogProps.g.cs">
+    <Compile Include="Windows\Controls\Dialogs\DialogButton.cs" />
+    <Compile Include="Windows\Controls\Dialogs\DialogProps.cs" />
+    <Compile Include="Windows\Controls\Dialogs\DialogProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Mvvm\Dialogs\DialogResult%28T%29.cs" />
-    <Compile Include="Windows\Mvvm\Dialogs\ValidationProps.cs" />
-    <Compile Include="Windows\Mvvm\Dialogs\ValidationProps.g.cs">
+    <Compile Include="Windows\Controls\Dialogs\DialogResult%28T%29.cs" />
+    <Compile Include="Windows\Controls\Dialogs\ValidationProps.cs" />
+    <Compile Include="Windows\Controls\Dialogs\ValidationProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
-    <Compile Include="Windows\Mvvm\Dialogs\WindowButton.cs" />
+    <Compile Include="Windows\Controls\Dialogs\WindowButton.cs" />
     <Compile Include="Windows\Mvvm\Models\IModel.cs" />
     <Compile Include="Windows\Mvvm\Models\ModelBase.cs" />
     <Compile Include="Windows\Mvvm\Models\ViewModelBase.cs" />
-    <Compile Include="Windows\Wpf\ColorExts.cs" />
-    <Compile Include="Windows\Wpf\DependencyPropertyExts.cs" />
-    <Compile Include="Windows\Wpf\DispatcherExts.cs" />
-    <Compile Include="Windows\Wpf\HslColor.cs" />
-    <Compile Include="Windows\Wpf\ItemsControlExts.cs" />
-    <Compile Include="Windows\Wpf\RoutedEventArgsExts.cs" />
-    <Compile Include="Windows\Wpf\StoryboardExts.cs" />
-    <Compile Include="Windows\Wpf\VisualExts.cs" />
+    <Compile Include="Windows\Media\ColorExts.cs" />
+    <Compile Include="Windows\Common\DependencyPropertyExts.cs" />
+    <Compile Include="Windows\Threading\DispatcherExts.cs" />
+    <Compile Include="Windows\Media\HslColor.cs" />
+    <Compile Include="Windows\Controls\ItemsControlExts.cs" />
+    <Compile Include="Windows\Common\RoutedEventArgsExts.cs" />
+    <Compile Include="Windows\Media\Animation\StoryboardExts.cs" />
+    <Compile Include="Windows\Media\VisualExts.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Alba.Framework\Alba.Framework.csproj">
@@ -172,11 +182,21 @@
     <None Include="Windows\Markup\Extensions\SystemColorsExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
     </None>
-    <None Include="Windows\Mvvm\Dialogs\AttachedProps.json">
+    <None Include="Windows\Controls\Dialogs\AttachedProps.json">
       <Generator>AttachT4</Generator>
       <LastGenOutput>AttachedProps.tt</LastGenOutput>
     </None>
-    <None Include="Windows\Mvvm\Dialogs\AttachedProps.tt">
+    <None Include="Windows\Controls\Dialogs\AttachedProps.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AttachedProps.json</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="Windows\Media\Animation\AttachedProps.json">
+      <Generator>AttachT4</Generator>
+      <LastGenOutput>AttachedProps.tt</LastGenOutput>
+    </None>
+    <None Include="Windows\Media\Animation\AttachedProps.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>AttachedProps.json</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using Alba.Framework.Collections;
-using Alba.Framework.Events;
 using Alba.Framework.Sys;
 using Alba.Framework.Text;
 

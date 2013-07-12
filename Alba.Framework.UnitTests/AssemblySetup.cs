@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Alba.Framework.Logs;
+using Alba.Framework.Diagnostics;
 using Alba.Framework.Testing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

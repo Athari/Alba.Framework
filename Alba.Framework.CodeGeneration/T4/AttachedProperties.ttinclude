@@ -24,7 +24,7 @@ using <#=use#>;
 using FPM = System.Windows.FrameworkPropertyMetadata;
 using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
 
-namespace <#=Namespace#>
+namespace <#=cls["namespace"] ?? data["namespace"] ?? Namespace#>
 {
     public static partial class <#=clsName#>
     {

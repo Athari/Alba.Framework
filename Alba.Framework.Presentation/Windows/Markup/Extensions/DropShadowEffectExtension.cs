@@ -3,7 +3,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Effects;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class DropShadowEffectExtension : MarkupExtension
     {

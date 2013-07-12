@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ValueConversion (typeof(ReadOnlyObservableCollection<ValidationError>), typeof(object))]
     public class ErrorContentConverter : IValueConverter

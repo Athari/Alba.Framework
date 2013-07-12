@@ -13,7 +13,7 @@ using Alba.Framework.Common;
 using Alba.Framework.Linq;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ContentProperty ("Pairs")]
     public class DictionaryConverter : IValueConverter

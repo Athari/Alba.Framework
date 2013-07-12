@@ -1,6 +1,6 @@
 using System.Windows.Threading;
 
-namespace Alba.Framework.Windows.Mvvm.Models
+namespace Alba.Framework.Windows.Mvvm
 {
     public interface IModel
     {

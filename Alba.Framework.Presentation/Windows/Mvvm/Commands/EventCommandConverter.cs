@@ -2,9 +2,8 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Alba.Framework.Windows.Mvvm.Models;
 
-namespace Alba.Framework.Windows.Mvvm.Commands
+namespace Alba.Framework.Windows.Mvvm
 {
     internal class EventCommandConverter : IValueConverter
     {

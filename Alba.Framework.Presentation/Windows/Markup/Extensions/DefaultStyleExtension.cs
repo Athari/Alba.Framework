@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class DefaultStyleExtension : StaticResourceExtension
     {

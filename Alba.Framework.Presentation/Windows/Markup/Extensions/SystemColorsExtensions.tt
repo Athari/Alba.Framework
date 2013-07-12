@@ -22,7 +22,7 @@ using System;
 using System.Windows;
 using Alba.Framework.Text;
 
-namespace <#=Namespace#>
+namespace Alba.Framework.Windows.Markup
 {
     public class System<#=kind#>Extension : DynamicResourceExtension
     {

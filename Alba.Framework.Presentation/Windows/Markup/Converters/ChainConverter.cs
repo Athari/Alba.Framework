@@ -7,7 +7,7 @@ using System.Windows.Markup;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ContentProperty ("Converters")]
     public class ChainConverter : IValueConverter

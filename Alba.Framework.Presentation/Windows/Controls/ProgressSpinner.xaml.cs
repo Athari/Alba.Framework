@@ -2,7 +2,7 @@
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using Alba.Framework.Linq;
-using Alba.Framework.Sys;
+using Alba.Framework.Windows.Threading;
 
 namespace Alba.Framework.Windows.Controls
 {

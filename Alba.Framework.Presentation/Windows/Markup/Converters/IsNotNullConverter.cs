@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ValueConversion (typeof(object), typeof(bool))]
     public class IsNotNullConverter : IValueConverter

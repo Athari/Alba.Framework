@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ValueConversion (typeof(object), typeof(bool))]
     public class EnumContainsConverter : MarkupExtension, IValueConverter

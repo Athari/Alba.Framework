@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using Alba.Framework.Interop;
+using Alba.Framework.Windows.Interop;
 using FPM = System.Windows.FrameworkPropertyMetadata;
 using FPMO = System.Windows.FrameworkPropertyMetadataOptions;
 

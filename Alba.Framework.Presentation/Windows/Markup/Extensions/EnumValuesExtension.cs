@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Windows.Markup;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     [MarkupExtensionReturnType (typeof(ICollection))]
     public class EnumValuesExtension : MarkupExtension

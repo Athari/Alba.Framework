@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Markup.Extensions
+namespace Alba.Framework.Windows.Markup
 {
     public class StaticExtension : System.Windows.Markup.StaticExtension
     {

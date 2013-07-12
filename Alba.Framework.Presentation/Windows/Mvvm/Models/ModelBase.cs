@@ -9,12 +9,12 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
-using Alba.Framework.Events;
+using Alba.Framework.Diagnostics;
 using Alba.Framework.Linq;
-using Alba.Framework.Logs;
+using Alba.Framework.Sys;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Mvvm.Models
+namespace Alba.Framework.Windows.Mvvm
 {
     public abstract class ModelBase<TSelf> : IModel, INotifyPropertyChanging, INotifyPropertyChanged, IDataErrorInfo
         where TSelf : ModelBase<TSelf>

@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls.Primitives;
-using Alba.Framework.Events;
 
 namespace Alba.Framework.Windows.Controls
 {

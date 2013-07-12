@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Alba.Framework.Attributes;
 
-namespace Alba.Framework.Windows.Mvvm.Commands
+namespace Alba.Framework.Windows.Mvvm
 {
     internal static class WeakEvents
     {

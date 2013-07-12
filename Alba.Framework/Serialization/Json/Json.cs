@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Alba.Framework.Logs;
+using Alba.Framework.Diagnostics;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

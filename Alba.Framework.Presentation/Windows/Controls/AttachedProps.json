@@ -7,16 +7,6 @@
         "System.Windows.Media"
     ],
     classes: {
-        AnimProps: {
-            using: [
-                "System.Windows.Media.Animation"
-            ],
-            attached: {
-                "string Target": { for: "Timeline", changed: 1 },
-                "bool Animate": { for: "FrameworkElement", changed: 1 },
-                "AnimationCollection Animations": { for: "FrameworkElement" },
-            }
-        },
         ButtonProps: {
             attached: {
                 "ImageSource Icon": { for: "Button" },
@@ -48,7 +38,7 @@
         },
         WindowProps: {
             using: [
-                "Alba.Framework.Interop"
+                "Alba.Framework.Windows.Interop"
             ],
             attached: {
                 "WINDOWPLACEMENT Placement": { for: "Window", default: "WINDOWPLACEMENT.Invalid", changed: 1, flags: "BindsTwoWayByDefault" },

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     public class EqualsConverter : IMultiValueConverter
     {

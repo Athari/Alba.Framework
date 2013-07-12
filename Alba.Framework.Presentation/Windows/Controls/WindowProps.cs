@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows;
 using Alba.Framework.Common;
-using Alba.Framework.Events;
-using Alba.Framework.Interop;
 using Alba.Framework.Sys;
 using Alba.Framework.Windows.Interop;
 

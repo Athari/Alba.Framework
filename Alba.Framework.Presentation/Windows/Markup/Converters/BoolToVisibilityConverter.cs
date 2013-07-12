@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     [ValueConversion (typeof(bool), typeof(Visibility), ParameterType = typeof(BoolToVisibilityMode))]
     public class BoolToVisibilityConverter : IValueConverter

@@ -4,7 +4,7 @@ using System.Windows.Data;
 using System.Windows.Media.Imaging;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Windows.Markup.Converters
+namespace Alba.Framework.Windows.Markup
 {
     public class ToImageSourceConverter : IValueConverter
     {
