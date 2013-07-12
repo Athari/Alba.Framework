@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using Alba.Framework.Text;
 
-namespace Alba.Framework.Serialization
+namespace Alba.Framework.Serialization.Json
 {
     public static class SerializationBinderExts
     {

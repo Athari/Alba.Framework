@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using Alba.Framework.Collections;
 using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 
 // ReSharper disable LoopCanBeConvertedToQuery
-namespace Alba.Framework.Serialization
+namespace Alba.Framework.Serialization.Json
 {
-    public class DictionarySerializationBinder : DefaultSerializationBinder
+    public class DictionarySerializationBinder : SerializationBinder
     {
         private readonly Dictionary<Type, BiDictionary<Type, string>> _baseTypeToTypeToName = new Dictionary<Type, BiDictionary<Type, string>>();
 

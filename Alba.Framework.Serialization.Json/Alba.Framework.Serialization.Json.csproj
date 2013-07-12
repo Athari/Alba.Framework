@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2782782A-8D6F-4CE6-9F9A-5C3767326C63}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Alba.Framework.Serialization.Json</RootNamespace>
+    <AssemblyName>Alba.Framework.Serialization.Json</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Interactive, Version=1.1.10823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Packages\Ix_Experimental-Main.1.1.10823\lib\Net4\System.Interactive.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\CustomJsonSerializer%28T%29.cs" />
+    <Compile Include="Common\DictionarySerializationBinder.cs" />
+    <Compile Include="Common\ICustomJsonSerializer%28T%29.cs" />
+    <Compile Include="Common\Json.cs" />
+    <Compile Include="Common\JsonLinkedContext.cs" />
+    <Compile Include="Common\JsonLinkedContractResolver.cs" />
+    <Compile Include="Common\JsonLinkedOptions.cs" />
+    <Compile Include="Common\JsonResolveLinkContext.cs" />
+    <Compile Include="Common\JsonSerializerExts.cs" />
+    <Compile Include="Common\JsonTextWriterEx.cs" />
+    <Compile Include="Common\QuoteNameHandling.cs" />
+    <Compile Include="Common\SerializationBinderExts.cs" />
+    <Compile Include="Converters\ConcreteTypeConverter%28T%29.cs" />
+    <Compile Include="Converters\EnumFlagsConverter.cs" />
+    <Compile Include="Converters\JsonLinkConverter.cs" />
+    <Compile Include="Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />
+    <Compile Include="Converters\JsonOriginConverter.cs" />
+    <Compile Include="Converters\JsonTypedObjectConverter.cs" />
+    <Compile Include="LinkProviders\IJsonLinkProvider.cs" />
+    <Compile Include="LinkProviders\JsonLinkProvider%28TValue%29.cs" />
+    <Compile Include="LinkProviders\JsonLinkProviderException.cs" />
+    <Compile Include="LinkProviders\PathLinkProvider%28TValue,TRoot%29.cs" />
+    <Compile Include="LinkProviders\PathLinkProviderBase%28TValue,TRoot%29.cs" />
+    <Compile Include="LinkProviders\RelativePathLinkProvider%28TValue,TRoot%29.cs" />
+    <Compile Include="LinkProviders\ScopedPathLinkProvider%28TValue,TRoot%29.cs" />
+    <Compile Include="LinkProviders\ScopedUniqueLinkProvider%28TValue,TRoot%29.cs" />
+    <Compile Include="LinkProviders\UniqueLinkProvider%28TValue%29.cs" />
+    <Compile Include="LinkProviders\UniqueLinkProviderBase%28TValue%29.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Alba.Framework\Alba.Framework.csproj">
+      <Project>{62730B23-450C-4B93-8D5C-F7037DB6D263}</Project>
+      <Name>Alba.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

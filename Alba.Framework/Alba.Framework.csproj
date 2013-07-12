@@ -32,9 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\packages\Newtonsoft.Json.5.0.5\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Interactive">
@@ -107,20 +104,6 @@
     <Compile Include="Diagnostics\AlbaFrameworkTraceSources.cs" />
     <Compile Include="Diagnostics\CallbackTraceFilter.cs" />
     <Compile Include="Reactive\NotifyPropertyChangeExts.cs" />
-    <Compile Include="Serialization\DictionarySerializationBinder.cs" />
-    <Compile Include="Serialization\Json\Converters\ConcreteTypeConverter%28T%29.cs" />
-    <Compile Include="Serialization\Json\Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />
-    <Compile Include="Serialization\Json\Converters\JsonTypedObjectConverter.cs" />
-    <Compile Include="Serialization\Json\Converters\EnumFlagsConverter.cs" />
-    <Compile Include="Serialization\Json\CustomJsonSerializer%28T%29.cs" />
-    <Compile Include="Serialization\Json\ICustomJsonSerializer%28T%29.cs" />
-    <Compile Include="Serialization\Json\JsonTextWriterEx.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\ScopedUniqueLinkProvider%28TValue,TRoot%29.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\UniqueLinkProvider%28TValue%29.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\RelativePathLinkProvider%28TValue,TRoot%29.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\PathLinkProvider%28TValue,TRoot%29.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\IJsonLinkProvider.cs" />
-    <Compile Include="Serialization\Json\Json.cs" />
     <Compile Include="Reflection\Props.cs" />
     <Compile Include="Diagnostics\ILog.cs" />
     <Compile Include="Diagnostics\Log%28T%29.cs" />
@@ -129,20 +112,6 @@
     <Compile Include="Diagnostics\TraceSourceExts.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reactive\ObservableExts.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\UniqueLinkProviderBase%28TValue%29.cs" />
-    <Compile Include="Serialization\Json\Converters\JsonLinkConverter.cs" />
-    <Compile Include="Serialization\Json\JsonLinkedContext.cs" />
-    <Compile Include="Serialization\Json\JsonLinkedContractResolver.cs" />
-    <Compile Include="Serialization\Json\JsonLinkedOptions.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonLinkProvider%28TValue%29.cs" />
-    <Compile Include="Serialization\Json\Converters\JsonOriginConverter.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\JsonLinkProviderException.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\PathLinkProviderBase%28TValue,TRoot%29.cs" />
-    <Compile Include="Serialization\Json\LinkProviders\ScopedPathLinkProvider%28TValue,TRoot%29.cs" />
-    <Compile Include="Serialization\Json\JsonResolveLinkContext.cs" />
-    <Compile Include="Serialization\Json\JsonSerializerExts.cs" />
-    <Compile Include="Serialization\Json\QuoteNameHandling.cs" />
-    <Compile Include="Serialization\SerializationBinderExts.cs" />
     <Compile Include="Globalization\ConvertibleExts.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
