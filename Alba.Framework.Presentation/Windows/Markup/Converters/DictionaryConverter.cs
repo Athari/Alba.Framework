@@ -23,7 +23,7 @@ namespace Alba.Framework.Windows.Markup
         private static readonly string FromPropName = Props.GetName((IFromTo o) => o.From);
         private static readonly string ToPropName = Props.GetName((IFromTo o) => o.To);
 
-        public ICollection<IFromTo> Pairs { get; private set; }
+        public ObservableCollectionEx<IFromTo> Pairs { get; private set; }
 
         public DictionaryConverter ()
         {
