@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Windows.Markup;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
@@ -34,7 +35,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-//[assembly: XmlnsPrefix("urn:alba-framework", "a")]
-//[assembly: XmlnsDefinition("urn:alba-framework", "Alba.Framework.Windows.Controls")]
-//[assembly: XmlnsDefinition("urn:alba-framework", "Alba.Framework.Windows.Markup.Converters")]
-//[assembly: XmlnsDefinition("urn:alba-framework", "Alba.Framework.Windows.Markup.Extensions")]
+[assembly: XmlnsPrefix("urn:alba:framework", "a")]
+[assembly: XmlnsDefinition("urn:alba:framework", "Alba.Framework.Windows.Controls")]
+[assembly: XmlnsDefinition("urn:alba:framework", "Alba.Framework.Windows.Markup")]
+[assembly: XmlnsDefinition("urn:alba:framework", "Alba.Framework.Windows.Media")]
+[assembly: XmlnsDefinition("urn:alba:framework", "Alba.Framework.Windows.Media.Animation")]
+[assembly: XmlnsDefinition("urn:alba:framework", "Alba.Framework.Windows.Mvvm")]
