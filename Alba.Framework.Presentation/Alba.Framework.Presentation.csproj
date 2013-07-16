@@ -60,6 +60,7 @@
     <Compile Include="Windows\Interop\WPF.cs" />
     <Compile Include="Windows\Interop\WS.cs" />
     <Compile Include="Windows\Interop\WS_EX.cs" />
+    <Compile Include="Windows\Markup\Converters\NotConverter.cs" />
     <Compile Include="Windows\Media\Animation\AnimProps.cs" />
     <Compile Include="Windows\Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
