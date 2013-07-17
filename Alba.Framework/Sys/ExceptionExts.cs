@@ -23,13 +23,13 @@ namespace Alba.Framework.Sys
 
         public static Exception Create (Type exceptionType, string message)
         {
-            Contract.Requires<ArgumentException>(exceptionType.Is<Exception>(), "exceptionType must be derived from System.Exception.");
+            Contract.Requires<ArgumentException>(exceptionType.Is<Exception>(), "exceptionType");
             return CreateFromStrSite.Value.Target(CreateFromStrSite.Value, exceptionType, message);
         }
 
         public static Exception Create (Type exceptionType, string message, Exception innerException)
         {
-            Contract.Requires<ArgumentException>(exceptionType.Is<Exception>(), "exceptionType must be derived from System.Exception.");
+            Contract.Requires<ArgumentException>(exceptionType.Is<Exception>(), "exceptionType");
             return CreateFromStrAndInnerExcSite.Value.Target(CreateFromStrAndInnerExcSite.Value, exceptionType, message, innerException);
         }
 

@@ -54,11 +54,13 @@ namespace Alba.Framework.Collections
             return @this.Values.SelectMany(i => i.Values);
         }
 
-        public static int IndexOf<T> (this IEnumerable<T> @this, T value)
+        public static int IndexOf<T> (this IEnumerable<T> @this, T value, IEqualityComparer<T> comparer)
         {
+            if (comparer == null)
+                comparer = EqualityComparer<T>.Default;
             int i = 0;
             foreach (T item in @this) {
-                if (Equals(item, value))
+                if (comparer.Equals(item, value))
                     return i;
                 i++;
             }
@@ -76,11 +78,13 @@ namespace Alba.Framework.Collections
             return -1;
         }
 
-        public static int LastIndexOf<T> (this IEnumerable<T> @this, T value)
+        public static int LastIndexOf<T> (this IEnumerable<T> @this, T value, IEqualityComparer<T> comparer)
         {
+            if (comparer == null)
+                comparer = EqualityComparer<T>.Default;
             int i = 0, index = -1;
             foreach (T item in @this) {
-                if (Equals(item, value))
+                if (comparer.Equals(item, value))
                     index = i;
                 i++;
             }
@@ -100,9 +104,9 @@ namespace Alba.Framework.Collections
 
         public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Type exceptionType = null)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentNullException>(predicate != null);
-            Contract.Requires<ArgumentException>(exceptionType == null || exceptionType.Is<Exception>());
+            Contract.Requires<ArgumentNullException>(@this != null, "this");
+            Contract.Requires<ArgumentNullException>(predicate != null, "predicate");
+            Contract.Requires<ArgumentException>(exceptionType == null || exceptionType.Is<Exception>(), "exceptionType");
             foreach (T item in @this)
                 if (predicate(item))
                     return item;
@@ -112,9 +116,9 @@ namespace Alba.Framework.Collections
 
         public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Func<Exception> createException)
         {
-            Contract.Requires<ArgumentNullException>(@this != null);
-            Contract.Requires<ArgumentNullException>(predicate != null);
-            Contract.Requires<ArgumentNullException>(createException != null);
+            Contract.Requires<ArgumentNullException>(@this != null, "this");
+            Contract.Requires<ArgumentNullException>(predicate != null, "predicate");
+            Contract.Requires<ArgumentNullException>(createException != null, "createException");
             foreach (T item in @this)
                 if (predicate(item))
                     return item;
