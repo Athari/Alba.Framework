@@ -1,6 +1,9 @@
 ﻿<Window x:Class="Alba.Framework.Windows.Controls.TooltipPopup"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:ctl="clr-namespace:Alba.Framework.Windows.Controls"
+        xmlns:mvvm="clr-namespace:Alba.Framework.Windows.Mvvm"
         WindowStyle="None" Topmost="True" ShowActivated="False" ShowInTaskbar="False"
         WindowStartupLocation="Manual" SizeToContent="WidthAndHeight"
         AllowsTransparency="True" Background="Transparent"
@@ -11,9 +14,24 @@
         FontStyle="{DynamicResource {x:Static SystemFonts.StatusFontStyleKey}}"
         FontWeight="{DynamicResource {x:Static SystemFonts.StatusFontWeightKey}}">
     <Control.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="TextWrapping" Value="Wrap"/>
-        </Style>
+
+        <ctl:TooltipPopupErrorContentTemplateSelector x:Key="tpsErrorContent"/>
+
+        <!-- ReSharper disable Xaml.RedundantResource -->
+        <DataTemplate x:Key="tplMessages">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplateSelector="{StaticResource tpsErrorContent}"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type ValidationError}" x:Key="tplError">
+            <ContentPresenter Content="{Binding ErrorContent}" ContentTemplateSelector="{StaticResource tpsErrorContent}"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type mvvm:ValidationMessage}" x:Key="tplMessage">
+            <TextBlock Text="{Binding Message}" TextWrapping="Wrap"/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sys:String}" x:Key="tplString">
+            <TextBlock Text="{Binding}" TextWrapping="Wrap"/>
+        </DataTemplate>
+        <!-- ReSharper restore Xaml.RedundantResource -->
+
     </Control.Resources>
     <Control.Template>
         <ControlTemplate TargetType="Window">
@@ -24,7 +42,7 @@
                 <Border.Effect>
                     <DropShadowEffect BlurRadius="4" ShadowDepth="4" Opacity=".3"/>
                 </Border.Effect>
-                <TextBlock Text="{TemplateBinding Content}" TextWrapping="Wrap"/>
+                <ContentPresenter ContentTemplateSelector="{StaticResource tpsErrorContent}"/>
             </Border>
         </ControlTemplate>
     </Control.Template>
