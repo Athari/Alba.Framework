@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reactive.Disposables;
@@ -9,25 +9,23 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Windows.Threading;
 using Alba.Framework.Attributes;
-using Alba.Framework.Diagnostics;
+using Alba.Framework.Collections;
 using Alba.Framework.Reflection;
 using Alba.Framework.Sys;
-using Alba.Framework.Text;
 
+// ReSharper disable ExplicitCallerInfoArgument
+// ReSharper disable ReturnTypeCanBeEnumerable.Local
 namespace Alba.Framework.Windows.Mvvm
 {
-    public abstract class ModelBase<TSelf> : IModel, INotifyPropertyChanging, INotifyPropertyChanged, IDataErrorInfo
-        where TSelf : ModelBase<TSelf>
+    public abstract class ModelBase : IModel, INotifyPropertyChanging, INotifyPropertyChanged, INotifyDataErrorInfo
     {
-        // ReSharper disable StaticFieldInGenericType
-        private static readonly string IsLoading_PropName = GetName(o => o.IsLoading);
-        // ReSharper restore StaticFieldInGenericType
+        private static readonly string HasErrors_PropName = GetName((ModelBase o) => o.HasErrors);
+
+        private IDictionary<string, List<ValidationMessage>> _validationMessages;
 
         public event PropertyChangingEventHandler PropertyChanging;
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler IsLoadingChanged;
-
-        private bool _isLoading;
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
 
         protected ModelBase ()
         {
@@ -38,16 +36,13 @@ namespace Alba.Framework.Windows.Mvvm
         public Dispatcher Dispatcher { get; protected set; }
 
         [IgnoreDataMember]
-        public bool IsValid
+        public bool HasErrors
         {
-            get { return ValidatedProps.All(propName => ValidateProp(propName).IsNullOrEmpty()); }
-        }
-
-        [IgnoreDataMember]
-        public bool IsLoading
-        {
-            get { return Get(ref _isLoading); }
-            set { Set(ref _isLoading, value); }
+            get
+            {
+                VerifyAccess();
+                return _validationMessages != null && _validationMessages.Count > 0;
+            }
         }
 
         [NotifyPropertyChangedInvocator]
@@ -64,41 +59,32 @@ namespace Alba.Framework.Windows.Mvvm
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propName));
-            if (propName == IsLoading_PropName)
-                IsLoadingChanged.NullableInvoke(this);
+        }
+
+        protected void OnErrorsChanged (string propName = null)
+        {
+            var handler = ErrorsChanged;
+            if (handler != null)
+                handler(this, new DataErrorsChangedEventArgs(propName));
         }
 
         [NotifyPropertyChangedInvocator ("propName")]
         protected bool Set<T> (ref T field, T value, [CallerMemberName] string propName = null)
         {
             VerifyAccess();
-            if (EqualityComparer<T>.Default.Equals(field, value))
+            if (field.EqualsValue(value))
                 return false;
             OnPropertyChanging(propName);
             field = value;
             OnPropertyChanged(propName);
             return true;
-        }
-
-        [NotifyPropertyChangedInvocator ("propName")]
-        protected bool SetAndValidate<T> (ref T field, T value, [CallerMemberName] string propName = null)
-        {
-            VerifyAccess();
-            if (EqualityComparer<T>.Default.Equals(field, value))
-                return false;
-            OnPropertyChanging(propName);
-            OnPropertyChanging("IsValid");
-            field = value;
-            OnPropertyChanged(propName);
-            OnPropertyChanged("IsValid");
-            return ValidateProp(propName) == null;
         }
 
         [NotifyPropertyChangedInvocator ("propNames")]
         protected bool Set<T> (ref T field, T value, params string[] propNames)
         {
             VerifyAccess();
-            if (EqualityComparer<T>.Default.Equals(field, value))
+            if (field.EqualsValue(value))
                 return false;
             foreach (string prop in propNames)
                 OnPropertyChanging(prop);
@@ -108,20 +94,13 @@ namespace Alba.Framework.Windows.Mvvm
             return true;
         }
 
-        [NotifyPropertyChangedInvocator ("propNames")]
-        protected bool SetAndValidate<T> (ref T field, T value, params string[] propNames)
+        [NotifyPropertyChangedInvocator ("propName")]
+        protected bool SetAndValidate<T> (ref T field, T value, Action validate, [CallerMemberName] string propName = null)
         {
-            VerifyAccess();
-            if (EqualityComparer<T>.Default.Equals(field, value))
-                return false;
-            foreach (string prop in propNames)
-                OnPropertyChanging(prop);
-            OnPropertyChanging("IsValid");
-            field = value;
-            foreach (string prop in propNames)
-                OnPropertyChanged(prop);
-            OnPropertyChanged("IsValid");
-            return ValidateProp(propNames[0]) == null;
+            bool result = Set(ref field, value, propName);
+            if (result)
+                Validate(validate, propName);
+            return result;
         }
 
         protected T Get<T> (ref T field)
@@ -143,37 +122,73 @@ namespace Alba.Framework.Windows.Mvvm
             return Disposable.Create(() => { Dispatcher = newDispatcher ?? oldDispatcher; });
         }
 
-        protected virtual string[] ValidatedProps
+        private IReadOnlyList<ValidationMessage> GetErrors (string propName)
         {
-            get { return new string[0]; }
+            if (!HasErrors)
+                return ValidationMessage.EmptyCollection;
+            List<ValidationMessage> messages = _validationMessages.GetOrDefault(propName);
+            return messages != null ? messages.AsReadOnly() : ValidationMessage.EmptyCollection;
         }
 
-        protected virtual string ValidateProp (string propName)
+        IEnumerable INotifyDataErrorInfo.GetErrors (string propName)
         {
-            return null;
+            return GetErrors(propName);
         }
 
-        string IDataErrorInfo.this [string propName]
+        private void Validate (Action validate, string propName)
         {
-            get { return ValidateProp(propName); }
+            bool oldHasErrors = HasErrors;
+            IReadOnlyList<ValidationMessage> oldMessages = GetErrors(propName);
+
+            RemoveValidationMessages(propName);
+            validate();
+
+            if (HasErrors != oldHasErrors) {
+                OnPropertyChanging(HasErrors_PropName); // incorrect, because HasErrors value has already changed, but who cares...
+                OnPropertyChanged(HasErrors_PropName);
+            }
+
+            if (!GetErrors(propName).SequenceEqual(oldMessages)) {
+                OnErrorsChanged(propName);
+            }
         }
 
-        string IDataErrorInfo.Error
+        protected void AddValidationMessage (ValidationMessage message, string propName)
         {
-            get { return null; }
+            VerifyAccess();
+            EnsureValidationMessages();
+            List<ValidationMessage> propMessages = _validationMessages.GetOrAdd(propName, () => new List<ValidationMessage>(1));
+            int indexSameCodeMessage = propMessages.IndexOf(m => m.Code == message.Code);
+            if (indexSameCodeMessage == -1)
+                propMessages.Add(message);
+            else
+                propMessages[indexSameCodeMessage] = message;
         }
 
-        protected static ILog GetLog (TraceSource traceSource)
+        protected void AddValidationMessage (string message, int code = 0, [CallerMemberName] string propName = null)
         {
-            return new Log<TSelf>(traceSource);
+            AddValidationMessage(new ValidationMessage { Message = message, Code = code }, propName);
         }
 
-        protected static string GetName<T> (Expression<Func<T>> propExpr)
+        private void RemoveValidationMessages ([CallerMemberName] string propName = null)
+        {
+            if (!HasErrors)
+                return;
+            _validationMessages.Remove(propName);
+        }
+
+        private void EnsureValidationMessages ()
+        {
+            if (_validationMessages == null)
+                _validationMessages = new SortedList<string, List<ValidationMessage>>();
+        }
+
+        protected static string GetName<TObj, T> (Expression<Func<TObj, T>> propExpr)
         {
             return Props.GetName(propExpr);
         }
 
-        protected static string GetName<T> (Expression<Func<TSelf, T>> propExpr)
+        protected static string GetName<T> (Expression<Func<T>> propExpr)
         {
             return Props.GetName(propExpr);
         }

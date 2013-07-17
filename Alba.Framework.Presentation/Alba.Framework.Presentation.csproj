@@ -147,7 +147,9 @@
     </Compile>
     <Compile Include="Windows\Controls\Dialogs\WindowButton.cs" />
     <Compile Include="Windows\Mvvm\Models\IModel.cs" />
+    <Compile Include="Windows\Mvvm\Models\ModelBase%28TSelf%29.cs" />
     <Compile Include="Windows\Mvvm\Models\ModelBase.cs" />
+    <Compile Include="Windows\Mvvm\Models\ValidationMessage.cs" />
     <Compile Include="Windows\Mvvm\Models\ViewModelBase.cs" />
     <Compile Include="Windows\Media\ColorExts.cs" />
     <Compile Include="Windows\Common\DependencyPropertyExts.cs" />
