@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using Alba.Framework.Text;
 using Alba.Framework.Windows.Media;
 
 namespace Alba.Framework.Windows.Controls
@@ -66,7 +69,11 @@ namespace Alba.Framework.Windows.Controls
             var icon = GetValidationIcon(control);
             SetCurrentValidatedControl(window, control);
 
-            if (icon == null || GetMessage(icon) == null || !control.IsKeyboardFocused) {
+            object message = GetMessage(icon);
+            if (icon == null || !control.IsKeyboardFocused
+                || (message == null)
+                || (message is string && ((string)message).IsNullOrEmpty())
+                || (message is IEnumerable<object> && !((IEnumerable<object>)message).Any())) {
                 popup.Hide();
             }
             else {
