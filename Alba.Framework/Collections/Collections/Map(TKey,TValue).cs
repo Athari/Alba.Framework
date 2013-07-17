@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Alba.Framework.Text;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Collections
 {
@@ -84,7 +85,7 @@ namespace Alba.Framework.Collections
         public bool Contains (KeyValuePair<TKey, TValue> item)
         {
             TValue value;
-            return TryGetItemValue(item.Key, out value) && Equals(value, item.Value);
+            return TryGetItemValue(item.Key, out value) && value.EqualsValue(item.Value);
         }
 
         public bool ContainsKey (TKey key)
@@ -108,7 +109,7 @@ namespace Alba.Framework.Collections
             if (IsReadOnly)
                 throw NewNotSupportedReadOnlyException();
             TValue value;
-            if (TryGetItemValue(item.Key, out value) && Equals(value, item.Value))
+            if (TryGetItemValue(item.Key, out value) && value.EqualsValue(item.Value))
                 RemoveItem(item.Key);
             return false;
         }

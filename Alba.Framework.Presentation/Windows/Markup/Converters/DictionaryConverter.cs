@@ -12,6 +12,7 @@ using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Reflection;
 using Alba.Framework.Text;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Windows.Markup
 {
@@ -50,7 +51,7 @@ namespace Alba.Framework.Windows.Markup
                 throw new ArgumentException("Validation of {0} values in DictionaryConverter failed: wrong item number (expected: {1}, actual: {2})."
                     .Fmt(propName, expectedValues.Count, actualPairs.Count));
             foreach (object value in expectedValues)
-                if (!actualPairs.Any(p => Equals(getValue(p), value)))
+                if (!actualPairs.Any(p => getValue(p).EqualsValue(value)))
                     throw new ArgumentException("Validation of {0} values in DictionaryConverter failed: value '{1}' is missing."
                         .Fmt(propName, value));
         }
@@ -61,7 +62,7 @@ namespace Alba.Framework.Windows.Markup
                 return DependencyProperty.UnsetValue;
             object def = null;
             foreach (IFromTo pair in Pairs) {
-                if (Equals(pair.From, value))
+                if (pair.From.EqualsValue(value))
                     return pair.To;
                 if (ReferenceEquals(pair.From, Defaut))
                     def = pair.To;

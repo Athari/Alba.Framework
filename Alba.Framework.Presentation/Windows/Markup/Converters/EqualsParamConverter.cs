@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Windows.Markup
 {
@@ -12,7 +13,7 @@ namespace Alba.Framework.Windows.Markup
         {
             if (ReferenceEquals(value, DependencyProperty.UnsetValue))
                 return DependencyProperty.UnsetValue;
-            return Equals(value, parameter);
+            return value.EqualsValue(parameter);
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)

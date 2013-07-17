@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Alba.Framework.Reflection;
@@ -20,7 +21,13 @@ namespace Alba.Framework.Sys
         [Pure]
         public static bool EqualsAny<T> (this T @this, params T[] values)
         {
-            return values.Any(v => Equals(@this, v));
+            return values.Any(v => @this.EqualsValue(v));
+        }
+
+        [Pure]
+        public static bool EqualsValue<T> (this T @this, T value)
+        {
+            return EqualityComparer<T>.Default.Equals(@this, value);
         }
 
         [Pure]

@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using Alba.Framework.Text;
 using NcChangedAction = System.Collections.Specialized.NotifyCollectionChangedAction;
 using NcChangedEventArgs = System.Collections.Specialized.NotifyCollectionChangedEventArgs;
+using Alba.Framework.Sys;
 
 // TODO Collection view for ObservableQueue is ListCollectionView which uses IList internally. Implement ICollectionViewFactory and custom collection view?
 // ReSharper disable StaticFieldInGenericType
@@ -180,7 +181,7 @@ namespace Alba.Framework.Collections
             int index = 0;
             using (var items = GetEnumerator()) {
                 while (items.MoveNext()) {
-                    if (Equals(items.Current, item))
+                    if (items.Current.EqualsValue(item))
                         return index;
                     index++;
                 }
@@ -219,7 +220,7 @@ namespace Alba.Framework.Collections
 
         public bool Remove (T item)
         {
-            if (Equals(Peek(), item)) {
+            if (Peek().EqualsValue(item)) {
                 Dequeue();
                 return true;
             }

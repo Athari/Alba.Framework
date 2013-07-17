@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using Alba.Framework.Sys;
 
 namespace Alba.Framework.Windows.Markup
 {
@@ -14,7 +15,7 @@ namespace Alba.Framework.Windows.Markup
                 throw new ArgumentException("Two or more values required.", "values");
             if (values.Any(v => ReferenceEquals(v, DependencyProperty.UnsetValue)))
                 return DependencyProperty.UnsetValue;
-            return values.Skip(1).All(v => Equals(v, values[0]));
+            return values.Skip(1).All(v => v.EqualsValue(values[0]));
         }
 
         public object[] ConvertBack (object value, Type[] targetTypes, object parameter, CultureInfo culture)
