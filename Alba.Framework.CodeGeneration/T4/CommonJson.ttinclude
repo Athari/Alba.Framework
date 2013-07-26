@@ -1,0 +1,9 @@
+﻿<#@   assembly name="$(SolutionDir)\bin\Debug\Newtonsoft.Json.dll"
+#><#@ import namespace="Newtonsoft.Json.Linq"
+#><#@ include file="Common.ttinclude"
+#><#+
+    JObject LoadJson (string fileName = null) {
+        string text = LoadText(fileName, "json");
+        return JObject.Parse(text.StartsWith("_=") ? text.Substring(2) : text);
+    }
+#>

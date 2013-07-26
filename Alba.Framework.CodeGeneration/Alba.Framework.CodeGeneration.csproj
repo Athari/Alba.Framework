@@ -64,6 +64,7 @@
     </None>
     <None Include="T4\AttachedProperties.ttinclude" />
     <None Include="T4\Common.ttinclude" />
+    <None Include="T4\CommonJson.ttinclude" />
     <None Include="T4\MultipleOutputHelper.ttinclude" />
   </ItemGroup>
   <ItemGroup>

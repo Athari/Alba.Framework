@@ -1,17 +1,14 @@
-﻿<#@   assembly name="$(SolutionDir)\bin\Debug\Newtonsoft.Json.dll"
-#><#@ import namespace="System.Runtime.Remoting.Messaging"
+﻿<#@   import namespace="System.Runtime.Remoting.Messaging"
 #><#@ import namespace="System.Text.RegularExpressions"
-#><#@ import namespace="Newtonsoft.Json.Linq"
 #><#@ include file="MultipleOutputHelper.ttinclude"
 #><#+
     Manager GetT4() {
         return Manager.Create(Host, GenerationEnvironment);
     }
 
-    JObject LoadJson (string fileName = null) {
-        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, "json"));
-        string text = File.ReadAllText(fileName, Encoding.UTF8);
-        return JObject.Parse(text.StartsWith("_=") ? text.Substring(2) : text);
+    string LoadText (string fileName = null, string ext = null) {
+        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, ext));
+        return File.ReadAllText(fileName, Encoding.UTF8);
     }
 
     string Namespace {
