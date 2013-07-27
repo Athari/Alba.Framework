@@ -11,7 +11,7 @@ namespace Alba.Framework.Text
 {
     public static class StringExts
     {
-        private static readonly Regex ReNewlines = new Regex("@\r?\n", RegexOptions.Compiled);
+        private static readonly Regex ReNewlines = new Regex(@"\r?\n", RegexOptions.Compiled);
 
         [Pure]
         public static string AppendSentence (this string @this, string sentence)
@@ -31,6 +31,14 @@ namespace Alba.Framework.Text
         public static bool IsNullOrWhitespace (this string @this)
         {
             return string.IsNullOrWhiteSpace(@this);
+        }
+
+        [Pure]
+        public static string NormalizeWhitespace (this string @this, string nl = null)
+        {
+            if (nl == null)
+                nl = Environment.NewLine;
+            return ReNewlines.Replace(@this, nl);
         }
 
         [Pure]
