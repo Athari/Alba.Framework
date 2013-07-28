@@ -342,6 +342,12 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static string Indent (this string @this, int indentLength)
+        {
+            return @this.ReReplace("(?m)^(.*)$", new string(' ', indentLength) + "$1");
+        }
+
+        [Pure]
         public static string Indent (this string @this, string indentStr)
         {
             return @this.ReReplace("(?m)^(.*)$", indentStr.ReEscapeReplacement() + "$1");
