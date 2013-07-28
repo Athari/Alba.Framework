@@ -192,6 +192,26 @@ namespace Alba.Framework.Collections
             return @this.ToDictionary(p => (TKey)p.Key, p => (T)p.Value);
         }
 
+        public static HashSet<T> ToSet<T> (this IEnumerable<T> @this)
+        {
+            return new HashSet<T>(@this);
+        }
+
+        public static HashSet<T> ToSet<T> (this IEnumerable<T> @this, IEqualityComparer<T> comparer)
+        {
+            return new HashSet<T>(@this, comparer);
+        }
+
+        public static HashSet<TKey> ToSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector)
+        {
+            return new HashSet<TKey>(@this.Select(keySelector));
+        }
+
+        public static HashSet<TKey> ToSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        {
+            return new HashSet<TKey>(@this.Select(keySelector), comparer);
+        }
+
         public static ReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
             Func<T, TKey> keySelector)
         {
