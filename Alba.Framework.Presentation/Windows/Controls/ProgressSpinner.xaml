@@ -99,7 +99,7 @@
         <Style x:Key="stygrdRoot" TargetType="Grid">
             <Setter Property="Opacity" Value="1"/>
             <Style.Triggers>
-                <DataTrigger Binding="{xx:AncestorBinding IsDisplaying, ctl:ProgressSpinner}" Value="True">
+                <DataTrigger Binding="{xx:AncestorBinding (ctl:ProgressSpinner.IsDisplaying), ctl:ProgressSpinner}" Value="True">
                     <!--<DataTrigger.EnterActions>
                         <BeginStoryboard Storyboard="{StaticResource animShow}"/>
                     </DataTrigger.EnterActions>-->
