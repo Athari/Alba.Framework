@@ -17,14 +17,14 @@ namespace Alba.Framework.Text
             return @this.Groups[groupName].Value;
         }
 
-        public static IEnumerable<Capture> GetAll (this Match @this, int groupNum = 1)
+        public static IEnumerable<string> GetAll (this Match @this, int groupNum = 1)
         {
-            return @this.Groups[groupNum].Captures.Cast<Capture>();
+            return @this.Groups[groupNum].Captures.Cast<Capture>().Select(c => c.Value);
         }
 
-        public static IEnumerable<Capture> GetAll (this Match @this, string groupName)
+        public static IEnumerable<string> GetAll (this Match @this, string groupName)
         {
-            return @this.Groups[groupName].Captures.Cast<Capture>();
+            return @this.Groups[groupName].Captures.Cast<Capture>().Select(c => c.Value);
         }
 
         public static string GetConcat (this Match @this, int groupNum = 1)
@@ -35,6 +35,16 @@ namespace Alba.Framework.Text
         public static string GetConcat (this Match @this, string groupName)
         {
             return @this.GetAll(groupName).ConcatString();
+        }
+
+        public static int Count (this Match @this, int groupNum = 1)
+        {
+            return @this.Groups[groupNum].Captures.Count;
+        }
+
+        public static int Count (this Match @this, string groupName)
+        {
+            return @this.Groups[groupName].Captures.Count;
         }
     }
 }
