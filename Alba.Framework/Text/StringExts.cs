@@ -362,7 +362,7 @@ namespace Alba.Framework.Text
         [Pure]
         public static string Unindent (this string @this, int indentLength)
         {
-            return UnindentInternal(@this, @"\s{0}".FmtInv(indentLength));
+            return UnindentInternal(@this, @"\s{{{0}}}".FmtInv(indentLength));
         }
 
         [Pure]
