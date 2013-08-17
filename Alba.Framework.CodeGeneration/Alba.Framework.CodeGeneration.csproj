@@ -66,6 +66,7 @@
     <None Include="T4\Common.ttinclude" />
     <None Include="T4\CommonJson.ttinclude" />
     <None Include="T4\MultipleOutputHelper.ttinclude" />
+    <None Include="T4\ResX.ttinclude" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

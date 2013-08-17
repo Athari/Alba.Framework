@@ -1,5 +1,7 @@
 ﻿<#@   import namespace="System.Runtime.Remoting.Messaging"
 #><#@ import namespace="System.Text.RegularExpressions"
+#><#@ import namespace="System.Xml.Linq"
+#><#@ import namespace="System.Xml.XPath"
 #><#@ include file="MultipleOutputHelper.ttinclude"
 #><#+
     Manager GetT4() {
@@ -11,8 +13,22 @@
         return File.ReadAllText(fileName, Encoding.UTF8);
     }
 
+    XDocument LoadXml (string fileName = null, string ext = "xml") {
+        fileName = Host.ResolvePath(fileName ?? Path.ChangeExtension(Host.TemplateFile, ext));
+        return XDocument.Load(fileName);
+    }
+
     string Namespace {
         get { return (string)CallContext.LogicalGetData("NamespaceHint"); }
+    }
+
+    string ClassName {
+        get {
+            string name = Host.TemplateFile;
+            while (Path.GetExtension(name) != "")
+                name = Path.GetFileNameWithoutExtension(name);
+            return name;
+        }
     }
 
     static string IfFormat (string format, object value) {

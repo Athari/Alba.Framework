@@ -1,0 +1,94 @@
+﻿<#@ include file="Common.ttinclude" #>
+<#+
+    void GenerateResx (IEnumerable<KeyValuePair<string, string>> lines, string fileName = null)
+    {
+        if (fileName == null)
+            fileName = Path.ChangeExtension(Host.TemplateFile, "g.resx");
+        var T4 = GetT4();
+        T4.GenerateFile(fileName, () => GenerateResxFile(lines));
+        T4.Process();
+    }
+
+    void GenerateResxDesigner (string className = null, bool isPublic = false, bool generateProps = true,
+        string fileName = null)
+    {
+        if (fileName == null)
+            fileName = Path.ChangeExtension(Host.TemplateFile, "g.cs");
+        var lines = LoadXml(ext: "resx").XPathSelectElements("/root/data")
+            .Select(data => new KeyValuePair<string, string>(
+                data.Attribute("name").Value,
+                data.Element("value").Value
+            ));
+        var T4 = GetT4();
+        T4.GenerateFile(fileName, () => GenerateResxDesignerFile(lines, className, isPublic, generateProps));
+        T4.Process();
+    }
+
+    void GenerateResxFile (IEnumerable<KeyValuePair<string, string>> lines)
+    {
+#>
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+<#+ foreach (var kvp in lines) { #>
+  <data name="<#=kvp.Key#>" xml:space="preserve">
+    <value><#=kvp.Value#></value>
+  </data>
+<#+ } #>
+</root>
+<#+
+    } // void GenerateResxFile
+
+    void GenerateResxDesignerFile (IEnumerable<KeyValuePair<string, string>> lines,
+        string className = null, bool isPublic = false, bool generateProps = true)
+    {
+        if (className == null)
+            className = ClassName;
+        string visibility = isPublic ? "public" : "internal";
+#>
+using System.Globalization;
+using System.Resources;
+
+namespace <#=Namespace#>
+{
+    <#=visibility#> static class <#=className#>
+    {
+        private static ResourceManager _manager;
+
+        public static CultureInfo Culture { get; set; }
+
+        public static ResourceManager ResourceManager
+        {
+            get { return _manager ?? (_manager = new ResourceManager("<#=Namespace#>.<#=className#>", typeof(<#=className#>).Assembly)); }
+        }
+
+        public static string GetString (string name)
+        {
+            return ResourceManager.GetString(name, Culture);
+        }
+
+        public static string FormatString (string name, params object[] args)
+        {
+            return string.Format(Culture, GetString(name), args);
+        }
+
+<#+   if (generateProps) foreach (var kvp in lines) { #>
+        /// <#=new XElement("summary", kvp.Value).ToString()#>
+        public static string <#=kvp.Key#>
+        {
+            get { return ResourceManager.GetString("<#=kvp.Key#>", Culture); }
+        }
+
+<#+   } #>
+    }
+}
+<#+
+    } // void GenerateResxDesignerFile
+#>
