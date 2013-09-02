@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using Alba.Framework.Reflection;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Sys
 {
@@ -16,6 +19,21 @@ namespace Alba.Framework.Sys
             if (ReferenceEquals(x, null) || ReferenceEquals(y, null) || x.GetType() != y.GetType())
                 return false;
             return compare();
+        }
+
+        public static T CloneSerializable<T> (this T @this)
+        {
+            if (!typeof(T).IsSerializable)
+                throw new ArgumentException("Type '{0}' is not serializable.".Fmt(typeof(T).GetFullName()), "this");
+            if (ReferenceEquals(@this, null))
+                return default(T);
+
+            var formatter = new BinaryFormatter();
+            using (var stream = new MemoryStream()) {
+                formatter.Serialize(stream, @this);
+                stream.Position = 0;
+                return (T)formatter.Deserialize(stream);
+            }
         }
 
         [Pure]

@@ -1,10 +1,26 @@
-﻿using System.Net;
-using Alba.Framework.Sys;
+﻿using System.Collections.Generic;
+using System.Net;
 
 namespace Alba.Framework.Net
 {
     public static class WebRequestExts
     {
+        private static readonly ISet<string> RestrictedRequestHeaders = new HashSet<string> {
+            "Accept",
+            "Connection",
+            "Content-Type",
+            "Content-Length",
+            "Date",
+            "Expect",
+            "Host",
+            "If-Modified-Since",
+            "Proxy-Connection", // set internally
+            "Range", // not cloned!
+            "Referer",
+            "Transfer-Encoding",
+            "User-Agent",
+        };
+
         public static WebRequest CloneRequest (this WebRequest source)
         {
             if (source == null)
@@ -15,9 +31,9 @@ namespace Alba.Framework.Net
             copy.ConnectionGroupName = source.ConnectionGroupName;
             copy.ContentType = source.ContentType;
             copy.Credentials = source.Credentials;
-            // TODO Copy special headers
-            foreach (string headerName in source.Headers.AllKeys)
-                copy.Headers[headerName] = source.Headers[headerName];
+            foreach (string headerName in source.Headers)
+                if (!RestrictedRequestHeaders.Contains(headerName))
+                    copy.Headers[headerName] = source.Headers[headerName];
             copy.ImpersonationLevel = source.ImpersonationLevel;
             copy.Method = source.Method;
             copy.PreAuthenticate = source.PreAuthenticate;
@@ -39,19 +55,23 @@ namespace Alba.Framework.Net
                 return;
 
             var httpCopy = (HttpWebRequest)copy;
-            httpCopy.Accept = httpSource.Accept;
+            //httpCopy.Accept = httpSource.Accept;
+            //httpCopy.Connection = httpSource.Connection;
+            //httpCopy.ContentLength = httpSource.ContentLength;
+            //httpCopy.Date = httpSource.Date;
+            //httpCopy.Expect = httpSource.Expect;
+            //httpCopy.Host = httpSource.Host;
+            //httpCopy.IfModifiedSince = httpSource.IfModifiedSince;
+            //httpCopy.Referer = httpSource.Referer;
+            //httpCopy.TransferEncoding = httpSource.TransferEncoding;
+            //httpCopy.UserAgent = httpSource.UserAgent;
             httpCopy.AllowAutoRedirect = httpSource.AllowAutoRedirect;
             httpCopy.AllowReadStreamBuffering = httpSource.AllowReadStreamBuffering;
             httpCopy.AllowWriteStreamBuffering = httpSource.AllowWriteStreamBuffering;
             httpCopy.AutomaticDecompression = httpSource.AutomaticDecompression;
             httpCopy.ClientCertificates = httpSource.ClientCertificates;
-            httpCopy.Connection = httpSource.Connection;
             httpCopy.ContinueTimeout = httpSource.ContinueTimeout;
             httpCopy.CookieContainer = httpSource.CookieContainer;
-            httpCopy.Date = httpSource.Date;
-            httpCopy.Expect = httpSource.Expect;
-            httpCopy.Host = httpSource.Host;
-            httpCopy.IfModifiedSince = httpSource.IfModifiedSince;
             httpCopy.KeepAlive = httpSource.KeepAlive;
             httpCopy.MaximumAutomaticRedirections = httpSource.MaximumAutomaticRedirections;
             httpCopy.MaximumResponseHeadersLength = httpSource.MaximumResponseHeadersLength;
@@ -59,12 +79,9 @@ namespace Alba.Framework.Net
             httpCopy.Pipelined = httpSource.Pipelined;
             httpCopy.ProtocolVersion = httpSource.ProtocolVersion;
             httpCopy.ReadWriteTimeout = httpSource.ReadWriteTimeout;
-            httpCopy.Referer = httpSource.Referer;
             httpCopy.SendChunked = httpSource.SendChunked;
             httpCopy.ServerCertificateValidationCallback = httpSource.ServerCertificateValidationCallback;
-            httpCopy.TransferEncoding = httpSource.TransferEncoding;
             httpCopy.UnsafeAuthenticatedConnectionSharing = httpSource.UnsafeAuthenticatedConnectionSharing;
-            httpCopy.UserAgent = httpSource.UserAgent;
         }
 
         private static void CopyFtpRequestProps (WebRequest source, WebRequest copy)
@@ -88,9 +105,8 @@ namespace Alba.Framework.Net
             if (fileSource == null)
                 return;
 
-            // ReSharper disable ReturnValueOfPureMethodIsNotUsed
-            copy.To<FileWebRequest>();
-            // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+            // ReSharper disable once UnusedVariable
+            var fileCopy = (FileWebRequest)copy;
         }
     }
 }
