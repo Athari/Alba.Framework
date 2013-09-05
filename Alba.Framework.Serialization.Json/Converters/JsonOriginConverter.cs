@@ -1,5 +1,6 @@
 ﻿using System;
 using Alba.Framework.Common;
+using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -34,7 +35,7 @@ namespace Alba.Framework.Serialization.Json
 
         public override bool CanConvert (Type type)
         {
-            return type.IsAssignableFrom(typeof(IIdentifiable<string>));
+            return type.Is<IIdentifiable<string>>();
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Serialization.Json
@@ -42,7 +43,7 @@ namespace Alba.Framework.Serialization.Json
 
         public virtual bool CanLink (Type type)
         {
-            return typeof(TValue).IsAssignableFrom(type);
+            return type.Is<TValue>();
         }
 
         string IJsonLinkProvider.GetLink (object value, JsonLinkedContext context)

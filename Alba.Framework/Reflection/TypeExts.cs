@@ -17,9 +17,9 @@ namespace Alba.Framework.Reflection
         {
             if (types == null)
                 types = @this.Assembly.GetTypes();
-            return @this.IsClass
+            return @this.IsClass // else is interface
                 ? types.Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(@this))
-                : types.Where(t => t.IsClass && !t.IsAbstract && @this.IsAssignableFrom(t));
+                : types.Where(t => t.IsClass && !t.IsAbstract && t.IsAssignableTo(@this));
         }
 
         /// <summary>Return name of a type. Unlike <see cref="MemberInfo.Name"/>, includes name of container types, if the type is nested.</summary>

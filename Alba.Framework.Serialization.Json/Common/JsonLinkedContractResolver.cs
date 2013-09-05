@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
+using Alba.Framework.Reflection;
 using Alba.Framework.Sys;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -28,8 +29,7 @@ namespace Alba.Framework.Serialization.Json
         {
             JsonProperty property = base.CreateProperty(member, memberSerialization);
             if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).Has(DefaultValueHandling.Ignore)
-                && !typeof(string).IsAssignableFrom(property.PropertyType)
-                && typeof(IEnumerable).IsAssignableFrom(property.PropertyType)) {
+                && !property.PropertyType.Is<string>() && property.PropertyType.Is<IEnumerable>()) {
                 var memberProp = member as PropertyInfo;
                 var memberField = member as FieldInfo;
                 Predicate<object> shouldSerialize = obj => {
