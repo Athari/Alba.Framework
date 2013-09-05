@@ -88,6 +88,8 @@
     <Compile Include="Collections\Collections\ObservableCollectionEx%28T%29.cs" />
     <Compile Include="Collections\Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
+    <Compile Include="IO\StreamExts.cs" />
+    <Compile Include="IO\UndisposableStream.cs" />
     <Compile Include="Net\WebRequestExts.cs" />
     <Compile Include="Sys\EventArgs%28T%29.cs" />
     <Compile Include="Sys\EventHandlerExts.cs" />
