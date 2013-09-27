@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using Alba.Framework.Sys;
 
 namespace Alba.Framework.Collections
 {
@@ -129,7 +128,7 @@ namespace Alba.Framework.Collections
             ((IDictionary)_secondToFirst).Add(value, key);
         }
 
-        public void Add (KeyValuePair<TFirst, TSecond> item)
+        void ICollection<KeyValuePair<TFirst, TSecond>>.Add (KeyValuePair<TFirst, TSecond> item)
         {
             _firstToSecond.Add(item);
             _secondToFirst.Add(item.Reverse());
@@ -140,7 +139,7 @@ namespace Alba.Framework.Collections
             return _firstToSecond.ContainsKey(key);
         }
 
-        public bool Contains (KeyValuePair<TFirst, TSecond> item)
+        bool ICollection<KeyValuePair<TFirst, TSecond>>.Contains (KeyValuePair<TFirst, TSecond> item)
         {
             return _firstToSecond.Contains(item);
         }
@@ -172,12 +171,12 @@ namespace Alba.Framework.Collections
             ((IDictionary)_secondToFirst).Remove(value);
         }
 
-        public bool Remove (KeyValuePair<TFirst, TSecond> item)
+        bool ICollection<KeyValuePair<TFirst, TSecond>>.Remove (KeyValuePair<TFirst, TSecond> item)
         {
             return _firstToSecond.Remove(item);
         }
 
-        public bool Contains (object key)
+        bool IDictionary.Contains (object key)
         {
             return ((IDictionary)_firstToSecond).Contains(key);
         }
@@ -188,7 +187,7 @@ namespace Alba.Framework.Collections
             _secondToFirst.Clear();
         }
 
-        public void CopyTo (KeyValuePair<TFirst, TSecond>[] array, int arrayIndex)
+        void ICollection<KeyValuePair<TFirst, TSecond>>.CopyTo (KeyValuePair<TFirst, TSecond>[] array, int arrayIndex)
         {
             _firstToSecond.CopyTo(array, arrayIndex);
         }
@@ -317,7 +316,7 @@ namespace Alba.Framework.Collections
                 ((IDictionary)_owner._firstToSecond).Add(value, key);
             }
 
-            public void Add (KeyValuePair<TSecond, TFirst> item)
+            void ICollection<KeyValuePair<TSecond, TFirst>>.Add (KeyValuePair<TSecond, TFirst> item)
             {
                 _owner._secondToFirst.Add(item);
                 _owner._firstToSecond.Add(item.Reverse());
@@ -328,7 +327,7 @@ namespace Alba.Framework.Collections
                 return _owner._secondToFirst.ContainsKey(key);
             }
 
-            public bool Contains (KeyValuePair<TSecond, TFirst> item)
+            bool ICollection<KeyValuePair<TSecond, TFirst>>.Contains (KeyValuePair<TSecond, TFirst> item)
             {
                 return _owner._secondToFirst.Contains(item);
             }
@@ -360,12 +359,12 @@ namespace Alba.Framework.Collections
                 ((IDictionary)_owner._firstToSecond).Remove(value);
             }
 
-            public bool Remove (KeyValuePair<TSecond, TFirst> item)
+            bool ICollection<KeyValuePair<TSecond, TFirst>>.Remove (KeyValuePair<TSecond, TFirst> item)
             {
                 return _owner._secondToFirst.Remove(item);
             }
 
-            public bool Contains (object key)
+            bool IDictionary.Contains (object key)
             {
                 return ((IDictionary)_owner._secondToFirst).Contains(key);
             }
@@ -376,7 +375,7 @@ namespace Alba.Framework.Collections
                 _owner._firstToSecond.Clear();
             }
 
-            public void CopyTo (KeyValuePair<TSecond, TFirst>[] array, int arrayIndex)
+            void ICollection<KeyValuePair<TSecond, TFirst>>.CopyTo (KeyValuePair<TSecond, TFirst>[] array, int arrayIndex)
             {
                 _owner._secondToFirst.CopyTo(array, arrayIndex);
             }
