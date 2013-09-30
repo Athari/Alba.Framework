@@ -155,7 +155,7 @@ namespace Alba.Framework.Collections
         public bool TryGetValue (TKey key, out TValue value)
         {
             int index = KeyToIndex(key);
-            if (HasIndex(index)) {
+            if (HasIndex(index) && !_values[index].EqualsValue(default(TValue))) {
                 value = _values[index];
                 return true;
             }
