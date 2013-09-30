@@ -54,11 +54,25 @@ namespace Alba.Framework.Windows.Mvvm
         }
 
         [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanging (params string[] propNames)
+        {
+            foreach (string prop in propNames)
+                OnPropertyChanging(prop);
+        }
+
+        [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged ([CallerMemberName] string propName = null)
         {
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(propName));
+        }
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged (params string[] propNames)
+        {
+            foreach (string prop in propNames)
+                OnPropertyChanged(prop);
         }
 
         protected void OnErrorsChanged (string propName = null)
@@ -86,11 +100,9 @@ namespace Alba.Framework.Windows.Mvvm
             VerifyAccess();
             if (field.EqualsValue(value))
                 return false;
-            foreach (string prop in propNames)
-                OnPropertyChanging(prop);
+            OnPropertyChanging(propNames);
             field = value;
-            foreach (string prop in propNames)
-                OnPropertyChanged(prop);
+            OnPropertyChanged(propNames);
             return true;
         }
 
