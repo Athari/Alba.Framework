@@ -50,6 +50,10 @@
   <ItemGroup>
     <Compile Include="Windows\Common\DpChangedEventArgs%28T%29.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Windows\Controls\GridProps.cs" />
+    <Compile Include="Windows\Controls\GridProps.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Controls\WrapView.cs" />
     <Compile Include="Windows\Interop\GWL.cs" />
     <Compile Include="Windows\Interop\HWND.cs" />

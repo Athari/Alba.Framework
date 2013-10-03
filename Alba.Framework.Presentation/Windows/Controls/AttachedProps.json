@@ -12,6 +12,15 @@
                 "ImageSource Icon": { for: "Button" },
             }
         },
+        GridProps: {
+            attached: {
+                "bool CalculateCellSizes": { for: "Grid", changed: 1 },
+                "bool ForceCellSizes": { for: "Grid", changed: 1 },
+                "Grid DummyGrid": { for: "Grid", vis: "private" },
+                "double RowActualHeight": { for: "RowDefinition", key: "private" },
+                "double ColumnActualWidth": { for: "ColumnDefinition", key: "private" },
+            }
+        },
         ProgressBarProps: {
             attached: {
                 "Visibility AnimationVisibility": { for: "ProgressBar", changed: 1 },
