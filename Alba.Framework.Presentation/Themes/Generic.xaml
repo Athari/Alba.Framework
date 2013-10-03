@@ -4,6 +4,7 @@
         xmlns:xx="clr-namespace:Alba.Framework.Windows.Markup">
 
     <Style x:Key="{x:Static ctl:WrapView.WrapViewStyleKey}" TargetType="ListView" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ItemContainerStyle" Value="{xx:SelfBinding (ListView.View).ItemContainerStyle}"/>
         <Setter Property="ItemTemplate" Value="{xx:SelfBinding (ListView.View).ItemTemplate}"/>
         <Setter Property="ItemsPanel">
