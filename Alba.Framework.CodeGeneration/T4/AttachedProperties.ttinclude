@@ -1,4 +1,4 @@
-﻿<#@ include file="Common.ttinclude" #>
+﻿<#@ include file="CommonJson.ttinclude" #>
 <#+
     void GenerateAttachedProperties () {
         var T4 = GetT4();
@@ -28,44 +28,60 @@ namespace <#=cls["namespace"] ?? data["namespace"] ?? Namespace#>
 {
     public static partial class <#=clsName#>
     {
-<#+   foreach (JProperty pprop in cls["attached"]) {
-        var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
-            propType = propTypeName[0],
-            propName = propTypeName[1],
-            propDefault = prop["default"] != null ? F("({0}){1}", propType, prop["default"]) : F("default({0})", propType),
-            propFlags = prop["flags"] != null ? F("FPMO.{0}", ((string)prop["flags"]).Replace("|", " | FPMO.")) : null,
-            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
-            propVis = (string)prop["vis"] ?? "public"; #>
+<#+  foreach (JProperty pprop in cls["attached"]) {
+       var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
+           propType = propTypeName[0],
+           propName = propTypeName[1],
+           propDefault = prop["default"] != null ? F("({0}){1}", propType, prop["default"]) : F("default({0})", propType),
+           propFlags = prop["flags"] != null ? F("FPMO.{0}", ((string)prop["flags"]).Replace("|", " | FPMO.")) : null,
+           propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
+           propVisKey = (string)prop["key"],
+           propVis = (string)prop["vis"] ?? "public"; #>
+<#+    if (propVisKey == null) { #>
         <#=propVis#> static readonly DependencyProperty <#=propName#>Property = DependencyProperty.RegisterAttached(
             "<#=propName#>", typeof(<#=propType#>), typeof(<#=clsName#>),
             new FPM(<#=propDefault#><#=IfFormat(", {0}", propFlags)#><#=IfFormat(", {0}", propChanged)#>));
+<#+    } else { #>
+        <#=propVisKey#> static readonly DependencyPropertyKey <#=propName#>PropertyKey = DependencyProperty.RegisterAttachedReadOnly(
+            "<#=propName#>", typeof(<#=propType#>), typeof(<#=clsName#>),
+            new FPM(<#=propDefault#><#=IfFormat(", {0}", propFlags)#><#=IfFormat(", {0}", propChanged)#>));
+        <#=propVis#> static readonly DependencyProperty <#=propName#>Property = <#=propName#>PropertyKey.DependencyProperty;
+<#+    } #>
+ 
+<#+  } #>
 
-<#+   } #>
-
-<#+   foreach (JProperty pprop in cls["attached"]) {
-        var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
-            propType = propTypeName[0],
-            propName = propTypeName[1],
-            propFor = (string)prop["for"] ?? "DependencyObject",
-            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
-            propVis = (string)prop["vis"] ?? "public"; #>
+<#+  foreach (JProperty pprop in cls["attached"]) {
+       var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
+           propType = propTypeName[0],
+           propName = propTypeName[1],
+           propFor = (string)prop["for"] ?? "DependencyObject",
+           propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
+           propVisKey = (string)prop["key"],
+           propVis = (string)prop["vis"] ?? "public"; #>
         <#=propVis#> static <#=propType#> Get<#=propName#> (<#=propFor#> d)
         {
             return (<#=propType#>)d.GetValue(<#=propName#>Property);
         }
-
+ 
+<#+    if (propVisKey == null) { #>
         <#=propVis#> static void Set<#=propName#> (<#=propFor#> d, <#=propType#> value)
         {
             d.SetValue(<#=propName#>Property, value);
         }
-
-<#+     if (propChanged != null) { #>
+<#+    } else { #>
+        <#=propVisKey#> static void Set<#=propName#> (<#=propFor#> d, <#=propType#> value)
+        {
+            d.SetValue(<#=propName#>PropertyKey, value);
+        }
+<#+    } #>
+ 
+<#+    if (propChanged != null) { #>
         private static void <#=propChanged#> (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             <#=propChanged#>((<#=propFor#>)d, new DpChangedEventArgs<<#=propType#>>(args));
         }
 
-<#+     } #>
+<#+    } #>
 <#+   } #>
     }
 }
