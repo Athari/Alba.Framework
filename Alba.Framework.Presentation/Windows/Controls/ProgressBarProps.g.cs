@@ -15,21 +15,21 @@ namespace Alba.Framework.Windows.Controls
         public static readonly DependencyProperty AnimationVisibilityProperty = DependencyProperty.RegisterAttached(
             "AnimationVisibility", typeof(Visibility), typeof(ProgressBarProps),
             new FPM(default(Visibility), AnimationVisibility_Changed));
-
+ 
         public static readonly DependencyProperty IsErrorProperty = DependencyProperty.RegisterAttached(
             "IsError", typeof(bool), typeof(ProgressBarProps),
             new FPM(default(bool)));
-
+ 
         public static Visibility GetAnimationVisibility (ProgressBar d)
         {
             return (Visibility)d.GetValue(AnimationVisibilityProperty);
         }
-
+ 
         public static void SetAnimationVisibility (ProgressBar d, Visibility value)
         {
             d.SetValue(AnimationVisibilityProperty, value);
         }
-
+ 
         private static void AnimationVisibility_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             AnimationVisibility_Changed((ProgressBar)d, new DpChangedEventArgs<Visibility>(args));
@@ -39,11 +39,11 @@ namespace Alba.Framework.Windows.Controls
         {
             return (bool)d.GetValue(IsErrorProperty);
         }
-
+ 
         public static void SetIsError (ProgressBar d, bool value)
         {
             d.SetValue(IsErrorProperty, value);
         }
-
+ 
     }
 }

@@ -15,21 +15,21 @@ namespace Alba.Framework.Windows.Controls
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.RegisterAttached(
             "SelectedItem", typeof(object), typeof(TreeViewProps),
             new FPM(default(object), SelectedItem_Changed));
-
+ 
         public static readonly DependencyProperty SelectedItemSyncProperty = DependencyProperty.RegisterAttached(
             "SelectedItemSync", typeof(bool), typeof(TreeViewProps),
             new FPM(default(bool), SelectedItemSync_Changed));
-
+ 
         public static object GetSelectedItem (TreeView d)
         {
             return (object)d.GetValue(SelectedItemProperty);
         }
-
+ 
         public static void SetSelectedItem (TreeView d, object value)
         {
             d.SetValue(SelectedItemProperty, value);
         }
-
+ 
         private static void SelectedItem_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             SelectedItem_Changed((TreeView)d, new DpChangedEventArgs<object>(args));
@@ -39,12 +39,12 @@ namespace Alba.Framework.Windows.Controls
         {
             return (bool)d.GetValue(SelectedItemSyncProperty);
         }
-
+ 
         public static void SetSelectedItemSync (TreeView d, bool value)
         {
             d.SetValue(SelectedItemSyncProperty, value);
         }
-
+ 
         private static void SelectedItemSync_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             SelectedItemSync_Changed((TreeView)d, new DpChangedEventArgs<bool>(args));

@@ -15,16 +15,16 @@ namespace Alba.Framework.Windows.Controls
         public static readonly DependencyProperty IconProperty = DependencyProperty.RegisterAttached(
             "Icon", typeof(ImageSource), typeof(ButtonProps),
             new FPM(default(ImageSource)));
-
+ 
         public static ImageSource GetIcon (Button d)
         {
             return (ImageSource)d.GetValue(IconProperty);
         }
-
+ 
         public static void SetIcon (Button d, ImageSource value)
         {
             d.SetValue(IconProperty, value);
         }
-
+ 
     }
 }

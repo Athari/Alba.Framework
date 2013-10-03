@@ -15,21 +15,21 @@ namespace Alba.Framework.Windows.Controls
         public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.RegisterAttached(
             "SelectedItems", typeof(IList), typeof(SelectorProps),
             new FPM(default(IList), FPMO.BindsTwoWayByDefault, SelectedItems_Changed));
-
+ 
         private static readonly DependencyProperty SelectedItemsSyncProperty = DependencyProperty.RegisterAttached(
             "SelectedItemsSync", typeof(SelectedItemsSync), typeof(SelectorProps),
             new FPM(default(SelectedItemsSync)));
-
+ 
         public static IList GetSelectedItems (Selector d)
         {
             return (IList)d.GetValue(SelectedItemsProperty);
         }
-
+ 
         public static void SetSelectedItems (Selector d, IList value)
         {
             d.SetValue(SelectedItemsProperty, value);
         }
-
+ 
         private static void SelectedItems_Changed (DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             SelectedItems_Changed((Selector)d, new DpChangedEventArgs<IList>(args));
@@ -39,11 +39,11 @@ namespace Alba.Framework.Windows.Controls
         {
             return (SelectedItemsSync)d.GetValue(SelectedItemsSyncProperty);
         }
-
+ 
         private static void SetSelectedItemsSync (Selector d, SelectedItemsSync value)
         {
             d.SetValue(SelectedItemsSyncProperty, value);
         }
-
+ 
     }
 }
