@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ctl="clr-namespace:Alba.Framework.Windows.Controls"
+        xmlns:xx="clr-namespace:Alba.Framework.Windows.Markup">
+
+    <Style x:Key="{x:Static ctl:WrapView.WrapViewStyleKey}" TargetType="ListView" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="ItemContainerStyle" Value="{xx:SelfBinding (ListView.View).ItemContainerStyle}"/>
+        <Setter Property="ItemTemplate" Value="{xx:SelfBinding (ListView.View).ItemTemplate}"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <WrapPanel Orientation="Horizontal"
+                            Width="{xx:AncestorBinding (FrameworkElement.ActualWidth), ScrollContentPresenter}"
+                            ItemWidth="{xx:AncestorBinding (ListView.View).ItemWidth, ListView}"
+                            ItemHeight="{xx:AncestorBinding (ListView.View).ItemHeight, ListView}"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
