@@ -52,6 +52,13 @@ namespace Alba.Framework.Reflection
 
         /// <summary>Equivalent to "is" keyword.</summary>
         [Pure]
+        public static bool Is (this Type @this, Type type)
+        {
+            return @this.IsAssignableTo(type);
+        }
+
+        /// <summary>Equivalent to "is" keyword.</summary>
+        [Pure]
         public static bool Is<T> (this Type @this)
         {
             return @this.IsAssignableTo(typeof(T));
