@@ -8,18 +8,20 @@ using Newtonsoft.Json;
 namespace Alba.Framework.Serialization.Json
 {
     /// <summary>
-    /// JSON text writer with proper support for unquoted properties (they can be quoted only if necessary).
+    /// JSON text writer with proper support for unquoted properties (they can be quoted only if necessary) and unescaped whitespace in string values.
     /// </summary>
     public class JsonTextWriterEx : JsonTextWriter
     {
         private readonly TextWriter _writer;
 
         public QuoteNameHandling QuoteNameHandling { get; set; }
+        public bool EscapeWhitespace { get; set; }
 
         public JsonTextWriterEx (TextWriter textWriter) : base(textWriter)
         {
             _writer = textWriter;
             QuoteNameHandling = QuoteNameHandling.Quoted;
+            EscapeWhitespace = true;
         }
 
         private bool[] CharEscapeFlags
@@ -28,10 +30,20 @@ namespace Alba.Framework.Serialization.Json
             {
                 if (StringEscapeHandling == StringEscapeHandling.EscapeHtml)
                     return JavaScriptUtils.HtmlCharEscapeFlags;
-                else if (QuoteChar == '"')
-                    return JavaScriptUtils.DoubleQuoteCharEscapeFlags;
+                else if (EscapeWhitespace)
+                    return QuoteChar == '"' ? JavaScriptUtils.DoubleQuoteCharEscapeFlags : JavaScriptUtils.SingleQuoteCharEscapeFlags;
                 else
-                    return JavaScriptUtils.SingleQuoteCharEscapeFlags;
+                    return QuoteChar == '"' ? JavaScriptUtils.DoubleQuoteNoWhitespaceCharEscapeFlags : JavaScriptUtils.SingleQuoteNoWhitespaceCharEscapeFlags;
+            }
+        }
+
+        public override void WriteValue (string value)
+        {
+            if (value == null || EscapeWhitespace)
+                base.WriteValue(value);
+            else {
+                SetWriteState(JsonToken.String, value);
+                JavaScriptUtils.WriteEscapedJavaScriptString(_writer, value, QuoteChar, QuoteNameHandling.Quoted, CharEscapeFlags, StringEscapeHandling);
             }
         }
 
@@ -64,19 +76,24 @@ namespace Alba.Framework.Serialization.Json
 
             public static readonly bool[] SingleQuoteCharEscapeFlags = new bool[128];
             public static readonly bool[] DoubleQuoteCharEscapeFlags = new bool[128];
+            public static readonly bool[] SingleQuoteNoWhitespaceCharEscapeFlags = new bool[128];
+            public static readonly bool[] DoubleQuoteNoWhitespaceCharEscapeFlags = new bool[128];
             public static readonly bool[] HtmlCharEscapeFlags = new bool[128];
 
             static JavaScriptUtils ()
             {
                 var escapeChars = new List<char> { '\n', '\r', '\t', '\\', '\f', '\b' };
+                var whitespaceChars = new List<char> { '\n', '\r', '\t' };
                 for (int i = 0; i < ' '; i++)
                     escapeChars.Add((char)i);
-                foreach (var escapeChar in escapeChars.Concat('\''))
-                    SingleQuoteCharEscapeFlags[escapeChar] = true;
-                foreach (var escapeChar in escapeChars.Concat('"'))
-                    DoubleQuoteCharEscapeFlags[escapeChar] = true;
-                foreach (var escapeChar in escapeChars.Concat('"', '\'', '<', '>', '&'))
-                    HtmlCharEscapeFlags[escapeChar] = true;
+                foreach (char c in escapeChars.Concat('\''))
+                    SingleQuoteCharEscapeFlags[c] = SingleQuoteNoWhitespaceCharEscapeFlags[c] = true;
+                foreach (char c in escapeChars.Concat('"'))
+                    DoubleQuoteCharEscapeFlags[c] = DoubleQuoteNoWhitespaceCharEscapeFlags[c] = true;
+                foreach (char c in escapeChars.Concat('"', '\'', '<', '>', '&'))
+                    HtmlCharEscapeFlags[c] = true;
+                foreach (char c in whitespaceChars)
+                    DoubleQuoteNoWhitespaceCharEscapeFlags[c] = SingleQuoteNoWhitespaceCharEscapeFlags[c] = false;
             }
 
             public static void WriteEscapedJavaScriptString (TextWriter writer, string s, char delimiter, QuoteNameHandling appendDelimitersHandling, bool[] charEscapeFlags, StringEscapeHandling stringEscapeHandling)
