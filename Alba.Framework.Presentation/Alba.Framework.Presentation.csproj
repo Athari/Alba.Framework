@@ -66,6 +66,7 @@
     <Compile Include="Windows\Interop\WS.cs" />
     <Compile Include="Windows\Interop\WS_EX.cs" />
     <Compile Include="Windows\Markup\Converters\NotConverter.cs" />
+    <Compile Include="Windows\Markup\Selectors\DictionaryStyleSelector.cs" />
     <Compile Include="Windows\Media\Animation\AnimProps.cs" />
     <Compile Include="Windows\Controls\ButtonProps.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>
@@ -152,6 +153,7 @@
     </Compile>
     <Compile Include="Windows\Controls\Dialogs\WindowButton.cs" />
     <Compile Include="Windows\Mvvm\Models\IModel.cs" />
+    <Compile Include="Windows\Mvvm\Models\LazyExpand%28T%29.cs" />
     <Compile Include="Windows\Mvvm\Models\ModelBase%28TSelf%29.cs" />
     <Compile Include="Windows\Mvvm\Models\ModelBase.cs" />
     <Compile Include="Windows\Mvvm\Models\ValidationMessage.cs" />
