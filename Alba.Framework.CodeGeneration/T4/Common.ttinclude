@@ -38,4 +38,10 @@
     static string F (string format, params object[] args) {
         return string.Format(format, args);
     }
+
+    static string LowerFirst (string str) {
+        if (string.IsNullOrEmpty(str))
+            return "";
+        return char.ToLowerInvariant(str[0]) + str.Substring(1);
+    }
 #>
