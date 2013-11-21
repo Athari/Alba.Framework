@@ -1,58 +1,53 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
-using System.Windows.Media;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
-using Alba.Framework.Reflection;
-using Alba.Framework.Text;
 using Alba.Framework.Sys;
+using Alba.Framework.Text;
 
 namespace Alba.Framework.Windows.Markup
 {
-    [ContentProperty ("Pairs")]
-    public class DictionaryConverter : IValueConverter
+    public class DictionaryConverter : Map<object, object>, IValueConverter
     {
         public static readonly object Defaut = new NamedObject("DictionaryConverter.Default");
+        internal static readonly object Validator = new NamedObject("DictionaryConverter.Validator");
 
-        private static readonly string FromPropName = Props.GetName((IFromTo o) => o.From);
-        private static readonly string ToPropName = Props.GetName((IFromTo o) => o.To);
+        private object _defaultValue;
 
-        public ObservableCollectionEx<IFromTo> Pairs { get; private set; }
-
-        public DictionaryConverter ()
+        protected override void AddItem (object key, object value)
         {
-            var pairs = new ObservableCollectionEx<IFromTo>();
-            pairs.CollectionChanged += Pairs_OnCollectionChanged;
-            Pairs = pairs;
-        }
-
-        private void Pairs_OnCollectionChanged (object sender, NotifyCollectionChangedEventArgs e)
-        {
-            if (e.Action == NotifyCollectionChangedAction.Add) {
-                List<IFromTo> actualPairs = Pairs.Where(p => !(p is ValidateFromToBase)).ToList();
-                foreach (var validateFrom in e.NewItems.OfType<ValidateFromValues>())
-                    ValidatePairs(validateFrom.From, actualPairs, ft => ft.From, FromPropName);
-                foreach (var validateTo in e.NewItems.OfType<ValidateToValues>())
-                    ValidatePairs(validateTo.To, actualPairs, ft => ft.To, ToPropName);
-                Pairs.RemoveRange(Pairs.OfType<ValidateFromToBase>().ToList());
+            if (key == Defaut) {
+                _defaultValue = value;
+                return;
             }
+            if (key == Validator) {
+                Validate((DictionaryConverterValidator)value);
+                return;
+            }
+            base.AddItem(key, value);
         }
 
-        private void ValidatePairs (ICollection expectedValues, ICollection<IFromTo> actualPairs, Func<IFromTo, object> getValue, string propName)
+        private void Validate (DictionaryConverterValidator value)
         {
-            if (expectedValues.Count != actualPairs.Count)
-                throw new ArgumentException("Validation of {0} values in DictionaryConverter failed: wrong item number (expected: {1}, actual: {2})."
-                    .Fmt(propName, expectedValues.Count, actualPairs.Count));
-            foreach (object value in expectedValues)
-                if (!actualPairs.Any(p => getValue(p).EqualsValue(value)))
-                    throw new ArgumentException("Validation of {0} values in DictionaryConverter failed: value '{1}' is missing."
+            if (value.Keys != null)
+                ValidateItems(value.Keys, (ICollection)Keys, "key");
+            if (value.Values != null)
+                ValidateItems(value.Values, (ICollection)Values, "value");
+        }
+
+        private void ValidateItems (ICollection expected, ICollection actual, string propName)
+        {
+            if (expected.Count != actual.Count)
+                throw new ArgumentException("Validation of {0}s in DictionaryConverter failed: wrong item number (expected: {1}, actual: {2})."
+                    .Fmt(propName, expected.Count, actual.Count));
+            foreach (object value in expected)
+                if (!actual.OfType<object>().Any(a => a.EqualsValue(value)))
+                    throw new ArgumentException("Validation of {0}s in DictionaryConverter failed: {0} '{1}' is missing."
                         .Fmt(propName, value));
         }
 
@@ -60,14 +55,7 @@ namespace Alba.Framework.Windows.Markup
         {
             if (ReferenceEquals(value, DependencyProperty.UnsetValue))
                 return DependencyProperty.UnsetValue;
-            object def = null;
-            foreach (IFromTo pair in Pairs) {
-                if (pair.From.EqualsValue(value))
-                    return pair.To;
-                if (ReferenceEquals(pair.From, Defaut))
-                    def = pair.To;
-            }
-            return def;
+            return this.GetOrDefault(value, _defaultValue);
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
@@ -76,54 +64,17 @@ namespace Alba.Framework.Windows.Markup
         }
     }
 
-    public interface IFromTo
+    [DictionaryKeyProperty ("_")]
+    public class DictionaryConverterValidator
     {
-        object From { get; }
-        object To { get; }
-    }
+        private readonly object __ = DictionaryConverter.Validator;
 
-    public abstract class FromToBase<TFrom, TTo> : IFromTo
-    {
-        public TFrom From { get; set; }
-        public TTo To { get; set; }
-
-        object IFromTo.From
+        public object _
         {
-            get { return From; }
+            get { return __; }
         }
 
-        object IFromTo.To
-        {
-            get { return To; }
-        }
-    }
-
-    public class FromTo : FromToBase<object, object>
-    {}
-
-    public class FromToImage : FromToBase<object, ImageSource>
-    {}
-
-    public abstract class ValidateFromToBase : IFromTo
-    {
-        object IFromTo.From
-        {
-            get { throw new NotSupportedException(); }
-        }
-
-        object IFromTo.To
-        {
-            get { throw new NotSupportedException(); }
-        }
-    }
-
-    public class ValidateFromValues : ValidateFromToBase
-    {
-        public ICollection From { get; set; }
-    }
-
-    public class ValidateToValues : ValidateFromToBase
-    {
-        public ICollection To { get; set; }
+        public ICollection Keys { get; set; }
+        public ICollection Values { get; set; }
     }
 }
