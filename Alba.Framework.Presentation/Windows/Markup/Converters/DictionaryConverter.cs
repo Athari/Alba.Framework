@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Markup;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Sys;
@@ -12,12 +12,14 @@ using Alba.Framework.Text;
 
 namespace Alba.Framework.Windows.Markup
 {
-    public class DictionaryConverter : Map<object, object>, IValueConverter
+    public class DictionaryConverter : Map<object, object>, IValueConverter, ISupportInitialize
     {
         public static readonly object Defaut = new NamedObject("DictionaryConverter.Default");
-        internal static readonly object Validator = new NamedObject("DictionaryConverter.Validator");
 
         private object _defaultValue;
+
+        public ICollection ValidateKeys { get; set; }
+        public ICollection ValidateValues { get; set; }
 
         protected override void AddItem (object key, object value)
         {
@@ -25,19 +27,18 @@ namespace Alba.Framework.Windows.Markup
                 _defaultValue = value;
                 return;
             }
-            if (key == Validator) {
-                Validate((DictionaryConverterValidator)value);
-                return;
-            }
             base.AddItem(key, value);
         }
 
-        private void Validate (DictionaryConverterValidator value)
+        void ISupportInitialize.BeginInit ()
+        {}
+
+        void ISupportInitialize.EndInit ()
         {
-            if (value.Keys != null)
-                ValidateItems(value.Keys, (ICollection)Keys, "key");
-            if (value.Values != null)
-                ValidateItems(value.Values, (ICollection)Values, "value");
+            if (ValidateKeys != null)
+                ValidateItems(ValidateKeys, (ICollection)Keys, "key");
+            if (ValidateValues != null)
+                ValidateItems(ValidateValues, (ICollection)Values, "value");
         }
 
         private void ValidateItems (ICollection expected, ICollection actual, string propName)
@@ -62,19 +63,5 @@ namespace Alba.Framework.Windows.Markup
         {
             throw new NotSupportedException();
         }
-    }
-
-    [DictionaryKeyProperty ("_")]
-    public class DictionaryConverterValidator
-    {
-        private readonly object __ = DictionaryConverter.Validator;
-
-        public object _
-        {
-            get { return __; }
-        }
-
-        public ICollection Keys { get; set; }
-        public ICollection Values { get; set; }
     }
 }
