@@ -5,15 +5,12 @@ using System.Linq;
 using System.Windows.Data;
 using System.Windows.Markup;
 using Alba.Framework.Collections;
-using Alba.Framework.Common;
 
 namespace Alba.Framework.Windows.Markup
 {
     [ContentProperty ("Converters")]
     public class ChainConverter : IValueConverter
     {
-        public static readonly object PassParameter = new NamedObject("ChainConverter.PassParameter");
-
         public List<ValueConverterRef> Converters { get; private set; }
 
         public ChainConverter ()
@@ -35,7 +32,7 @@ namespace Alba.Framework.Windows.Markup
 
         private object GetParam (ValueConverterRef conv, object chainParameter)
         {
-            return ReferenceEquals(conv.Parameter, PassParameter) ? chainParameter : conv.Parameter;
+            return conv.PassParameter ? chainParameter : conv.Parameter;
         }
     }
 
@@ -43,5 +40,6 @@ namespace Alba.Framework.Windows.Markup
     {
         public IValueConverter Converter { get; set; }
         public object Parameter { get; set; }
+        public bool PassParameter { get; set; }
     }
 }
