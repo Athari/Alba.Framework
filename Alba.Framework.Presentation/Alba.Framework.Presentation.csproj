@@ -66,6 +66,7 @@
     <Compile Include="Windows\Interop\WS.cs" />
     <Compile Include="Windows\Interop\WS_EX.cs" />
     <Compile Include="Windows\Markup\Converters\NotConverter.cs" />
+    <Compile Include="Windows\Markup\Converters\ToBitmapImageConverter.cs" />
     <Compile Include="Windows\Markup\Selectors\DictionaryStyleSelector.cs" />
     <Compile Include="Windows\Media\Animation\AnimProps.cs" />
     <Compile Include="Windows\Controls\ButtonProps.g.cs">
@@ -115,7 +116,6 @@
     <Compile Include="Windows\Markup\Converters\NotEqualsParamConverter.cs" />
     <Compile Include="Windows\Markup\Converters\StringFormatConverter.cs" />
     <Compile Include="Windows\Markup\Converters\ToByteSizeConverter.cs" />
-    <Compile Include="Windows\Markup\Converters\ToImageSourceConverter.cs" />
     <Compile Include="Windows\Markup\Converters\YieldConverter.cs" />
     <Compile Include="Windows\Markup\Extensions\DefaultStyleExtension.cs" />
     <Compile Include="Windows\Markup\Extensions\DropShadowEffectExtension.cs" />
