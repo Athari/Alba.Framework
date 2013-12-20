@@ -83,7 +83,8 @@ namespace Alba.Framework.Text
 
         public static void AppendSentence (this StringBuilder @this, string sentence)
         {
-            @this.Append(@this[@this.Length - 1] == '.' ? " " : ". ");
+            if (@this.Length > 0)
+                @this.Append(@this[@this.Length - 1] == '.' ? " " : ". ");
             @this.Append(sentence);
         }
 
