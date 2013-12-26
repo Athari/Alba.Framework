@@ -153,6 +153,12 @@ namespace Alba.Framework.Collections
             return @this.OrderBy(i => _rnd.NextDouble());
         }
 
+        public static IEnumerable<T> WhereNotNull<T> (this IEnumerable<T> @this)
+            where T : class
+        {
+            return @this.Where(i => i != null);
+        }
+
         public static IEnumerable<TResult> Zip<T1, T2, T3, TResult> (this IEnumerable<T1> source, IEnumerable<T2> second, IEnumerable<T3> third, Func<T1, T2, T3, TResult> selector)
         {
             using (var e1 = source.GetEnumerator())
@@ -192,24 +198,44 @@ namespace Alba.Framework.Collections
             return @this.ToDictionary(p => (TKey)p.Key, p => (T)p.Value);
         }
 
-        public static HashSet<T> ToSet<T> (this IEnumerable<T> @this)
+        public static HashSet<T> ToHashSet<T> (this IEnumerable<T> @this)
         {
             return new HashSet<T>(@this);
         }
 
-        public static HashSet<T> ToSet<T> (this IEnumerable<T> @this, IEqualityComparer<T> comparer)
+        public static HashSet<T> ToHashSet<T> (this IEnumerable<T> @this, IEqualityComparer<T> comparer)
         {
             return new HashSet<T>(@this, comparer);
         }
 
-        public static HashSet<TKey> ToSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector)
+        public static HashSet<TKey> ToHashSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector)
         {
             return new HashSet<TKey>(@this.Select(keySelector));
         }
 
-        public static HashSet<TKey> ToSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer)
+        public static HashSet<TKey> ToHashSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer)
         {
             return new HashSet<TKey>(@this.Select(keySelector), comparer);
+        }
+
+        public static SortedSet<T> ToSortedSet<T> (this IEnumerable<T> @this)
+        {
+            return new SortedSet<T>(@this);
+        }
+
+        public static SortedSet<T> ToSortedSet<T> (this IEnumerable<T> @this, IComparer<T> comparer)
+        {
+            return new SortedSet<T>(@this, comparer);
+        }
+
+        public static SortedSet<TKey> ToSortedSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector)
+        {
+            return new SortedSet<TKey>(@this.Select(keySelector));
+        }
+
+        public static SortedSet<TKey> ToSortedSet<TKey, T> (this IEnumerable<T> @this, Func<T, TKey> keySelector, IComparer<TKey> comparer)
+        {
+            return new SortedSet<TKey>(@this.Select(keySelector), comparer);
         }
 
         public static ReadOnlyDictionary<TKey, T> ToReadOnlyDictionary<TKey, T> (this IEnumerable<T> @this,
