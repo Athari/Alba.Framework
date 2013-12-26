@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using Alba.Framework.Collections;
 using Alba.Framework.Reflection;
 using Alba.Framework.Sys;
 using Newtonsoft.Json;
@@ -28,8 +31,9 @@ namespace Alba.Framework.Serialization.Json
         protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
         {
             JsonProperty property = base.CreateProperty(member, memberSerialization);
-            if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).Has(DefaultValueHandling.Ignore)
-                && !property.PropertyType.Is<string>() && property.PropertyType.Is<IEnumerable>()) {
+
+            // Skip serialization of empty collections.
+            if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).Has(DefaultValueHandling.Ignore) && IsPropertyCollection(property)) {
                 var memberProp = member as PropertyInfo;
                 var memberField = member as FieldInfo;
                 Predicate<object> shouldSerialize = obj => {
@@ -39,7 +43,33 @@ namespace Alba.Framework.Serialization.Json
                 };
                 property.ShouldSerialize = property.ShouldSerialize.Merge(shouldSerialize, (a, b) => a && b);
             }
+
             return property;
+        }
+
+        protected override IList<JsonProperty> CreateProperties (Type type, MemberSerialization serialization)
+        {
+            var properties = new JsonPropertyCollection(type);
+            foreach (JsonProperty property in GetSerializableMembers(type).Select(m => CreateProperty(m, serialization)).WhereNotNull())
+                properties.AddProperty(property);
+            return properties
+                .OrderBy(p => p.Order ?? -1)
+                .ThenBy(IsPropertyCollection)
+                .ThenBy(GetPropertyTypeDepth)
+                .ThenBy(p => p.PropertyName)
+                .ToList();
+        }
+
+        private static int GetPropertyTypeDepth (JsonProperty property)
+        {
+            // Properties from base classes come before properties from descendant classes.
+            return property.DeclaringType.TraverseList(t => t.BaseType).Count();
+        }
+
+        private static bool IsPropertyCollection (JsonProperty property)
+        {
+            // Very simplified. See DefaultContractResolver.CreateContract for proper implementation of collection check.
+            return !property.PropertyType.Is<string>() && property.PropertyType.Is<IEnumerable>();
         }
     }
 }
