@@ -148,6 +148,24 @@ namespace Alba.Framework.Collections
             }
         }
 
+        public static IEnumerable<IEnumerable<T>> Batch<T> (this IEnumerable<T> @this, int size)
+        {
+            T[] bucket = null;
+            int count = 0;
+            foreach (T item in @this) {
+                if (bucket == null)
+                    bucket = new T[size];
+                bucket[count++] = item;
+                if (count != size)
+                    continue;
+                yield return bucket;
+                bucket = null;
+                count = 0;
+            }
+            if (bucket != null && count > 0)
+                yield return bucket.Take(count);
+        }
+
         public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this)
         {
             return @this.OrderBy(i => _rnd.NextDouble());
