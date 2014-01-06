@@ -67,6 +67,7 @@
     <Compile Include="Windows\Interop\WS_EX.cs" />
     <Compile Include="Windows\Markup\Converters\NotConverter.cs" />
     <Compile Include="Windows\Markup\Converters\ToBitmapImageConverter.cs" />
+    <Compile Include="Windows\Markup\Extensions\Bool.cs" />
     <Compile Include="Windows\Markup\Selectors\DictionaryStyleSelector.cs" />
     <Compile Include="Windows\Media\Animation\AnimProps.cs" />
     <Compile Include="Windows\Controls\ButtonProps.g.cs">
