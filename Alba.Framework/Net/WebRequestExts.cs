@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Alba.Framework.Net
 {
@@ -20,6 +21,30 @@ namespace Alba.Framework.Net
             "Transfer-Encoding",
             "User-Agent",
         };
+
+        public static WebResponse GetResponseForced (this WebRequest @this)
+        {
+            try {
+                return @this.GetResponse();
+            }
+            catch (WebException e) {
+                if (e.Response != null)
+                    return e.Response;
+                throw;
+            }
+        }
+
+        public static Task<WebResponse> GetResponseForcedAsync (this WebRequest @this)
+        {
+            try {
+                return @this.GetResponseAsync();
+            }
+            catch (WebException e) {
+                if (e.Response != null)
+                    return Task.FromResult(e.Response);
+                throw;
+            }
+        }
 
         public static WebRequest CloneRequest (this WebRequest source)
         {
