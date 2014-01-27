@@ -94,6 +94,10 @@
     <Compile Include="IO\StreamExts.cs" />
     <Compile Include="IO\UndisposableStream.cs" />
     <Compile Include="Net\WebRequestExts.cs" />
+    <Compile Include="Security\IZoneIdentifier.cs" />
+    <Compile Include="Security\PersistentZoneIdentifier.cs" />
+    <Compile Include="Security\UrlZone.cs" />
+    <Compile Include="Security\UrlZones.cs" />
     <Compile Include="Sys\EventArgs%28T%29.cs" />
     <Compile Include="Sys\EventHandlerExts.cs" />
     <Compile Include="Sys\FastWeakEvent%28T%29.cs" />
