@@ -1,0 +1,13 @@
+﻿_={
+    using: [
+        "System.Windows",
+        "Alba.Framework.Windows"
+    ],
+    classes: {
+        Message: {
+            attached: {
+                "string AttachMany": { for: "DependencyObject", changed: 1 },
+            }
+        },
+    }
+}
