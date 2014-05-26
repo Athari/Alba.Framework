@@ -15,6 +15,9 @@
 #>
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable RedundantCast
+using System.ComponentModel;
+using System.Windows;
+using Alba.Framework.Windows;
 <#+ foreach (JValue use in data["using"]) { #>
 using <#=use#>;
 <#+ } #>
@@ -51,13 +54,39 @@ namespace <#=cls["namespace"] ?? data["namespace"] ?? Namespace#>
 <#+  } #>
 
 <#+  foreach (JProperty pprop in cls["attached"]) {
-       var prop = pprop.Value; string[] propTypeName = pprop.Name.Split(' '); string
+       var prop = pprop.Value;
+       string[]
+           propTypeName = pprop.Name.Split(' '),
+           propBrowseTypes = prop["browseTypes"] != null ? ((string)prop["browseTypes"]).Split(',') : new string[0];
+       bool
+           propBrowse = prop["browse"] != null;
+       string
            propType = propTypeName[0],
            propName = propTypeName[1],
            propFor = (string)prop["for"] ?? "DependencyObject",
            propChanged = prop["changed"] != null ? F("{0}_Changed", propName) : null,
            propVisKey = (string)prop["key"],
-           propVis = (string)prop["vis"] ?? "public"; #>
+           propVis = (string)prop["vis"] ?? "public",
+           category = (string)prop["category"],
+           propBrowseChildren = (string)prop["browseChildren"],
+           propBrowseWhenAttr = (string)prop["browseWhenAttr"]; #>
+<#+    if (category != null) { #>
+        [Category("<#=category#>")]
+<#+    } #>
+<#+    if (propBrowse) { #>
+        [AttachedPropertyBrowsableForType(typeof(<#=propFor#>))]
+<#+    } #>
+<#+    if (propBrowseChildren == "direct") { #>
+        [AttachedPropertyBrowsableForChildren]
+<#+    } else if (propBrowseChildren == "descendants") { #>
+        [AttachedPropertyBrowsableForChildren(IncludeDescendants = true)]
+<#+    } #>
+<#+    if (propBrowseWhenAttr != null) { #>
+        [AttachedPropertyBrowsableWhenAttributePresent(typeof(<#=propBrowseWhenAttr#>))]
+<#+    } #>
+<#+    foreach (string propBrowseType in propBrowseTypes) { #>
+        [AttachedPropertyBrowsableForType(typeof(<#=propBrowseType#>))]
+<#+    } #>
         <#=propVis#> static <#=propType#> Get<#=propName#> (<#=propFor#> d)
         {
             return (<#=propType#>)d.GetValue(<#=propName#>Property);
