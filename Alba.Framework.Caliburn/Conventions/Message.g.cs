@@ -1,5 +1,6 @@
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable RedundantCast
+using System.ComponentModel;
 using System.Windows;
 using Alba.Framework.Windows;
 using FPM = System.Windows.FrameworkPropertyMetadata;
@@ -13,6 +14,8 @@ namespace Alba.Framework.Caliburn
             "AttachMany", typeof(string), typeof(Message),
             new FPM(default(string), AttachMany_Changed));
  
+        [Category("Action")]
+        [AttachedPropertyBrowsableForType(typeof(DependencyObject))]
         public static string GetAttachMany (DependencyObject d)
         {
             return (string)d.GetValue(AttachManyProperty);

@@ -1,12 +1,9 @@
 ﻿_={
-    using: [
-        "System.Windows",
-        "Alba.Framework.Windows"
-    ],
+    using: [],
     classes: {
         Message: {
             attached: {
-                "string AttachMany": { for: "DependencyObject", changed: 1 },
+                "string AttachMany": { for: "DependencyObject", changed: 1, browse: 1, category: "Action" },
             }
         },
     }
