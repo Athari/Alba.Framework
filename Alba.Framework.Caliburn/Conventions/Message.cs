@@ -16,6 +16,7 @@ namespace Alba.Framework.Caliburn
         {
             CaliburnMicro.Message.SetAttach(d, args.NewValue
                 .Split(AttachSeparators, StringSplitOptions.RemoveEmptyEntries)
+                .Where(a => !a.IsNullOrWhitespace())
                 .Select(a => "[Event {0}] = [Action {1}]".FmtInv(GetAttachMethod(a), a))
                 .JoinString("; "));
         }
