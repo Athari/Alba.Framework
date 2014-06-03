@@ -11,14 +11,14 @@ namespace Alba.Framework.Windows.Markup
     {
         public object Convert (object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (ReferenceEquals(value, DependencyProperty.UnsetValue))
+            if (value == DependencyProperty.UnsetValue)
                 return DependencyProperty.UnsetValue;
             return value.EqualsValue(parameter);
         }
 
         public object ConvertBack (object value, Type targetType, object parameter, CultureInfo culture)
         {
-            throw new NotSupportedException();
+            return value is bool && (bool)value ? parameter : Binding.DoNothing;
         }
     }
 }

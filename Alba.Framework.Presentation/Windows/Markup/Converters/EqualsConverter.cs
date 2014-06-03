@@ -13,7 +13,7 @@ namespace Alba.Framework.Windows.Markup
         {
             if (values.Length < 2)
                 throw new ArgumentException("Two or more values required.", "values");
-            if (values.Any(v => ReferenceEquals(v, DependencyProperty.UnsetValue)))
+            if (values.Any(v => v == DependencyProperty.UnsetValue))
                 return DependencyProperty.UnsetValue;
             return values.Skip(1).All(v => v.EqualsValue(values[0]));
         }
