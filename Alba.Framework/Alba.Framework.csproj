@@ -63,6 +63,7 @@
     <Compile Include="Collections\Collections\BiDictionary%28TFirst,TSecond%29.cs" />
     <Compile Include="Collections\Collections\IndexDictionary%28TValue%29.cs" />
     <Compile Include="Collections\Collections\IndexDictionaryBase%28TKey,TValue%29.cs" />
+    <Compile Include="Collections\Collections\OwnedCollection%28T%29.cs" />
     <Compile Include="Collections\Debug\CollectionDebugView.cs" />
     <Compile Include="Collections\Debug\DictionaryDebugView%28TKey,TValue%29.cs" />
     <Compile Include="Collections\Extensions\EnumerableExts.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Collections\Extensions\StackExts.cs" />
     <Compile Include="Collections\Collections\TypedCollection%28T%29.cs" />
     <Compile Include="Common\BoolMonitor.cs" />
+    <Compile Include="Common\IOwned%28TOwner%29.cs" />
     <Compile Include="Common\IOwner%28TOwned%29.cs" />
     <Compile Include="Common\IIdentifiable.cs" />
     <Compile Include="Common\IOwned.cs" />
