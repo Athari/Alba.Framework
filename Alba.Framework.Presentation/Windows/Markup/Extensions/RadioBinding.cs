@@ -2,9 +2,11 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Markup;
 
 namespace Alba.Framework.Windows.Markup
 {
+    [MarkupExtensionReturnType (typeof(bool))]
     public class RadioBinding : System.Windows.Data.MultiBinding
     {
         public RadioBinding (BindingBase selectedBinding, Binding valueBinding)
