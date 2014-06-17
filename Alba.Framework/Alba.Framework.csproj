@@ -65,6 +65,7 @@
     <Compile Include="Collections\Collections\IndexDictionaryBase%28TKey,TValue%29.cs" />
     <Compile Include="Collections\Collections\OwnedCollection%28T%29.cs" />
     <Compile Include="Collections\Collections\OwnedCollectionBase%28T%29.cs" />
+    <Compile Include="Collections\Collections\OwnedObservableCollectionBase%28T%29.cs" />
     <Compile Include="Collections\Debug\CollectionDebugView.cs" />
     <Compile Include="Collections\Debug\DictionaryDebugView%28TKey,TValue%29.cs" />
     <Compile Include="Collections\Extensions\EnumerableExts.cs" />
