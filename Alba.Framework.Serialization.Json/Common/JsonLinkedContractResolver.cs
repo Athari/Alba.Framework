@@ -34,11 +34,8 @@ namespace Alba.Framework.Serialization.Json
 
             // Skip serialization of empty collections.
             if ((property.DefaultValueHandling ?? DefaultValueHandling.Ignore).Has(DefaultValueHandling.Ignore) && IsPropertyCollection(property)) {
-                var memberProp = member as PropertyInfo;
-                var memberField = member as FieldInfo;
                 Predicate<object> shouldSerialize = obj => {
-                    object value = memberProp != null ? memberProp.GetValue(obj) : memberField != null ? memberField.GetValue(obj) : null;
-                    var collection = value as ICollection;
+                    var collection = property.ValueProvider.GetValue(obj) as ICollection;
                     return collection == null || collection.Count != 0;
                 };
                 property.ShouldSerialize = property.ShouldSerialize.Merge(shouldSerialize, (a, b) => a && b);
