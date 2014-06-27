@@ -11,6 +11,11 @@ namespace Alba.Framework.Common
             return root.TraverseList(i => i.Owner as T);
         }
 
+        public static IEnumerable<T> TraverseToRootOwnerTyped<T> (this T root) where T : class, IOwned<T>
+        {
+            return root.TraverseList(i => i.Owner);
+        }
+
         public static void SetNewOwner<TOwner> (this IOwned<TOwner> @this, TOwner owner)
         {
             if (!Equals(@this.Owner, default(TOwner)))
