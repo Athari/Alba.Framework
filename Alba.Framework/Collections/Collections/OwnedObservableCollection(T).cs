@@ -1,19 +1,13 @@
-﻿using System.Collections.Generic;
-using Alba.Framework.Common;
+﻿using Alba.Framework.Common;
 
 namespace Alba.Framework.Collections
 {
-    public class OwnedCollection<T, TOwner> : OwnedCollectionBase<T>
+    public class OwnedObservableCollection<T, TOwner> : OwnedObservableCollectionBase<T>
         where T : class, IOwned<TOwner>
     {
         private readonly TOwner _owner;
 
-        public OwnedCollection (TOwner owner)
-        {
-            _owner = owner;
-        }
-
-        public OwnedCollection (IList<T> list, TOwner owner) : base(list)
+        public OwnedObservableCollection (TOwner owner)
         {
             _owner = owner;
         }
