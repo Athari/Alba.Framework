@@ -1,4 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Alba.Framework.Attributes;
 
 namespace Alba.Framework.Sys
 {
@@ -32,6 +35,20 @@ namespace Alba.Framework.Sys
         {
             if (handler != null)
                 handler(sender, EventArgs<T>.Empty);
+        }
+
+        [NotifyPropertyChangedInvocator ("propName")]
+        public static void NullableInvoke (this PropertyChangedEventHandler handler, object sender, [CallerMemberName] string propName = null)
+        {
+            if (handler != null)
+                handler(sender, new PropertyChangedEventArgs(propName));
+        }
+
+        [NotifyPropertyChangedInvocator ("propName")]
+        public static void NullableInvoke (this PropertyChangingEventHandler handler, object sender, [CallerMemberName] string propName = null)
+        {
+            if (handler != null)
+                handler(sender, new PropertyChangingEventArgs(propName));
         }
     }
 }
