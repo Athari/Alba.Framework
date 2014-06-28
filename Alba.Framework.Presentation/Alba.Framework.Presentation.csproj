@@ -70,6 +70,9 @@
     <Compile Include="Windows\Markup\Converters\ToBitmapImageConverter.cs" />
     <Compile Include="Windows\Markup\Extensions\Bool.cs" />
     <Compile Include="Windows\Markup\Extensions\MultiBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\PushBinding\FreezableBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\PushBinding\PushBinding.cs" />
+    <Compile Include="Windows\Markup\Extensions\PushBinding\PushBindingCollection.cs" />
     <Compile Include="Windows\Markup\Extensions\RadioBinding.cs" />
     <Compile Include="Windows\Markup\Extensions\RadioBindingStatic.cs" />
     <Compile Include="Windows\Markup\Selectors\DictionaryStyleSelector.cs" />
