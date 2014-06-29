@@ -61,6 +61,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conventions\Bind.cs" />
+    <Compile Include="Conventions\Bind.g.cs">
+      <DependentUpon>AttachedProps.tt</DependentUpon>
+    </Compile>
     <Compile Include="Conventions\Message.cs" />
     <Compile Include="Conventions\Message.g.cs">
       <DependentUpon>AttachedProps.tt</DependentUpon>

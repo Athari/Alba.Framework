@@ -6,5 +6,10 @@
                 "string AttachMany": { for: "DependencyObject", changed: 1, browse: 1, category: "Action" },
             }
         },
+        Bind: {
+            attached: {
+                "bool Template": { for: "DependencyObject", changed: 1, browse: 1, category: "Action" },
+            }
+        },
     }
 }
