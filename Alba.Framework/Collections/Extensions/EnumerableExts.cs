@@ -186,6 +186,38 @@ namespace Alba.Framework.Collections
                     yield return selector(e1.Current, e2.Current, e3.Current);
         }
 
+        public static bool AllEqual<T> (this IEnumerable<T> @this)
+        {
+            bool isFirst = true;
+            T first = default(T);
+            foreach (T item in @this) {
+                if (isFirst) {
+                    first = item;
+                    isFirst = false;
+                }
+                else if (!first.EqualsValue(item))
+                    return false;
+            }
+            return true;
+        }
+
+        public static bool AllEqual<T> (this IEnumerable<T> @this, out T value)
+        {
+            bool isFirst = true;
+            value = default(T);
+            foreach (T item in @this) {
+                if (isFirst) {
+                    value = item;
+                    isFirst = false;
+                }
+                else if (!value.EqualsValue(item))
+                    return false;
+            }
+            if (isFirst)
+                throw new InvalidOperationException("Sequence is empty.");
+            return true;
+        }
+
         public static string JoinString<T> (this IEnumerable<T> @this, string separator)
         {
             return string.Join(separator, @this);
