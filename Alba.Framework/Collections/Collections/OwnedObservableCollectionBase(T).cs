@@ -4,12 +4,9 @@ using NcChangedEventArgs = System.Collections.Specialized.NotifyCollectionChange
 
 namespace Alba.Framework.Collections
 {
-    public abstract class OwnedObservableCollectionBase<T> : ObservableCollectionEx<T>
+    public abstract class OwnedObservableCollectionBase<T> : ObservableCollectionEx<T>, IOwnedList<T>
         where T : class
     {
-        protected OwnedObservableCollectionBase ()
-        {}
-
         protected abstract void OwnItem (T item);
 
         protected abstract void UnownItem (T item);
@@ -51,6 +48,13 @@ namespace Alba.Framework.Collections
             OnPropertyChanged(CountPropertyName);
             OnPropertyChanged(IndexerPropertyName);
             OnCollectionChanged(new NcChangedEventArgs(NcChangedAction.Reset));
+        }
+
+        public void SwapAt (int index, int indexOther)
+        {
+            T temp = this[index];
+            base.SetItem(index, this[indexOther]);
+            base.SetItem(indexOther, temp);
         }
     }
 }

@@ -29,6 +29,18 @@ namespace Alba.Framework.Collections
             @this[WrapIndex(index, @this.Count)] = value;
         }
 
+        public static void SwapAt<T> (this IList<T> @this, int index, int indexOther)
+        {
+            var ownedList = @this as IOwnedList<T>;
+            if (ownedList != null) {
+                ownedList.SwapAt(index, indexOther);
+                return;
+            }
+            T temp = @this[index];
+            @this[index] = @this[indexOther];
+            @this[indexOther] = temp;
+        }
+
         public static void AddRangeUntyped (this IList @this, IEnumerable items)
         {
             foreach (object item in items)

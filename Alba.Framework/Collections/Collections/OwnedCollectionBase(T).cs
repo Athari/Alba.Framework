@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Alba.Framework.Collections
 {
-    public abstract class OwnedCollectionBase<T> : Collection<T>
+    public abstract class OwnedCollectionBase<T> : Collection<T>, IOwnedList<T>
         where T : class
     {
         protected OwnedCollectionBase ()
@@ -40,6 +40,13 @@ namespace Alba.Framework.Collections
             for (int i = 0; i < Count; i++)
                 UnownItem(Items[i]);
             base.ClearItems();
+        }
+
+        public void SwapAt (int index, int indexOther)
+        {
+            T temp = this[index];
+            base.SetItem(index, this[indexOther]);
+            base.SetItem(indexOther, temp);
         }
     }
 }
