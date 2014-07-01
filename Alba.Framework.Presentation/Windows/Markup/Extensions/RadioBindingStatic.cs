@@ -8,22 +8,24 @@ namespace Alba.Framework.Windows.Markup
     {
         private static readonly IValueConverter _converter = new EqualsParamConverter();
 
-        [ConstructorArgument ("value")]
-        public object Value
-        {
-            get { return ConverterParameter; }
-            set { ConverterParameter = value; }
-        }
-
         public RadioBindingStatic ()
         {
+            FallbackValue = false;
             Converter = _converter;
         }
 
         public RadioBindingStatic (string path, object value) : base(path)
         {
+            FallbackValue = false;
             Converter = _converter;
             Value = value;
+        }
+
+        [ConstructorArgument("value")]
+        public object Value
+        {
+            get { return ConverterParameter; }
+            set { ConverterParameter = value; }
         }
     }
 }

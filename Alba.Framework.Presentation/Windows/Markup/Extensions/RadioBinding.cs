@@ -11,8 +11,8 @@ namespace Alba.Framework.Windows.Markup
     {
         public RadioBinding (BindingBase selectedBinding, Binding valueBinding)
         {
-            if (Mode == BindingMode.Default)
-                Mode = BindingMode.TwoWay;
+            FallbackValue = false;
+            Mode = BindingMode.TwoWay;
             var selectedBindingSingle = selectedBinding as Binding;
             if (selectedBindingSingle != null && selectedBindingSingle.Mode == BindingMode.Default)
                 selectedBindingSingle.Mode = Mode;
