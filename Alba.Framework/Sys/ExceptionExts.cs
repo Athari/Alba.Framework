@@ -5,12 +5,14 @@ using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Alba.Framework.Collections;
 using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Microsoft.CSharp.RuntimeBinder;
+using Binder = Microsoft.CSharp.RuntimeBinder.Binder;
 using TypeLoadException = System.Reflection.ReflectionTypeLoadException;
 
 // ReSharper disable RedundantJumpStatement
@@ -53,9 +55,16 @@ namespace Alba.Framework.Sys
         public static string GetFullMessage (this Exception @this)
         {
             var sb = new StringBuilder();
-            foreach (Exception e in @this.TraverseList(e => e.InnerException))
+            foreach (Exception e in @this.TraverseList(e => e.InnerException).Where(IsExceptionMessageIncluded))
                 sb.AppendSentence(GetMessageWithSubExceptions(e));
             return sb.ToString().SingleLine();
+        }
+
+        private static bool IsExceptionMessageIncluded (Exception e)
+        {
+            if (e is TargetInvocationException)
+                return false;
+            return true;
         }
 
         private static string GetMessageWithSubExceptions (Exception exc)
