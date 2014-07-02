@@ -97,6 +97,9 @@
     <Compile Include="Collections\Collections\ObservableCollectionEx%28T%29.cs" />
     <Compile Include="Collections\Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
     <Compile Include="Common\SingleInstance.cs" />
+    <Compile Include="Diagnostics\UnhandledExceptionsEventArgs.cs" />
+    <Compile Include="Diagnostics\UnhandledExceptionsHandler.cs" />
+    <Compile Include="Diagnostics\UnhandledExceptionSource.cs" />
     <Compile Include="Interop\InteropMath.cs" />
     <Compile Include="IO\StreamExts.cs" />
     <Compile Include="IO\UndisposableStream.cs" />
