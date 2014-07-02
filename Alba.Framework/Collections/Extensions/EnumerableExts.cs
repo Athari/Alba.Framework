@@ -238,6 +238,11 @@ namespace Alba.Framework.Collections
             return string.Concat(@this);
         }
 
+        public static IList<T> AsList<T> (this IEnumerable<T> @this)
+        {
+            return @this as IList<T> ?? @this.ToList();
+        }
+
         public static Dictionary<TKey, T> ToDictionary<TKey, T> (this IEnumerable<KeyValuePair<TKey, T>> @this)
         {
             return @this.ToDictionary(p => p.Key, p => p.Value);
