@@ -41,6 +41,13 @@ namespace Alba.Framework.Collections
             @this[indexOther] = temp;
         }
 
+        public static void ClearAndDispose<T> (this IList<T> @this) where T : IDisposable
+        {
+            foreach (T item in @this)
+                item.Dispose();
+            @this.Clear();
+        }
+
         public static void AddRangeUntyped (this IList @this, IEnumerable items)
         {
             foreach (object item in items)
