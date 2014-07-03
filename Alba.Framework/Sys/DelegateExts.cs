@@ -40,5 +40,15 @@ namespace Alba.Framework.Sys
                 return @this;
             return (t1) => merge(@this(t1), other(t1));
         }
+
+        public static Predicate<T> MergeAnd<T> (this Predicate<T> @this, Predicate<T> other)
+        {
+            return Merge(@this, other, (a, b) => a && b);
+        }
+
+        public static Predicate<T> MergeOr<T> (this Predicate<T> @this, Predicate<T> other)
+        {
+            return Merge(@this, other, (a, b) => a || b);
+        }
     }
 }
