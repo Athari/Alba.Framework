@@ -1,17 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace Alba.Framework.Collections
 {
     public abstract class OwnedCollectionBase<T> : Collection<T>, IOwnedList<T>
         where T : class
     {
-        protected OwnedCollectionBase ()
-        {}
-
-        protected OwnedCollectionBase (IList<T> list) : base(list)
-        {}
-
         protected abstract void OwnItem (T item);
 
         protected abstract void UnownItem (T item);

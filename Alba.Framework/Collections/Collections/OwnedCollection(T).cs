@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Alba.Framework.Common;
+﻿using Alba.Framework.Common;
 
 namespace Alba.Framework.Collections
 {
@@ -9,11 +8,6 @@ namespace Alba.Framework.Collections
         private readonly TOwner _owner;
 
         public OwnedCollection (TOwner owner)
-        {
-            _owner = owner;
-        }
-
-        public OwnedCollection (IList<T> list, TOwner owner) : base(list)
         {
             _owner = owner;
         }

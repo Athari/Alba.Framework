@@ -29,11 +29,11 @@ namespace Alba.Framework.Serialization.Json
             var resolveContext = new JsonResolveLinkContext(objectType, serializer, reader as IJsonLineInfo);
             resolveContext.UpdateTypeFromTypeProperty(objectType, (string)jo.Property(JsonLinkedContext.TypePropName));
             var value = (T)resolveContext.Context.ResolveOrigin(GetId(resolveContext, jo), resolveContext);
-            PopulateFromJObject(reader, jo, objectType, ref value, serializer);
+            PopulateFromJObject(reader, jo, objectType, value, serializer);
             return value;
         }
 
-        public virtual void PopulateFromJObject (JsonReader reader, JObject jo, Type objectType, ref T existingValue, JsonSerializer serializer)
+        public virtual void PopulateFromJObject (JsonReader reader, JObject jo, Type objectType, T existingValue, JsonSerializer serializer)
         {
             serializer.Populate(jo.CreateReader(), existingValue);
         }
