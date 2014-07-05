@@ -12,7 +12,7 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Serialization.Json
 {
     public abstract class PathLinkProviderBase<TValue, TRoot> : JsonLinkProvider<TValue>
-        where TValue : class, IIdentifiable<string>
+        where TValue : class
         where TRoot : class
     {
         private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<PathLinkProviderBase<TValue, TRoot>>();
@@ -88,7 +88,7 @@ namespace Alba.Framework.Serialization.Json
                 }
                 catch (KeyNotFoundException e) {
                     throw new JsonLinkProviderException("Object '{0}' of type '{1}' (id={2}) is not a valid link as it is not contained within the root object."
-                        .Fmt(value, value.GetType(), value.Id), e);
+                        .Fmt(value, value.GetType(), _linkProvider.GetDebugId(value)), e);
                 }
             }
 
@@ -132,8 +132,11 @@ namespace Alba.Framework.Serialization.Json
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
-                if (!_linkProvider.IsIndexed && value.Id == null)
-                    return;
+                if (!_linkProvider.IsIndexed) {
+                    var idable = value as IIdentifiable<string>;
+                    if (idable != null && idable.Id == null)
+                        return;
+                }
                 string path = _linkProvider.GenerateLink(context);
                 if (path == null)
                     return;
@@ -141,13 +144,15 @@ namespace Alba.Framework.Serialization.Json
                     _pathToValue.Add(path, value);
                 }
                 catch (ArgumentException e) {
-                    throw new JsonLinkProviderException("Duplicate origin path '{0}' (value={1}, id={2}).".Fmt(path, value, value.Id), e);
+                    throw new JsonLinkProviderException("Duplicate origin path '{0}' (value={1}, id={2})."
+                        .Fmt(path, value, _linkProvider.GetDebugId(value)), e);
                 }
                 try {
                     _valueToPath.Add(value, path);
                 }
                 catch (ArgumentException e) {
-                    throw new JsonLinkProviderException("Duplicate origin value '{0}' (id={1}, path={2}).".Fmt(value, value.Id, path), e);
+                    throw new JsonLinkProviderException("Duplicate origin value '{0}' (id={1}, path={2})."
+                        .Fmt(value, _linkProvider.GetDebugId(value), path), e);
                 }
             }
 

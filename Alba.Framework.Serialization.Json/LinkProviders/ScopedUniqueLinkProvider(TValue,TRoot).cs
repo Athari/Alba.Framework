@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
-using Alba.Framework.Common;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Serialization.Json
 {
     public class ScopedUniqueLinkProvider<TValue, TRoot> : UniqueLinkProviderBase<TValue>
-        where TValue : IIdentifiable<string>
         where TRoot : class
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();

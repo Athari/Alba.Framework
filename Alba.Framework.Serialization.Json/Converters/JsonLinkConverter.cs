@@ -1,6 +1,4 @@
 ﻿using System;
-using Alba.Framework.Common;
-using Alba.Framework.Reflection;
 using Newtonsoft.Json;
 
 // TODO Modify Json.Net to make JsonConverter.WriteJson include container property type argument (also in JsonOriginConverter)
@@ -23,7 +21,7 @@ namespace Alba.Framework.Serialization.Json
 
         public override bool CanConvert (Type type)
         {
-            return type.Is<IIdentifiable<string>>();
+            return true;
         }
     }
 }

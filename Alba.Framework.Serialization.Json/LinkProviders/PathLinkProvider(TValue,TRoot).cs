@@ -6,7 +6,7 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Serialization.Json
 {
     public class PathLinkProvider<TValue, TRoot> : PathLinkProviderBase<TValue, TRoot>
-        where TValue : class, IIdentifiable<string>
+        where TValue : class
         where TRoot : class
     {
         private readonly GlobalLinkData _linkData;

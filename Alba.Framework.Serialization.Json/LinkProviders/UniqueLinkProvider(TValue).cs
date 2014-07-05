@@ -1,12 +1,10 @@
 ﻿using System.Linq;
 using Alba.Framework.Collections;
-using Alba.Framework.Common;
 using Alba.Framework.Text;
 
 namespace Alba.Framework.Serialization.Json
 {
     public class UniqueLinkProvider<TValue> : UniqueLinkProviderBase<TValue>
-        where TValue : IIdentifiable<string>
     {
         private readonly GlobalLinkData _linkData = new GlobalLinkData();
 

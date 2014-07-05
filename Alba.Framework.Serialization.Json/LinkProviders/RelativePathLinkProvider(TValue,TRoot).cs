@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
-using Alba.Framework.Common;
 using Alba.Framework.Diagnostics;
 using Alba.Framework.Text;
 
@@ -10,7 +9,7 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Serialization.Json
 {
     public class RelativePathLinkProvider<TValue, TRoot> : PathLinkProviderBase<TValue, TRoot>
-        where TValue : class, IIdentifiable<string>
+        where TValue : class
         where TRoot : class
     {
         private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<RelativePathLinkProvider<TValue, TRoot>>();

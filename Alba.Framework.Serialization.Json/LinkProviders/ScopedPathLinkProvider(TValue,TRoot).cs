@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
-using Alba.Framework.Common;
 using Alba.Framework.Text;
 
 // ReSharper disable StaticFieldInGenericType
 namespace Alba.Framework.Serialization.Json
 {
     public class ScopedPathLinkProvider<TValue, TRoot> : PathLinkProviderBase<TValue, TRoot>
-        where TValue : class, IIdentifiable<string>
+        where TValue : class
         where TRoot : class
     {
         private readonly IDictionary<TRoot, RootLinkData> _roots = new Dictionary<TRoot, RootLinkData>();

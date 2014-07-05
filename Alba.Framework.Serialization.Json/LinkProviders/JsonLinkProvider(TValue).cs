@@ -8,7 +8,6 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Serialization.Json
 {
     public abstract class JsonLinkProvider<TValue> : IJsonLinkProvider
-        where TValue : IIdentifiable<string>
     {
         public string IdProp { get; private set; }
 
@@ -44,6 +43,19 @@ namespace Alba.Framework.Serialization.Json
             }
             throw new JsonLinkProviderException("Root not found. (IOwner interface missing? Default contructor missing?) Stack contents: {0}."
                 .Fmt(context.Stack.JoinString("; ")));
+        }
+
+        protected string GetDebugId (TValue value)
+        {
+            if (IsIndexed)
+                return JsonLinkedContext.IndexPropName;
+            var idable = value as IIdentifiable<string>;
+            if (idable == null)
+                return "?";
+            string id = idable.Id;
+            if (id == null)
+                return "?";
+            return id;
         }
 
         public virtual bool CanLink (Type type)

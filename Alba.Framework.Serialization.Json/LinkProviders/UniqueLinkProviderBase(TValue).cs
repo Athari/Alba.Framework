@@ -7,7 +7,6 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Serialization.Json
 {
     public abstract class UniqueLinkProviderBase<TValue> : JsonLinkProvider<TValue>
-        where TValue : IIdentifiable<string>
     {
         private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<UniqueLinkProviderBase<TValue>>();
 
@@ -22,7 +21,11 @@ namespace Alba.Framework.Serialization.Json
 
             public string GetLink (TValue value, JsonLinkedContext context)
             {
-                string id = value.Id;
+                // TODO Support indexed identifiers in UniqueLinkProvider.
+                var idable = value as IIdentifiable<string>;
+                if (idable == null)
+                    throw new JsonLinkProviderException("Id of origin '{0}' not specified.".Fmt(value));
+                string id = idable.Id;
                 if (id == null)
                     throw new JsonLinkProviderException("Id of origin '{0}' not specified.".Fmt(value));
                 return id;
