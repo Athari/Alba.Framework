@@ -59,20 +59,28 @@ namespace Alba.Framework.Serialization.Json
             // Apply linked collection attributes.
             var linkedCollectionAttr = member.GetCustomAttribute<JsonLinkedCollectionAttribute>();
             var originCollectionAttr = linkedCollectionAttr as JsonOriginCollectionAttribute;
-            if (originCollectionAttr != null)
+            if (originCollectionAttr != null && property.ItemConverter == null)
                 property.ItemConverter = _originConverter;
             var linkCollectionAttr = linkedCollectionAttr as JsonLinkCollectionAttribute;
-            if (linkCollectionAttr != null)
+            if (linkCollectionAttr != null && property.ItemConverter == null)
                 property.ItemConverter = _linkConverter;
 
             // Apply linked object attributes.
             var linkedAttr = member.GetCustomAttribute<JsonLinkedAttribute>();
             var originAttr = linkedAttr as JsonOriginAttribute;
-            if (originAttr != null)
-                property.MemberConverter = property.Converter = _originConverter;
+            if (originAttr != null) {
+                if (property.Converter == null)
+                    property.Converter = _originConverter;
+                if (property.MemberConverter == null)
+                    property.MemberConverter = _originConverter;
+            }
             var linkAttr = linkedAttr as JsonLinkAttribute;
-            if (linkAttr != null)
-                property.MemberConverter = property.Converter = _linkConverter;
+            if (linkAttr != null) {
+                if (property.Converter == null)
+                    property.Converter = _linkConverter;
+                if (property.MemberConverter == null)
+                    property.MemberConverter = _linkConverter;
+            }
 
             return property;
         }
