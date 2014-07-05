@@ -51,14 +51,14 @@ namespace Alba.Framework.Serialization.Json
         private RootLinkData GetRootLinkData (JsonLinkedContext context)
         {
             var root = GetRoot<TRoot>(context);
-            return _roots.GetOrAdd(root, () => new RootLinkData(root));
+            return _roots.GetOrAdd(root, () => new RootLinkData(this, root));
         }
 
         protected class RootLinkData : LinkData
         {
             private readonly TRoot _root;
 
-            public RootLinkData (TRoot root)
+            public RootLinkData (PathLinkProviderBase<TValue, TRoot> linkProvider, TRoot root) : base(linkProvider)
             {
                 _root = root;
             }

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
 using Alba.Framework.Diagnostics;
+using Alba.Framework.Globalization;
 using Alba.Framework.Text;
 
 // ReSharper disable StaticFieldInGenericType
@@ -18,32 +20,64 @@ namespace Alba.Framework.Serialization.Json
         protected PathLinkProviderBase (string idProp) : base(idProp)
         {}
 
-        protected static string GenerateLink (JsonLinkedContext context, bool skipTop = false)
+        protected string GenerateLink (JsonLinkedContext context, bool skipTop = false)
         {
             var path = new List<string>();
             IList<object> stack = context.Stack;
             int i;
-            for (i = stack.Count - 1; i >= 0 && !(stack[i] is TRoot); i--) {
-                var idable = stack[i] as IIdentifiable<string>;
-                if (idable == null)
-                    continue;
-                string id = idable.Id;
+            for (i = stack.Count - 1; i >= 0; i--) {
+                if (stack[i] is TRoot) {
+                    if (i == stack.Count - 1)
+                        return "";
+                    break;
+                }
+                string id = GetIdAt(stack, i);
                 if (id != null)
                     path.Add(id);
             }
             if (i == -1)
-                throw new JsonLinkProviderException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
+                //throw new JsonLinkProviderException("Root of type '{0}' not found.".Fmt(typeof(TRoot).Name));
+                return "";
             path.Reverse();
             if (skipTop && path.Count >= 1)
                 path.RemoveAt(path.Count - 1);
             return path.Any() ? path.JoinString(JsonLinkedContext.LinkPathSeparator) : null;
         }
 
+        private string GetIdAt (IList<object> stack, int i)
+        {
+            if (IsIndexed) {
+                if (i == stack.Count - 1)
+                    return null;
+                var collection = stack[i] as IList;
+                if (collection == null)
+                    return null;
+                int index = collection.IndexOf(stack[i + 1]);
+                // Use index when serializing, count when deserializing (collection is being added to).
+                return (index != -1 ? index : collection.Count).ToStringInv();
+            }
+            else {
+                var idable = stack[i] as IIdentifiable<string>;
+                if (idable == null)
+                    return null;
+                string id = idable.Id;
+                if (id == null)
+                    return null;
+                return id;
+            }
+        }
+
         protected abstract class LinkData
         {
+            private readonly PathLinkProviderBase<TValue, TRoot> _linkProvider;
             private readonly IDictionary<string, TValue> _pathToValue = new Dictionary<string, TValue>();
             private readonly IDictionary<TValue, string> _valueToPath = new Dictionary<TValue, string>();
             protected readonly ISet<string> _unresolvedLinks = new HashSet<string>();
+
+            protected LinkData (PathLinkProviderBase<TValue, TRoot> linkProvider)
+            {
+                _linkProvider = linkProvider;
+            }
 
             public string GetLink (TValue value)
             {
@@ -61,7 +95,7 @@ namespace Alba.Framework.Serialization.Json
             public TValue ResolveOrigin (string id, JsonResolveLinkContext resolveContext)
             {
                 string untypedId = GetUntypedLink(id);
-                string path = GenerateLink(resolveContext.Context);
+                string path = _linkProvider.GenerateLink(resolveContext.Context);
                 path = !path.IsNullOrEmpty() ? path + JsonLinkedContext.LinkPathSeparator + untypedId : untypedId;
                 TValue value;
                 if (!_pathToValue.TryGetValue(path, out value)) {
@@ -98,9 +132,9 @@ namespace Alba.Framework.Serialization.Json
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
-                if (value.Id == null)
+                if (!_linkProvider.IsIndexed && value.Id == null)
                     return;
-                string path = GenerateLink(context);
+                string path = _linkProvider.GenerateLink(context);
                 if (path == null)
                     return;
                 try {

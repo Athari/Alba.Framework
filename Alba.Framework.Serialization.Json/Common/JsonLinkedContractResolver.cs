@@ -13,19 +13,34 @@ namespace Alba.Framework.Serialization.Json
 {
     public class JsonLinkedContractResolver : DefaultContractResolver
     {
+        private static readonly JsonConverter _originConverter = new JsonOriginConverter();
+        private static readonly JsonConverter _linkConverter = new JsonLinkConverter();
+
         public JsonLinkedContractResolver (bool shareCache = false)
             : base(shareCache)
         {}
 
         protected override JsonObjectContract CreateObjectContract (Type objectType)
         {
-            var contract = base.CreateObjectContract(objectType);
+            JsonObjectContract contract = base.CreateObjectContract(objectType);
+            AddContractStackCallbacks(contract);
+            return contract;
+        }
+
+        protected override JsonArrayContract CreateArrayContract (Type objectType)
+        {
+            JsonArrayContract contract = base.CreateArrayContract(objectType);
+            AddContractStackCallbacks(contract);
+            return contract;
+        }
+
+        private static void AddContractStackCallbacks (JsonContract contract)
+        {
             contract.OnDeserializingCallbacks.Add((o, ctx) => JsonLinkedContext.Get(ctx).PushObject(o));
             contract.OnDeserializingCallbacks.Add((o, ctx) => JsonLinkedContext.Get(ctx).SetOwner(o));
             contract.OnDeserializedCallbacks.Add((o, ctx) => JsonLinkedContext.Get(ctx).PopObject(o));
             contract.OnSerializingCallbacks.Add((o, ctx) => JsonLinkedContext.Get(ctx).PushObject(o));
             contract.OnSerializedCallbacks.Add((o, ctx) => JsonLinkedContext.Get(ctx).PopObject(o));
-            return contract;
         }
 
         protected override JsonProperty CreateProperty (MemberInfo member, MemberSerialization memberSerialization)
@@ -40,6 +55,24 @@ namespace Alba.Framework.Serialization.Json
                 };
                 property.ShouldSerialize = property.ShouldSerialize.Merge(shouldSerialize, (a, b) => a && b);
             }
+
+            // Apply linked collection attributes.
+            var linkedCollectionAttr = member.GetCustomAttribute<JsonLinkedCollectionAttribute>();
+            var originCollectionAttr = linkedCollectionAttr as JsonOriginCollectionAttribute;
+            if (originCollectionAttr != null)
+                property.ItemConverter = _originConverter;
+            var linkCollectionAttr = linkedCollectionAttr as JsonLinkCollectionAttribute;
+            if (linkCollectionAttr != null)
+                property.ItemConverter = _linkConverter;
+
+            // Apply linked object attributes.
+            var linkedAttr = member.GetCustomAttribute<JsonLinkedAttribute>();
+            var originAttr = linkedAttr as JsonOriginAttribute;
+            if (originAttr != null)
+                property.MemberConverter = property.Converter = _originConverter;
+            var linkAttr = linkedAttr as JsonLinkAttribute;
+            if (linkAttr != null)
+                property.MemberConverter = property.Converter = _linkConverter;
 
             return property;
         }

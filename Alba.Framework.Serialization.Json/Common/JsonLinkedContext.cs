@@ -4,6 +4,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using Alba.Framework.Collections;
 using Alba.Framework.Common;
+using Alba.Framework.Diagnostics;
+using Alba.Framework.Text;
 using Newtonsoft.Json;
 
 namespace Alba.Framework.Serialization.Json
@@ -11,9 +13,12 @@ namespace Alba.Framework.Serialization.Json
     public class JsonLinkedContext
     {
         public const string TypePropName = "$type";
+        public const string IndexPropName = "$index";
         public const string LinkPathSeparator = "/";
         public const char LinkPathSeparatorChar = '/';
         public const char LinkTypeSeparator = ':';
+
+        private static readonly ILog Log = AlbaFrameworkTraceSources.Serialization.GetLog<JsonLinkedContext>();
 
         internal IList<object> Stack { get; private set; }
         public JsonLinkedOptions Options { get; private set; }
@@ -67,6 +72,11 @@ namespace Alba.Framework.Serialization.Json
                 linkProvider.RememberOriginLink(value, this);
         }
 
+        public IDisposable RememberLinkScoped (object value)
+        {
+            return new RememberLinkScope(this, value);
+        }
+
         public void ValidateLinksResolved ()
         {
             foreach (IJsonLinkProvider linkProvider in Options.LinkProviders)
@@ -76,17 +86,19 @@ namespace Alba.Framework.Serialization.Json
         public void SetOwner (object o)
         {
             var current = Stack[Stack.Count - 1] as IOwned;
-            if (current != null)
+            if (current != null && Stack.Count >= 2)
                 current.Owner = Stack[Stack.Count - 2];
         }
 
         public void PushObject (object o)
         {
+            Log.Trace("Push {0}".Fmt(o));
             Stack.Add(o);
         }
 
         public void PopObject (object o)
         {
+            Log.Trace("Pop {0}".Fmt(o));
             if (Stack.Last() != o)
                 throw new InvalidOperationException("Invalid object popped from the stack.");
             Stack.RemoveAt(Stack.Count - 1);
@@ -95,6 +107,25 @@ namespace Alba.Framework.Serialization.Json
         public string StackString
         {
             get { return Stack.Select(o => o.GetType().Name).JoinString(">"); }
+        }
+
+        private struct RememberLinkScope : IDisposable
+        {
+            private readonly JsonLinkedContext _context;
+            private readonly object _value;
+
+            public RememberLinkScope (JsonLinkedContext context, object value)
+            {
+                _context = context;
+                _value = value;
+                _context.PushObject(_value);
+                _context.RememberLink(_value);
+            }
+
+            public void Dispose ()
+            {
+                _context.PopObject(_value);
+            }
         }
     }
 }

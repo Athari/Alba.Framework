@@ -46,6 +46,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\JsonLinkAttribute.cs" />
+    <Compile Include="Attributes\JsonLinkCollectionAttribute.cs" />
+    <Compile Include="Attributes\JsonLinkedAttribute.cs" />
+    <Compile Include="Attributes\JsonLinkedCollectionAttribute.cs" />
+    <Compile Include="Attributes\JsonOriginAttribute.cs" />
+    <Compile Include="Attributes\JsonOriginCollectionAttribute.cs" />
     <Compile Include="Common\CustomJsonSerializer%28T%29.cs" />
     <Compile Include="Common\DictionarySerializationBinder.cs" />
     <Compile Include="Common\ICustomJsonSerializer%28T%29.cs" />

@@ -9,11 +9,13 @@ namespace Alba.Framework.Serialization.Json
         where TValue : class, IIdentifiable<string>
         where TRoot : class
     {
-        private readonly GlobalLinkData _linkData = new GlobalLinkData();
+        private readonly GlobalLinkData _linkData;
 
         public PathLinkProvider (string idProp) :
             base(idProp)
-        {}
+        {
+            _linkData = new GlobalLinkData(this);
+        }
 
         public override string GetLink (TValue value, JsonLinkedContext context)
         {
@@ -42,6 +44,9 @@ namespace Alba.Framework.Serialization.Json
 
         private class GlobalLinkData : LinkData
         {
+            public GlobalLinkData (PathLinkProviderBase<TValue, TRoot> linkProvider) : base(linkProvider)
+            {}
+
             public override void ValidateLinksResolved ()
             {
                 if (_unresolvedLinks.Any()) {

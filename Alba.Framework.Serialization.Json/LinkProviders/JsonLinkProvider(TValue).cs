@@ -17,6 +17,11 @@ namespace Alba.Framework.Serialization.Json
             IdProp = idProp;
         }
 
+        protected bool IsIndexed
+        {
+            get { return IdProp == JsonLinkedContext.IndexPropName; }
+        }
+
         public virtual bool IsScoped
         {
             get { return false; }

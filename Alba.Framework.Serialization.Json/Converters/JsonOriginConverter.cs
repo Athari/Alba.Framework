@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Linq;
 using Alba.Framework.Common;
+using Alba.Framework.Globalization;
 using Alba.Framework.Reflection;
 using Alba.Framework.Text;
 using Newtonsoft.Json;
@@ -26,11 +29,21 @@ namespace Alba.Framework.Serialization.Json
             var jobj = JObject.Load(reader);
 
             resolveContext.UpdateTypeFromTypeProperty(type, (string)jobj.Property(JsonLinkedContext.TypePropName));
-            var id = (string)jobj.Property(resolveContext.IdProp);
 
-            var value = resolveContext.Context.ResolveOrigin(id, resolveContext);
+            var value = resolveContext.Context.ResolveOrigin(GetId(resolveContext, jobj), resolveContext);
             serializer.Populate(jobj.CreateReader(), value);
             return value;
+        }
+
+        private static string GetId (JsonResolveLinkContext resolveContext, JObject jobj)
+        {
+            string idProp = resolveContext.IdProp;
+            if (idProp != JsonLinkedContext.IndexPropName)
+                return (string)jobj.Property(idProp);
+            else {
+                var collection = resolveContext.Context.Stack.Last() as ICollection;
+                return collection != null ? collection.Count.ToStringInv() : "";
+            }
         }
 
         public override bool CanConvert (Type type)
