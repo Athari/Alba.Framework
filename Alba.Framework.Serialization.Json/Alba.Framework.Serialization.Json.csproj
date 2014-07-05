@@ -66,9 +66,12 @@
     <Compile Include="Common\SerializationBinderExts.cs" />
     <Compile Include="Converters\ConcreteTypeConverter%28T%29.cs" />
     <Compile Include="Converters\EnumFlagsConverter.cs" />
+    <Compile Include="Converters\JsonJObjectConverter%28T%29.cs" />
+    <Compile Include="Converters\JsonConverter%28T%29.cs" />
     <Compile Include="Converters\JsonLinkConverter.cs" />
     <Compile Include="Converters\JsonLinkLinkDictionaryConverter%28TKey,TValue%29.cs" />
     <Compile Include="Converters\JsonOriginConverter.cs" />
+    <Compile Include="Converters\JsonOriginConverter%28T%29.cs" />
     <Compile Include="Converters\JsonTypedObjectConverter.cs" />
     <Compile Include="LinkProviders\IJsonLinkProvider.cs" />
     <Compile Include="LinkProviders\JsonLinkProvider%28TValue%29.cs" />
