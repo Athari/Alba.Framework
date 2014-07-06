@@ -8,9 +8,9 @@ namespace Alba.Framework.Collections
     {
         private static readonly Random _rnd = new Random();
 
-        public static T RandomItem<T> (this IList<T> @this)
+        public static T RandomItem<T> (this IList<T> @this, Random rnd = null)
         {
-            return @this[_rnd.Next(@this.Count)];
+            return @this[(rnd ?? _rnd).Next(@this.Count)];
         }
 
         public static void InsertRange<T> (this IList<T> @this, int index, IEnumerable<T> items)
@@ -27,6 +27,12 @@ namespace Alba.Framework.Collections
         public static void SetAtWrapped<T> (this IList<T> @this, int index, T value)
         {
             @this[WrapIndex(index, @this.Count)] = value;
+        }
+
+        public static int IndexOfOrDefault<T> (this IList<T> @this, T value, int defaultIndex)
+        {
+            int index = @this.IndexOf(value);
+            return index != -1 ? index : defaultIndex;
         }
 
         public static void SwapAt<T> (this IList<T> @this, int index, int indexOther)

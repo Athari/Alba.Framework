@@ -166,9 +166,9 @@ namespace Alba.Framework.Collections
                 yield return bucket.Take(count);
         }
 
-        public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this)
+        public static IEnumerable<T> Shuffle<T> (this IEnumerable<T> @this, Random rnd = null)
         {
-            return @this.OrderBy(i => _rnd.NextDouble());
+            return @this.OrderBy(i => (rnd ?? _rnd).NextDouble());
         }
 
         public static IEnumerable<T> WhereNotNull<T> (this IEnumerable<T> @this)
