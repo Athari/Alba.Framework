@@ -21,6 +21,14 @@ namespace Alba.Framework.Sys
             return compare();
         }
 
+        [Pure]
+        public static bool Equals<T> (this T @this, object obj, Func<T, bool> equals)
+        {
+            if (ReferenceEquals(obj, null)) return false;
+            if (ReferenceEquals(obj, @this)) return true;
+            return obj.GetType() == @this.GetType() && equals((T)obj);
+        }
+
         public static T CloneSerializable<T> (this T @this)
         {
             if (!typeof(T).IsSerializable)
