@@ -70,6 +70,23 @@ namespace Alba.Framework.Text
         }
 
         [Pure]
+        public static string RemoveSuffixes (this string @this, string prefix, string postfix)
+        {
+            if (!@this.StartsWith(prefix))
+                throw new ArgumentException("String '{0}' does not contain prefix '{1}'.".Fmt(@this, prefix), "prefix");
+            if (!@this.EndsWith(postfix))
+                throw new ArgumentException("String '{0}' does not contain postfix '{1}'.".Fmt(@this, postfix), "postfix");
+            return @this.Substring(prefix.Length, @this.Length - prefix.Length - postfix.Length);
+        }
+
+        [Pure]
+        public static string RemoveSuffixesSafe (this string @this, string prefix, string postfix)
+        {
+            return @this.StartsWith(prefix) && @this.EndsWith(postfix)
+                ? @this.Substring(prefix.Length, @this.Length - prefix.Length - postfix.Length) : @this;
+        }
+
+        [Pure]
         public static string SingleLine (this string @this)
         {
             return ReNewlines.Replace(@this, " ");
@@ -79,6 +96,13 @@ namespace Alba.Framework.Text
         public static string SubstringEnd (this string @this, int length)
         {
             return @this.Length < length ? @this : @this.Substring(@this.Length - length, length);
+        }
+
+        public static void Split (this string @this, out string s1, out string s2, params char[] separator)
+        {
+            string[] values = @this.Split(separator, 2);
+            s1 = values[0];
+            s2 = values[1];
         }
 
         public static void AppendSentence (this StringBuilder @this, string sentence)
