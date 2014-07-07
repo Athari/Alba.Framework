@@ -24,13 +24,16 @@ namespace Alba.Framework.Caliburn
 
         private static string GetAttachMessageItem (string action)
         {
+            action = action.Trim();
             if (action.IndexOf(EventMethodSeparators[0]) != -1) {
-                string[] eventAction = action.Split(EventMethodSeparators, 2);
-                return "[Event {0}] = [Action {1}]".FmtInv(eventAction[0], eventAction[1]);
+                string[] triggerAction = action.Split(EventMethodSeparators, 2);
+                if (triggerAction[0].StartsWith("["))
+                    return "[Key {0}] = [Action {1}]".FmtInv(triggerAction[0].RemoveSuffixes("[", "]"), triggerAction[1]); // "[Ctrl+O]=FileOpen"
+                else
+                    return "[Event {0}] = [Action {1}]".FmtInv(triggerAction[0], triggerAction[1]); // "MouseDown=ButtonMouseDown"
             }
-            else {
-                return "[Event {0}] = [Action {1}]".FmtInv(GetAttachMessageEvent(action), action);
-            }
+            else
+                return "[Event {0}] = [Action {1}]".FmtInv(GetAttachMessageEvent(action), action); // "MouseDown"
         }
 
         private static string GetAttachMessageEvent (string attach)
