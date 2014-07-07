@@ -56,6 +56,9 @@
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
     <Compile Include="Windows\Controls\WrapView.cs" />
+    <Compile Include="Windows\Input\AnyKeyGesture.cs" />
+    <Compile Include="Windows\Input\Converters\AnyKeyGestureConverter.cs" />
+    <Compile Include="Windows\Input\Converters\AnyKeyGestureValueSerializer.cs" />
     <Compile Include="Windows\Interop\GWL.cs" />
     <Compile Include="Windows\Interop\HWND.cs" />
     <Compile Include="Windows\Interop\ICON.cs" />

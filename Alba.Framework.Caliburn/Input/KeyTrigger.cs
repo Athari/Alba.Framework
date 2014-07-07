@@ -1,32 +1,35 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Alba.Framework.ComponentModel;
+using Alba.Framework.Windows.Input;
 
 namespace Alba.Framework.Caliburn
 {
     public class KeyTrigger : TriggerBase<UIElement>
     {
-        private static readonly KeyGestureConverter _keyGestureConverter = new KeyGestureConverter();
+        private static readonly TypeConverter _keyGestureConverter = new AnyKeyGestureConverter();
 
         public static readonly DependencyProperty KeyGestureProperty = DependencyProperty.Register(
-            "KeyGesture", typeof(KeyGesture), typeof(KeyTrigger), null);
+            "KeyGesture", typeof(AnyKeyGesture), typeof(KeyTrigger), null);
 
         public KeyTrigger ()
         {}
 
-        public KeyTrigger (KeyGesture keyGesture)
+        public KeyTrigger (AnyKeyGesture keyGesture)
         {
             KeyGesture = keyGesture;
         }
 
         public KeyTrigger (string keyGesture)
         {
-            KeyGesture = (KeyGesture)_keyGestureConverter.ConvertFromString(keyGesture);
+            KeyGesture = _keyGestureConverter.ConvertFromString<AnyKeyGesture>(keyGesture);
         }
 
-        public KeyGesture KeyGesture
+        public AnyKeyGesture KeyGesture
         {
-            get { return (KeyGesture)GetValue(KeyGestureProperty); }
+            get { return (AnyKeyGesture)GetValue(KeyGestureProperty); }
             set { SetValue(KeyGestureProperty, value); }
         }
 
