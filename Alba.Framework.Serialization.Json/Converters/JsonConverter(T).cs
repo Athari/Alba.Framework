@@ -33,14 +33,6 @@ namespace Alba.Framework.Serialization.Json
             return objectType.Is<T>();
         }
 
-        protected TEnum ParseEnum<TEnum> (string value) where TEnum : struct
-        {
-            TEnum result;
-            if (!Enum.TryParse(value, out result))
-                throw new JsonSerializationException("Unexpected enum value of {0} '{1}'.".Fmt(typeof(TEnum).Name, value));
-            return result;
-        }
-
         protected Exception CreateNotSupportedException ([CallerMemberName] string memberName = null)
         {
             return new NotSupportedException("{0} does not support {1}.".Fmt(GetType().GetFullName(), memberName));

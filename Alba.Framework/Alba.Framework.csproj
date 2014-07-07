@@ -147,6 +147,7 @@
     <Compile Include="Collections\Common\KeyValuePairExts.cs" />
     <Compile Include="Sys\LazyExts.cs" />
     <Compile Include="IO\Paths.cs" />
+    <Compile Include="Sys\Parse.cs" />
     <Compile Include="Sys\ServiceProviderExts.cs" />
     <Compile Include="Sys\Shell.cs" />
     <Compile Include="Reflection\TypeExts.cs" />
