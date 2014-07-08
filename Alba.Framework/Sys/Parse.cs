@@ -87,7 +87,12 @@ namespace Alba.Framework.Sys
             return System.TimeSpan.Parse(value, _inv);
         }
 
-        public static TEnum Enum<TEnum> (string value, bool ignoreCase = false)
+        public static TEnum Enum<TEnum> (string value)
+        {
+            return (TEnum)System.Enum.Parse(typeof(TEnum), value);
+        }
+
+        public static TEnum Enum<TEnum> (string value, bool ignoreCase)
         {
             return (TEnum)System.Enum.Parse(typeof(TEnum), value, ignoreCase);
         }
