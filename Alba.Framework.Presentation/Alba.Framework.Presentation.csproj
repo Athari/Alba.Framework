@@ -163,6 +163,7 @@
       <DependentUpon>AttachedProps.tt</DependentUpon>
     </Compile>
     <Compile Include="Windows\Controls\Dialogs\WindowButton.cs" />
+    <Compile Include="Windows\Mvvm\Models\EnumFlagsModel%28T%29.cs" />
     <Compile Include="Windows\Mvvm\Models\IModel.cs" />
     <Compile Include="Windows\Mvvm\Models\LazyExpand%28T%29.cs" />
     <Compile Include="Windows\Mvvm\Models\ModelBase%28TSelf%29.cs" />

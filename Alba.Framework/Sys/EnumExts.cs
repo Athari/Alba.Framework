@@ -30,6 +30,66 @@ namespace Alba.Framework.Sys
             return (uthis & uflags) == uflags;
         }
 
+        public static T With<T> (this T @this, T flag)
+            where T : struct, IComparable, IFormattable, IConvertible //, Enum
+        {
+            return @this.With(flag, true);
+        }
+
+        public static T Without<T> (this T @this, T flag)
+            where T : struct, IComparable, IFormattable, IConvertible //, Enum
+        {
+            return @this.With(flag, false);
+        }
+
+        public static T Toggle<T> (this T @this, T flag)
+            where T : struct, IComparable, IFormattable, IConvertible //, Enum
+        {
+            return @this.With(flag, !@this.Has(flag));
+        }
+
+        public static T With<T> (this T @this, T flag, bool isSet)
+            where T : struct, IComparable, IFormattable, IConvertible //, Enum
+        {
+            TypeCode typeCode = Convert.GetTypeCode(@this);
+            switch (typeCode) {
+                case TypeCode.SByte: {
+                    SByte ithis = Convert.ToSByte(@this, null), iflag = Convert.ToSByte(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.Byte: {
+                    Byte ithis = Convert.ToByte(@this, null), iflag = Convert.ToByte(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.Int16: {
+                    Int16 ithis = Convert.ToInt16(@this, null), iflag = Convert.ToInt16(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.UInt16: {
+                    UInt16 ithis = Convert.ToUInt16(@this, null), iflag = Convert.ToUInt16(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.Int32: {
+                    Int32 ithis = Convert.ToInt32(@this, null), iflag = Convert.ToInt32(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.UInt32: {
+                    UInt32 ithis = Convert.ToUInt32(@this, null), iflag = Convert.ToUInt32(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.Int64: {
+                    Int64 ithis = Convert.ToInt64(@this, null), iflag = Convert.ToInt64(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                case TypeCode.UInt64: {
+                    UInt64 ithis = Convert.ToUInt64(@this, null), iflag = Convert.ToUInt64(flag, null);
+                    return (T)(object)(isSet ? (ithis | iflag) : (ithis & ~iflag));
+                }
+                default:
+                    throw new InvalidOperationException("Unknown enum type: {0}.".Fmt(typeCode));
+            }
+        }
+
         public static IEnumerable<T> EnumerateBits<T> (this T @this)
             where T : struct, IComparable, IFormattable, IConvertible //, Enum
         {
