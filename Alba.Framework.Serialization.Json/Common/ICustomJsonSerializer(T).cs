@@ -10,6 +10,7 @@ namespace Alba.Framework.Serialization.Json
         void PopulateFromString (T value, string source);
         T DeserializeFromFile (string fileName, bool throwOnError = true);
         T DeserializeFromString (string source);
+        T Clone (T value);
         Func<object, string> GetGlobalLinks (T value);
     }
 }

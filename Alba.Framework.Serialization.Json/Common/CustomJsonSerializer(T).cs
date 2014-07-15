@@ -211,6 +211,11 @@ namespace Alba.Framework.Serialization.Json
                 return DeserializeFromStream(stringReader);
         }
 
+        public T Clone (T value)
+        {
+            return DeserializeFromString(SerializeToString(value));
+        }
+
         private T DeserializeFromStream (TextReader textReader)
         {
             JsonSerializer serializer = CreateJsonSerializer();
