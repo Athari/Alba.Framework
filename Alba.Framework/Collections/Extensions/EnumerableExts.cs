@@ -14,6 +14,16 @@ namespace Alba.Framework.Collections
     {
         private static readonly Random _rnd = new Random();
 
+        public static ReadOnlyCollection<T> EmptyList<T> ()
+        {
+            return EmptyEnumerable<T>.EmptyList;
+        }
+
+        public static ReadOnlyDictionary<TKey, TValue> EmptyDictionary<TKey, TValue> ()
+        {
+            return EmptyDictionaryEnumerable<TKey, TValue>.EmptyDictionary;
+        }
+
         public static IEnumerable<T> Concat<T> (params IEnumerable<T>[] enumerables)
         {
             return enumerables.SelectMany(e => e);
@@ -387,6 +397,26 @@ namespace Alba.Framework.Collections
         public static IEnumerable<int> Range (this int start, int count)
         {
             return Enumerable.Range(start, count);
+        }
+
+        private static class EmptyEnumerable<T>
+        {
+            private static volatile ReadOnlyCollection<T> _emptyList;
+
+            public static ReadOnlyCollection<T> EmptyList
+            {
+                get { return _emptyList ?? (_emptyList = new ReadOnlyCollection<T>(new T[0])); }
+            }
+        }
+
+        private static class EmptyDictionaryEnumerable<TKey, TValue>
+        {
+            private static volatile ReadOnlyDictionary<TKey, TValue> _emptyDictionary;
+
+            public static ReadOnlyDictionary<TKey, TValue> EmptyDictionary
+            {
+                get { return _emptyDictionary ?? (_emptyDictionary = new ReadOnlyDictionary<TKey, TValue>(new SortedList<TKey, TValue>())); }
+            }
         }
     }
 }
