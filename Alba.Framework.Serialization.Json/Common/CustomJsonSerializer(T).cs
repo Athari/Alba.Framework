@@ -92,7 +92,7 @@ namespace Alba.Framework.Serialization.Json
             context.PopObject(value);
         }
 
-        public bool SerializeToFile (T value, string fileName, bool createBackup = true, bool throwOnError = true)
+        public bool SerializeToFile (T value, string fileName, bool createBackup = false, bool throwOnError = true)
         {
             string dirName = Path.GetDirectoryName(fileName);
             string tempFileName = fileName + TempFileExt;
