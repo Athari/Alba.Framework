@@ -148,6 +148,12 @@ namespace Alba.Framework.Collections
             return min;
         }
 
+        public static IEnumerable<T> OrderByIndices<T> (this IEnumerable<T> @this, IEnumerable<int> indices)
+        {
+            IList<T> list = @this.AsList();
+            return indices.Select(index => list[index]);
+        }
+
         public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Type exceptionType = null)
         {
             Contract.Requires<ArgumentNullException>(@this != null, "this");
