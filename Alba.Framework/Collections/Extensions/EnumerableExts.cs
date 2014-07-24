@@ -12,6 +12,8 @@ namespace Alba.Framework.Collections
 {
     public static class EnumerableExts
     {
+        private const string ErrorNoElements = "Sequence contains no elements.";
+
         private static readonly Random _rnd = new Random();
 
         public static ReadOnlyCollection<T> EmptyList<T> ()
@@ -110,6 +112,40 @@ namespace Alba.Framework.Collections
                 i++;
             }
             return index;
+        }
+
+        public static T MinBy<T, TKey> (this IEnumerable<T> @this, Func<T, TKey> selector, IComparer<TKey> comparer = null)
+        {
+            return ExtremeBy(@this, selector, (comparer ?? Comparer<TKey>.Default).IsLessThan);
+        }
+
+        public static T MaxBy<T, TKey> (this IEnumerable<T> @this, Func<T, TKey> selector, IComparer<TKey> comparer = null)
+        {
+            return ExtremeBy(@this, selector, (comparer ?? Comparer<TKey>.Default).IsMoreThan);
+        }
+
+        private static T ExtremeBy<T, TKey> (this IEnumerable<T> @this, Func<T, TKey> selector, Func<TKey, TKey, bool> isMoreExtreme)
+        {
+            bool hasValue = false;
+            T min = default(T);
+            TKey minKey = default(TKey);
+            foreach (T item in @this) {
+                TKey itemKey = selector(item);
+                if (hasValue) {
+                    if (isMoreExtreme(itemKey, minKey)) {
+                        min = item;
+                        minKey = itemKey;
+                    }
+                }
+                else {
+                    min = item;
+                    minKey = itemKey;
+                    hasValue = true;
+                }
+            }
+            if (!hasValue)
+                throw new InvalidOperationException(ErrorNoElements);
+            return min;
         }
 
         public static T FirstOrException<T> (this IEnumerable<T> @this, Func<T, bool> predicate, Type exceptionType = null)

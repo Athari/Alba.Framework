@@ -70,6 +70,7 @@
     <Compile Include="Collections\Collections\OwnedObservableCollectionBase%28T%29.cs" />
     <Compile Include="Collections\Debug\CollectionDebugView.cs" />
     <Compile Include="Collections\Debug\DictionaryDebugView%28TKey,TValue%29.cs" />
+    <Compile Include="Collections\Extensions\ComparerExts.cs" />
     <Compile Include="Collections\Extensions\EnumerableExts.cs" />
     <Compile Include="Collections\Extensions\EnumeratorExts.cs" />
     <Compile Include="Collections\Collections\Map%28TKey,TValue%29.cs" />
