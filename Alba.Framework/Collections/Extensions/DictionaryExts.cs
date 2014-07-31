@@ -86,6 +86,16 @@ namespace Alba.Framework.Collections
             return value;
         }
 
+        public static int GetAndIncrement<TKey> (this IDictionary<TKey, int> @this, TKey key, int startValue = 0)
+        {
+            int value;
+            if (@this.TryGetValue(key, out value))
+                @this[key] = ++value;
+            else
+                @this[key] = value = startValue;
+            return value;
+        }
+
         public static ExpandoObject ToExpando<TValue> (this IDictionary<string, TValue> @this)
         {
             var expando = new ExpandoObject();
