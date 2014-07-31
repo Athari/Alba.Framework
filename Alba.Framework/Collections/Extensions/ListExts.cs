@@ -24,6 +24,11 @@ namespace Alba.Framework.Collections
             return @this[WrapIndex(index, @this.Count)];
         }
 
+        public static T AtWrappedOrDefault<T> (this IList<T> @this, int index, T defaultValue = default(T))
+        {
+            return @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : defaultValue;
+        }
+
         public static void SetAtWrapped<T> (this IList<T> @this, int index, T value)
         {
             @this[WrapIndex(index, @this.Count)] = value;
