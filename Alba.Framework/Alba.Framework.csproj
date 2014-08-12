@@ -146,6 +146,7 @@
     <Compile Include="Sys\EnumExts.cs" />
     <Compile Include="Sys\ExceptionExts.cs" />
     <Compile Include="Collections\Common\KeyValuePairExts.cs" />
+    <Compile Include="Sys\FloatExts.cs" />
     <Compile Include="Sys\LazyExts.cs" />
     <Compile Include="IO\Paths.cs" />
     <Compile Include="Sys\Parse.cs" />
