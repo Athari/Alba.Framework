@@ -5,15 +5,15 @@ namespace Alba.Framework.Sys
 {
     public static class FloatExts
     {
-        private const float Epsilon = 1.192092896e-7f;
+        public const float Epsilon = 1.192092896e-7f;
 
-        public static bool IsCloseTo (this float value1, float value2)
+        public static bool IsCloseTo (this float value1, float value2, float epsilon = Epsilon)
         {
             //in case they are Infinities (then epsilon check does not work)
             if (value1 == value2)
                 return true;
-            // This computes (|value1-value2| / (|value1| + |value2| + 10.0f)) < Epsilon
-            float eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0f) * Epsilon;
+            // This computes (|value1-value2| / (|value1| + |value2| + 10.0f)) < epsilon
+            float eps = (Math.Abs(value1) + Math.Abs(value2) + 10.0f) * epsilon;
             float delta = value1 - value2;
             return (-eps < delta) && (eps > delta);
         }
