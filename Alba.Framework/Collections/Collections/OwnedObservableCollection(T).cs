@@ -7,6 +7,11 @@ namespace Alba.Framework.Collections
     {
         private readonly TOwner _owner;
 
+        protected TOwner Owner
+        {
+            get { return _owner; }
+        }
+
         public OwnedObservableCollection (TOwner owner)
         {
             _owner = owner;
