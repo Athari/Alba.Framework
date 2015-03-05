@@ -63,6 +63,7 @@
     <Compile Include="Collections\Collections\IndexDictionary%28TValue%29.cs" />
     <Compile Include="Collections\Collections\IndexDictionaryBase%28TKey,TValue%29.cs" />
     <Compile Include="Collections\Collections\IOwnedList%28T%29.cs" />
+    <Compile Include="Collections\Collections\ListDictionary%28T%29.cs" />
     <Compile Include="Collections\Collections\OwnedCollection%28T%29.cs" />
     <Compile Include="Collections\Collections\OwnedCollectionBase%28T%29.cs" />
     <Compile Include="Collections\Collections\OwnedObservableCollection%28T%29.cs" />
