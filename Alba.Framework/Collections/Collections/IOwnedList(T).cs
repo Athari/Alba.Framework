@@ -1,11 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿namespace Alba.Framework.Collections;
 
-// ReSharper disable PossibleInterfaceMemberAmbiguity
-namespace Alba.Framework.Collections
+public interface IOwnedList<T> : IList<T>
 {
-    public interface IOwnedList<T> : IList<T>, IList, IReadOnlyList<T>
-    {
-        void SwapAt (int index, int indexOther);
-    }
+    void SwapAt(int index, int indexOther);
 }

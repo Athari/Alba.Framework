@@ -1,12 +1,11 @@
-﻿using System.Security.Principal;
+﻿using System.Runtime.Versioning;
+using System.Security.Principal;
 
-namespace Alba.Framework.Security
+namespace Alba.Framework.Security;
+
+[PublicAPI, SupportedOSPlatform("windows")]
+public static class WellKnownSidTypeExts
 {
-    public static class WellKnownSidTypeExts
-    {
-        public static SecurityIdentifier ToIdentifier (this WellKnownSidType @this)
-        {
-            return new SecurityIdentifier(@this, null);
-        }
-    }
+    public static SecurityIdentifier ToIdentifier(this WellKnownSidType @this, SecurityIdentifier? security = null) =>
+        new(@this, security);
 }

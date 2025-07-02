@@ -2,6 +2,6 @@
 {
     public interface IOwned<TOwner>
     {
-        TOwner Owner { get; set; }
+        TOwner? Owner { get; set; }
     }
 }

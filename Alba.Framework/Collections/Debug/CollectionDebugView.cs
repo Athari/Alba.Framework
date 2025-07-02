@@ -1,25 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 
-namespace Alba.Framework.Collections
+namespace Alba.Framework.Collections;
+
+internal class CollectionDebugView<T>
 {
-    internal class CollectionDebugView<T>
+    private readonly ICollection<T> _collection;
+
+    [PublicAPI]
+    [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+    public T[] Items => [ .._collection ];
+
+    public CollectionDebugView(ICollection<T> collection)
     {
-        private readonly ICollection<T> _collection;
-
-        [DebuggerBrowsable (DebuggerBrowsableState.RootHidden)]
-        public T[] Items
-        {
-            get { return _collection.ToArray(); }
-        }
-
-        public CollectionDebugView (ICollection<T> collection)
-        {
-            if (collection == null)
-                throw new ArgumentNullException("collection");
-            _collection = collection;
-        }
+        Guard.IsNotNull(collection, nameof(collection));
+        _collection = collection;
     }
 }

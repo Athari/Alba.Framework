@@ -1,7 +1,6 @@
-namespace Alba.Framework.Common
+namespace Alba.Framework.Common;
+
+public interface IIdentifiable<out TKey>
 {
-    public interface IIdentifiable<out TKey>
-    {
-        TKey Id { get; }
-    }
+    TKey Id { get; }
 }

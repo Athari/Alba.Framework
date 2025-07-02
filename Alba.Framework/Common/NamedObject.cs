@@ -1,24 +1,19 @@
-﻿using System;
-using Alba.Framework.Text;
+﻿namespace Alba.Framework.Common;
 
-namespace Alba.Framework.Common
+public class NamedObject
 {
-    public class NamedObject
+    private string _name;
+
+    public NamedObject(string name)
     {
-        private string _name;
+        Guard.IsNotNullOrEmpty(name, nameof(name));
+        _name = name;
+    }
 
-        public NamedObject (string name)
-        {
-            if (name.IsNullOrEmpty())
-                throw new ArgumentNullException(name);
-            _name = name;
-        }
-
-        public override string ToString ()
-        {
-            if (_name[0] != '{')
-                _name = "{{{0}}}".FmtInv(_name);
-            return _name;
-        }
+    public override string ToString()
+    {
+        if (_name[0] != '{')
+            _name = $"{{{_name}}}";
+        return _name;
     }
 }

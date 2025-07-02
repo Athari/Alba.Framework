@@ -1,20 +1,16 @@
-﻿using System;
-using Alba.Framework.Text;
+﻿namespace Alba.Framework.Diagnostics;
 
-namespace Alba.Framework.Diagnostics
+public class LogEntry
 {
-    public class LogEntry
-    {
-        public Exception Exception { get; set; }
-        public string Message { get; set; }
-        public string DetailedMessage { get; set; }
-        public string TypeName { get; set; }
-        public string MediumTypeName { get; set; }
-        public string FullTypeName { get; set; }
+    public Exception? Exception { get; set; }
+    public string Message { get; set; } = "";
+    public string DetailedMessage { get; set; } = "";
+    public string TypeName { get; set; } = "";
+    public string MediumTypeName { get; set; } = "";
+    public string FullTypeName { get; set; } = "";
 
-        public override string ToString ()
-        {
-            return "Message='{0}'\nType={1}".Fmt(Message, MediumTypeName);
-        }
+    public override string ToString()
+    {
+        return $"Message='{Message}'\nType={MediumTypeName}";
     }
 }

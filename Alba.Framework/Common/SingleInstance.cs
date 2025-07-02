@@ -1,65 +1,67 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
 using Alba.Framework.IO;
 using Alba.Framework.Security;
+using Alba.Framework.Text;
 
-namespace Alba.Framework.Common
+namespace Alba.Framework.Common;
+
+[PublicAPI]
+public static class SingleInstance
 {
-    public static class SingleInstance
+    private const string GlobalNamespacePrefix = "Global\\";
+    private static readonly Lock Lock = new();
+    private static Mutex? _Mutex;
+    private static string? _MutexName;
+
+    /// <summary>Check if it is the first application instance.</summary>
+    /// <param name="instanceName">Unique instance name. If null, executanle path is used.</param>
+    /// <param name="isGlobal">Check globally, for all terminal sessions.</param>
+    [SuppressMessage("ReSharper", "ConvertIfStatementToConditionalTernaryExpression")]
+    public static bool IsFirstInstance(string? instanceName = null, bool isGlobal = true)
     {
-        private const string GlobalNamespacePrefix = "Global\\";
-        private static readonly object sync = new object();
-        private static Mutex mutex;
-        private static string mutexName;
+        if (instanceName?.Contains('\\') == true)
+            throw new ArgumentException($"${nameof(instanceName)} must not contain '\\'", nameof(instanceName));
 
-        /// <summary>Check if it is the first application instance.</summary>
-        /// <param name="instanceName">Unique instance name. If null, executanle path is used.</param>
-        /// <param name="isGlobal">Check globally, for all terminal sessions.</param>
-        public static bool IsFirstInstance (string instanceName = null, bool isGlobal = true)
-        {
-            if (instanceName != null && instanceName.Contains("\\"))
-                throw new ArgumentException("name");
-            if (instanceName == null)
-                instanceName = Paths.ExecutableFilePath.Replace('\\', '/');
-            string newMutexName = isGlobal ? GlobalNamespacePrefix + instanceName : instanceName;
-            lock (sync) {
-                // can only be called with the same name
-                if (!string.IsNullOrEmpty(mutexName) && string.CompareOrdinal(mutexName, newMutexName) != 0)
-                    throw new ArgumentException("Must be unique for application.", "instanceName");
-                // has already checked
-                if (mutex != null)
-                    return true;
-                mutexName = newMutexName;
+        instanceName ??= Paths.ExecutableFilePath.Replace('\\', '/');
+        string newMutexName = isGlobal ? GlobalNamespacePrefix + instanceName : instanceName;
+        lock (Lock) {
+            // can only be called with the same name
+            if (!_MutexName.IsNullOrEmpty() && string.CompareOrdinal(_MutexName, newMutexName) != 0)
+                throw new ArgumentException($"{nameof(instanceName)} must be unique for application", nameof(instanceName));
+            // has already checked
+            if (_Mutex != null)
+                return true;
+            _MutexName = newMutexName;
 
-                bool isNew;
-                try {
-                    // try to create mutex with full permissions
-                    mutex = new Mutex(true, mutexName, out isNew, CreateFullAccessMutexSecurity());
+            bool isNew;
+            try {
+                // try to create mutex with full permissions
+                if (OperatingSystem.IsWindows()) {
+                    var sec = new MutexSecurity();
+                    sec.AddAccessRule(new(WellKnownSidType.CreatorOwnerSid.ToIdentifier(), MutexRights.FullControl, AccessControlType.Allow));
+                    sec.AddAccessRule(new(WellKnownSidType.AuthenticatedUserSid.ToIdentifier(), MutexRights.FullControl, AccessControlType.Allow));
+                  #if NET6_0_OR_GREATER
+                    _Mutex = MutexAcl.Create(true, _MutexName, out isNew, sec);
+                  #else
+                    _Mutex = new(true, _MutexName, out isNew, sec);
+                  #endif
                 }
-                catch (UnauthorizedAccessException) {
-                    // not new, another instance created mutex with limited permissions
-                    return false;
+                else {
+                    _Mutex = new(true, _MutexName, out isNew);
                 }
-                if (!isNew) {
-                    // not new, another instance exists
-                    mutex.Close();
-                    mutex = null;
-                }
-                return isNew;
             }
-        }
-
-        private static MutexSecurity CreateFullAccessMutexSecurity ()
-        {
-            // full permissions for all authorized users
-            var mutexSecurity = new MutexSecurity();
-            mutexSecurity.AddAccessRule(new MutexAccessRule(
-                WellKnownSidType.CreatorOwnerSid.ToIdentifier(), MutexRights.FullControl, AccessControlType.Allow));
-            mutexSecurity.AddAccessRule(new MutexAccessRule(
-                WellKnownSidType.AuthenticatedUserSid.ToIdentifier(), MutexRights.FullControl, AccessControlType.Allow));
-            return mutexSecurity;
+            catch (UnauthorizedAccessException) {
+                // not new, another instance created mutex with limited permissions
+                return false;
+            }
+            if (!isNew) {
+                // not new, another instance exists
+                _Mutex.Close();
+                _Mutex = null;
+            }
+            return isNew;
         }
     }
 }

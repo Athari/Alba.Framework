@@ -1,17 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
-namespace Alba.Framework.Diagnostics
+namespace Alba.Framework.Diagnostics;
+
+public static class AlbaFrameworkTraceSources
 {
-    public static class AlbaFrameworkTraceSources
-    {
-        public const string BaseTraceSourceName = "Alba.Framework.";
-        public const string SerializationTraceSourceName = BaseTraceSourceName + "Serialization";
+    public const string BaseTraceSourceName = "Alba.Framework.";
+    public const string SerializationTraceSourceName = BaseTraceSourceName + "Serialization";
 
-        private static TraceSource _serialization;
-
-        public static TraceSource Serialization
-        {
-            get { return _serialization ?? (_serialization = new TraceSource(SerializationTraceSourceName)); }
-        }
-    }
+    [field: MaybeNull]
+    public static TraceSource Serialization => field ??= new(SerializationTraceSourceName);
 }

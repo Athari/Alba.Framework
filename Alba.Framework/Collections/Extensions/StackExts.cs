@@ -1,13 +1,10 @@
-﻿using System.Collections.Generic;
+﻿namespace Alba.Framework.Collections;
 
-namespace Alba.Framework.Collections
+public static class StackExts
 {
-    public static class StackExts
+    public static void PushRange<T>(this Stack<T> @this, IEnumerable<T> items)
     {
-        public static void PushRange<T> (this Stack<T> @this, IEnumerable<T> items)
-        {
-            foreach (T item in items)
-                @this.Push(item);
-        }
+        foreach (T item in items)
+            @this.Push(item);
     }
 }

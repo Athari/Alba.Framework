@@ -1,30 +1,14 @@
 ﻿using Alba.Framework.Common;
 
-namespace Alba.Framework.Collections
+namespace Alba.Framework.Collections;
+
+[PublicAPI]
+public class OwnedCollection<T, TOwner>(TOwner owner) : OwnedCollectionBase<T>
+    where T : class, IOwned<TOwner>
 {
-    public class OwnedCollection<T, TOwner> : OwnedCollectionBase<T>
-        where T : class, IOwned<TOwner>
-    {
-        private readonly TOwner _owner;
+    protected TOwner Owner { get; } = owner;
 
-        protected TOwner Owner
-        {
-            get { return _owner; }
-        }
+    protected override void OwnItem(T item) => item.SetNewOwner(Owner);
 
-        public OwnedCollection (TOwner owner)
-        {
-            _owner = owner;
-        }
-
-        protected override void OwnItem (T item)
-        {
-            item.SetNewOwner(_owner);
-        }
-
-        protected override void UnownItem (T item)
-        {
-            item.ResetOwner();
-        }
-    }
+    protected override void UnownItem(T item) => item.ResetOwner();
 }

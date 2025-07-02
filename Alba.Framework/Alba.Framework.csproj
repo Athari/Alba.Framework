@@ -1,198 +1,35 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{62730B23-450C-4B93-8D5C-F7037DB6D263}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Alba.Framework</RootNamespace>
-    <AssemblyName>Alba.Framework</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Platform">
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CODE_ANALYSIS</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+
+  <PropertyGroup Label="Build">
+    <IsRuntimeWindows Condition="'$(OS)' == 'Windows_NT' OR $(RuntimeIdentifier.StartsWith('win'))">True</IsRuntimeWindows>
+    <DefineConstants Condition="'$(IsRuntimeWindows)' == 'True'">$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Interactive">
-      <HintPath>..\..\packages\Ix_Experimental-Main.1.1.10823\lib\Net4\System.Interactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\..\packages\Rx-Core.2.0.21114\lib\Net45\System.Reactive.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\..\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\..\packages\Rx-Linq.2.0.21114\lib\Net45\System.Reactive.Linq.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\..\packages\Rx-PlatformServices.2.0.21114\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\..\packages\Rx-XAML.2.0.21114\lib\Net45\System.Reactive.Windows.Threading.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="WindowsBase" />
+
+  <ItemGroup Label="Build">
+    <Using Include="CommunityToolkit.Diagnostics" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Include="System.Diagnostics.Contracts.PureAttribute" Alias="PureAttribute" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Attributes\JetBrainsAnnotations.cs" />
-    <Compile Include="Collections\Collections\BiDictionary%28TFirst,TSecond%29.cs" />
-    <Compile Include="Collections\Collections\IndexDictionary%28TValue%29.cs" />
-    <Compile Include="Collections\Collections\IndexDictionaryBase%28TKey,TValue%29.cs" />
-    <Compile Include="Collections\Collections\IOwnedList%28T%29.cs" />
-    <Compile Include="Collections\Collections\ListDictionary%28T%29.cs" />
-    <Compile Include="Collections\Collections\OwnedCollection%28T%29.cs" />
-    <Compile Include="Collections\Collections\OwnedCollectionBase%28T%29.cs" />
-    <Compile Include="Collections\Collections\OwnedObservableCollection%28T%29.cs" />
-    <Compile Include="Collections\Collections\OwnedObservableCollectionBase%28T%29.cs" />
-    <Compile Include="Collections\Debug\CollectionDebugView.cs" />
-    <Compile Include="Collections\Debug\DictionaryDebugView%28TKey,TValue%29.cs" />
-    <Compile Include="Collections\Extensions\BitArrayExts.cs" />
-    <Compile Include="Collections\Extensions\ComparerExts.cs" />
-    <Compile Include="Collections\Extensions\EnumerableExts.cs" />
-    <Compile Include="Collections\Extensions\EnumeratorExts.cs" />
-    <Compile Include="Collections\Collections\Map%28TKey,TValue%29.cs" />
-    <Compile Include="Collections\Collections\ObservableQueue%28T%29.cs" />
-    <Compile Include="Collections\Extensions\QueueExts.cs" />
-    <Compile Include="Collections\Collections\ReadOnlyNotifyingCollection%28T%29.cs" />
-    <Compile Include="Collections\Common\INotifyCollectionItemChanged.cs" />
-    <Compile Include="Collections\Collections\NotifyingCollection%28T%29.cs" />
-    <Compile Include="Collections\Extensions\StackExts.cs" />
-    <Compile Include="Collections\Collections\TypedCollection%28T%29.cs" />
-    <Compile Include="Common\BoolMonitor.cs" />
-    <Compile Include="Common\IOwned%28TOwner%29.cs" />
-    <Compile Include="Common\IOwner%28TOwned%29.cs" />
-    <Compile Include="Common\IIdentifiable.cs" />
-    <Compile Include="Common\IOwned.cs" />
-    <Compile Include="Common\IOwner.cs" />
-    <Compile Include="Common\NamedObject.cs" />
-    <Compile Include="Common\OwnedExts.cs" />
-    <Compile Include="Common\OwnerExts.cs" />
-    <Compile Include="Common\Undefined.cs" />
-    <Compile Include="Collections\Extensions\CollectionExts.cs" />
-    <Compile Include="Collections\Extensions\ConditionalWeakTableExts.cs" />
-    <Compile Include="Collections\Extensions\DictionaryExts.cs" />
-    <Compile Include="Collections\Extensions\ListExts.cs" />
-    <Compile Include="Collections\Collections\ObservableCollectionEx%28T%29.cs" />
-    <Compile Include="Collections\Collections\ReadOnlyObservableCollectionEx%28T%29.cs" />
-    <Compile Include="Common\SingleInstance.cs" />
-    <Compile Include="ComponentModel\TypeConverterExts.cs" />
-    <Compile Include="Diagnostics\UnhandledExceptionsEventArgs.cs" />
-    <Compile Include="Diagnostics\UnhandledExceptionsHandler.cs" />
-    <Compile Include="Diagnostics\UnhandledExceptionSource.cs" />
-    <Compile Include="Interop\InteropMath.cs" />
-    <Compile Include="IO\StreamExts.cs" />
-    <Compile Include="IO\UndisposableStream.cs" />
-    <Compile Include="Net\WebRequestExts.cs" />
-    <Compile Include="Security\IZoneIdentifier.cs" />
-    <Compile Include="Security\PersistentZoneIdentifier.cs" />
-    <Compile Include="Security\UrlZone.cs" />
-    <Compile Include="Security\UrlZones.cs" />
-    <Compile Include="Sys\EventArgs%28T%29.cs" />
-    <Compile Include="Sys\EventHandlerExts.cs" />
-    <Compile Include="Sys\FastWeakEvent%28T%29.cs" />
-    <Compile Include="Interop\ASSOCF.cs" />
-    <Compile Include="Interop\ASSOCSTR.cs" />
-    <Compile Include="Interop\Dll.cs" />
-    <Compile Include="Interop\MAPI.cs" />
-    <Compile Include="Interop\POINT.cs" />
-    <Compile Include="Interop\RECT.cs" />
-    <Compile Include="Interop\SPI.cs" />
-    <Compile Include="Interop\SPIF.cs" />
-    <Compile Include="Interop\Native.cs" />
-    <Compile Include="IO\Streams.cs" />
-    <Compile Include="IO\TeeOutputStream.cs" />
-    <Compile Include="Diagnostics\AlbaFrameworkTraceSources.cs" />
-    <Compile Include="Diagnostics\CallbackTraceFilter.cs" />
-    <Compile Include="Reactive\NotifyPropertyChangeExts.cs" />
-    <Compile Include="Reflection\Props.cs" />
-    <Compile Include="Diagnostics\ILog.cs" />
-    <Compile Include="Diagnostics\Log%28T%29.cs" />
-    <Compile Include="Diagnostics\LogEntry.cs" />
-    <Compile Include="Diagnostics\RollingFileTraceListener.cs" />
-    <Compile Include="Diagnostics\TraceSourceExts.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reactive\ObservableExts.cs" />
-    <Compile Include="Globalization\ConvertibleExts.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConvertibleExts.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Globalization\ConvertibleExts.cs" />
-    <Compile Include="Sys\DelegateExts.cs" />
-    <Compile Include="Sys\DoubleExts.cs" />
-    <Compile Include="Sys\EnumExts.cs" />
-    <Compile Include="Sys\ExceptionExts.cs" />
-    <Compile Include="Collections\Common\KeyValuePairExts.cs" />
-    <Compile Include="Sys\FloatExts.cs" />
-    <Compile Include="Sys\LazyExts.cs" />
-    <Compile Include="IO\Paths.cs" />
-    <Compile Include="Sys\Parse.cs" />
-    <Compile Include="Sys\ServiceProviderExts.cs" />
-    <Compile Include="Sys\Shell.cs" />
-    <Compile Include="Reflection\TypeExts.cs" />
-    <Compile Include="Sys\ValueExts.cs" />
-    <Compile Include="Net\WebUtils.cs" />
-    <Compile Include="Text\MatchCollectionExts.cs" />
-    <Compile Include="Text\Encodings.cs" />
-    <Compile Include="Text\MatchExts.cs" />
-    <Compile Include="Text\StringExts.cs" />
-    <Compile Include="Sys\ObjectExts.cs" />
-    <Compile Include="Security\WellKnownSidTypeExts.cs" />
-    <Compile Include="Text\Wildcards\WildcardOptions.cs" />
-    <Compile Include="Text\Wildcards\WildcardPattern.cs" />
-    <Compile Include="Text\Wildcards\WildcardPatternException.cs" />
-    <Compile Include="Text\Wildcards\WildcardPatternMatcher.cs" />
-    <Compile Include="Text\Wildcards\WildcardPatternParser.cs" />
-    <Compile Include="Text\Wildcards\WildcardPatternToRegexParser.cs" />
-    <Compile Include="Threading\AsyncLock.cs" />
-    <Compile Include="Threading\Tasks\Schedulers\ThreadTaskScheduler.cs" />
-    <Compile Include="Threading\Tasks\Schedulers\LimitedConcurrencyTaskScheduler.cs" />
-    <Compile Include="Threading\Tasks\Schedulers\OrderedTaskScheduler.cs" />
-    <Compile Include="Threading\Tasks\Schedulers\ApartmentTaskScheduler.cs" />
+
+  <ItemGroup Label="Services">
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Alba.Framework.fxcop" />
-    <None Include="packages.config" />
-    <None Include="Globalization\ConvertibleExts.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ConvertibleExts.g.cs</LastGenOutput>
-    </None>
+
+  <ItemGroup Label="Packages">
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
+    <PackageReference Include="System.Threading.AccessControl" Version="9.0.6" Condition="'$(IsRuntimeWindows)' == 'True'" />
   </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+
+  <ItemGroup Label="CodeGen">
+    <Compile Update="Globalization\ConvertibleExts.g.cs" DependentUpon="ConvertibleExts.tt" DesignTime="True" AutoGen="True" />
+    <None Update="Globalization\ConvertibleExts.tt" LastGenOutput="ConvertibleExts.g.cs" Generator="TextTemplatingFileGenerator" />
   </ItemGroup>
-  <Import Project="$(SolutionDir)\Build\Common.targets" Condition="Exists('$(SolutionDir)\Build\Common.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

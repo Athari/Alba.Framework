@@ -1,12 +1,8 @@
-﻿using System.IO;
+﻿namespace Alba.Framework.IO;
 
-namespace Alba.Framework.IO
+[PublicAPI]
+public static class StreamExts
 {
-    public static class StreamExts
-    {
-        public static Stream ToUndisposable (this Stream @this)
-        {
-            return new UndisposableStream(@this);
-        }
-    }
+    public static Stream ToUndisposable(this Stream @this) =>
+        new UndisposableStream(@this);
 }

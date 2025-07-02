@@ -3,7 +3,6 @@
     public enum UnhandledExceptionSource
     {
         CurrentDomain,
-        CurrentDispatcher,
         TaskScheduler,
     }
 }

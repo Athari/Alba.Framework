@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace Alba.Framework.Common;
 
-namespace Alba.Framework.Common
+public interface IOwner<out TOwned>
 {
-    public interface IOwner<out TOwned>
-    {
-        IEnumerable<TOwned> Owned { get; }
-    }
+    IEnumerable<TOwned> Owned { get; }
 }

@@ -32,8 +32,7 @@ namespace Alba.Framework.CodeGeneration.Generators
 
         private static string GetToolsKeyName (string toolName, string visualStudioVersion)
         {
-            return string.Format(@"Software\Microsoft\VisualStudio\{0}\Generators\{1:B}\{2}\",
-                visualStudioVersion, CSharpGuid, toolName);
+            return $@"Software\Microsoft\VisualStudio\{visualStudioVersion}\Generators\{CSharpGuid:B}\{toolName}\";
         }
     }
 }

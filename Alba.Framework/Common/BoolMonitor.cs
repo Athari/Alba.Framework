@@ -1,21 +1,20 @@
-﻿using System;
+﻿using System.Diagnostics.CodeAnalysis;
 
-// ReSharper disable RedundantAssignment
-namespace Alba.Framework.Common
+namespace Alba.Framework.Common;
+
+[PublicAPI]
+public readonly struct BoolMonitor : IDisposable
 {
-    public struct BoolMonitor : IDisposable
+    private readonly Action _setIsChangingFalse;
+
+    public BoolMonitor([SuppressMessage("ReSharper", "RedundantAssignment")] ref bool isChanging, Action setIsChangingFalse)
     {
-        private readonly Action _setIsChangingFalse;
+        isChanging = true;
+        _setIsChangingFalse = setIsChangingFalse;
+    }
 
-        public BoolMonitor (ref bool isChanging, Action setIsChangingFalse)
-        {
-            isChanging = true;
-            _setIsChangingFalse = setIsChangingFalse;
-        }
-
-        public void Dispose ()
-        {
-            _setIsChangingFalse();
-        }
+    public void Dispose()
+    {
+        _setIsChangingFalse();
     }
 }
