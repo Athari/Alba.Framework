@@ -1,0 +1,17 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#
+    var priorities = "Send,Render,Loaded,Default,Input,Background,ContextIdle,ApplicationIdle,SystemIdle".Split(',');
+#>
+using Avalonia.Threading;
+
+namespace Alba.Framework.Avalonia;
+
+public static partial class AwaitAvalonia
+{
+<# foreach (var priority in priorities) { #>
+    public static AvaloniaDispatcherAwaiter <#=$"{priority,-20}"#> { get; } = new(DispatcherPriority.<#=$"{priority,-15}"#>, alwaysYield: false);
+    public static AvaloniaDispatcherAwaiter <#=$"{priority + "Yield",-20}"#> { get; } = new(DispatcherPriority.<#=$"{priority,-15}"#>, alwaysYield: true);
+<# } #>
+}
