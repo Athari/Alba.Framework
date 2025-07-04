@@ -31,8 +31,6 @@ public static class Paths
     }
 
     public static string GetPath(this Environment.SpecialFolder @this,
-        Environment.SpecialFolderOption option = Environment.SpecialFolderOption.Create)
-    {
-        return Environment.GetFolderPath(@this, option);
-    }
+        Environment.SpecialFolderOption option = Environment.SpecialFolderOption.Create) =>
+        Environment.GetFolderPath(@this, option);
 }

@@ -12,6 +12,12 @@ public static class ListExts
         return @this[(rnd ?? Rnd).Next(@this.Count)];
     }
 
+    public static List<T> GetRange<T>(this List<T> @this, Range range)
+    {
+        var (index, count) = range.GetOffsetAndLength(@this.Count);
+        return @this.GetRange(index, count);
+    }
+
     public static void InsertRange<T>(this IList<T> @this, int index, IEnumerable<T> items)
     {
         foreach (T item in items)
@@ -76,9 +82,28 @@ public static class ListExts
     private static int WrapIndex(int index, int count)
     {
         Guard.IsGreaterThan(count, 0, nameof(count));
-        index %= count;
-        if (index < 0)
-            index += count;
-        return index;
+        return index % count + (index < 0 ? count : 0);
+    }
+
+    public static ListSelectedIndexDisposable<T> WithSelectedIndex<T>(this IList<T> @this,
+        int selectedIndex, Action<int> setSelectedIndex) =>
+        new(@this, selectedIndex, setSelectedIndex);
+
+    public static ListSelectedItemDisposable<T> WithSelectedItem<T>(this IList<T> @this,
+        T? selectedItem, Action<T?> setSelectedItem) =>
+        new(@this, selectedItem != null ? @this.IndexOf(selectedItem) : -1, setSelectedItem);
+
+    public readonly struct ListSelectedIndexDisposable<T>(
+        IList<T> list, int selectedIndex, Action<int> setSelectedIndex) : IDisposable
+    {
+        public void Dispose() =>
+            setSelectedIndex(list.Count > 0 ? Math.Min(selectedIndex, list.Count - 1) : -1);
+    }
+
+    public readonly struct ListSelectedItemDisposable<T>(
+        IList<T> list, int selectedIndex, Action<T?> setSelectedItem) : IDisposable
+    {
+        public void Dispose() =>
+            setSelectedItem(list.Count > 0 ? list[Math.Min(selectedIndex, list.Count - 1)] : default);
     }
 }

@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Build">
-    <IsRuntimeWindows Condition="'$(OS)' == 'Windows_NT' OR $(RuntimeIdentifier.StartsWith('win'))">True</IsRuntimeWindows>
-    <DefineConstants Condition="'$(IsRuntimeWindows)' == 'True'">$(DefineConstants);WINDOWS</DefineConstants>
+    <IsRuntimeWindows Condition="'$(OS)' == 'Windows_NT' OR $(RuntimeIdentifier.StartsWith('win'))">true</IsRuntimeWindows>
+    <DefineConstants Condition="'$(IsRuntimeWindows)' == 'true'">$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Label="Build">
@@ -24,7 +24,7 @@
   <ItemGroup Label="Packages">
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
     <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="System.Threading.AccessControl" Version="9.0.6" Condition="'$(IsRuntimeWindows)' == 'True'" />
+    <PackageReference Include="System.Threading.AccessControl" Version="9.0.6" Condition="'$(IsRuntimeWindows)' == 'true'" />
   </ItemGroup>
 
   <ItemGroup Label="CodeGen">

@@ -54,4 +54,22 @@ public static class TypeExts
             name = $"{name.Sub(0, genericGrave)}<{type.GenericTypeArguments.Select(getName).JoinString(", ")}>";
         return name;
     }
+
+    public static IEnumerable<string> GetResourceNames(this Type @this)
+    {
+        var prefix = $"{@this.Namespace}.";
+        return @this.Assembly.GetManifestResourceNames()
+            .Where(n => n.StartsWith(prefix))
+            .Select(n => n[prefix.Length..]);
+    }
+
+    public static Stream ReadResourceStream(this Type @this, string resourceName) =>
+        @this.Assembly.GetManifestResourceStream($"{@this.Namespace}.{resourceName}")
+     ?? throw new InvalidOperationException($"Resource '{resourceName}' not found.");
+
+    public static string ReadResourceString(this Type @this, string resourceName)
+    {
+        using var reader = new StreamReader(ReadResourceStream(@this, resourceName));
+        return reader.ReadToEnd();
+    }
 }

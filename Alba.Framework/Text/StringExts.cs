@@ -32,39 +32,45 @@ public static partial class StringExts
         ReNewLines().Replace(@this, nl ?? Environment.NewLine);
 
     [Pure]
-    public static string RemovePostfix(this string @this, string postfix) =>
-        !@this.EndsWith(postfix)
+    public static string RemovePostfix(this string @this, string postfix,
+        StringComparison comparison = StringComparison.InvariantCulture) =>
+        !@this.EndsWith(postfix, comparison)
             ? throw new ArgumentException($"String '{@this}' does not contain postfix '{postfix}'.", nameof(postfix))
-            : @this.Remove(@this.Length - postfix.Length);
+            : @this[..^postfix.Length];
 
     [Pure]
-    public static string RemovePostfixSafe(this string @this, string postfix) =>
-        @this.EndsWith(postfix) ? @this.Remove(@this.Length - postfix.Length) : @this;
+    public static string RemovePostfixSafe(this string @this, string postfix,
+        StringComparison comparison = StringComparison.InvariantCulture) =>
+        @this.EndsWith(postfix, comparison) ? @this[..^postfix.Length] : @this;
 
     [Pure]
-    public static string RemovePrefix(this string @this, string prefix) =>
-        !@this.StartsWith(prefix)
+    public static string RemovePrefix(this string @this, string prefix,
+        StringComparison comparison = StringComparison.InvariantCulture) =>
+        !@this.StartsWith(prefix, comparison)
             ? throw new ArgumentException($"String '{@this}' does not contain prefix '{prefix}'.", nameof(prefix))
             : @this[prefix.Length..];
 
     [Pure]
-    public static string RemovePrefixSafe(this string @this, string prefix) =>
-        @this.StartsWith(prefix) ? @this[prefix.Length..] : @this;
+    public static string RemovePrefixSafe(this string @this, string prefix,
+        StringComparison comparison = StringComparison.InvariantCulture) =>
+        @this.StartsWith(prefix, comparison) ? @this[prefix.Length..] : @this;
 
     [Pure]
-    public static string RemoveSuffixes(this string @this, string prefix, string postfix)
+    public static string RemoveSuffixes(this string @this, string prefix, string postfix,
+        StringComparison comparison = StringComparison.InvariantCulture)
     {
-        if (!@this.StartsWith(prefix))
+        if (!@this.StartsWith(prefix, comparison))
             throw new ArgumentException($"String '{@this}' does not contain prefix '{prefix}'.", nameof(prefix));
-        if (!@this.EndsWith(postfix))
+        if (!@this.EndsWith(postfix, comparison))
             throw new ArgumentException($"String '{@this}' does not contain postfix '{postfix}'.", nameof(postfix));
-        return @this.Substring(prefix.Length, @this.Length - prefix.Length - postfix.Length);
+        return @this[prefix.Length..^postfix.Length];
     }
 
     [Pure]
-    public static string RemoveSuffixesSafe(this string @this, string prefix, string postfix) =>
-        @this.StartsWith(prefix) && @this.EndsWith(postfix)
-            ? @this.Substring(prefix.Length, @this.Length - prefix.Length - postfix.Length) : @this;
+    public static string RemoveSuffixesSafe(this string @this, string prefix, string postfix,
+        StringComparison comparison = StringComparison.InvariantCulture) =>
+        @this.StartsWith(prefix, comparison) && @this.EndsWith(postfix, comparison)
+            ? @this[prefix.Length..^postfix.Length] : @this;
 
     [Pure]
     public static string SingleLine(this string @this) =>
@@ -133,7 +139,7 @@ public static partial class StringExts
         @this.Replace("$", "$$");
 
     [Pure]
-    public static bool IsReMatch(this string @this, string pattern, RegexOptions options = RegexOptions.None) =>
+    public static bool IsReMatch(this string @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
         Regex.IsMatch(@this, pattern, options);
 
     [Pure]
@@ -141,20 +147,20 @@ public static partial class StringExts
         regex.IsMatch(@this);
 
     [Pure]
-    public static Match ReMatch(this string @this, string pattern, RegexOptions options = RegexOptions.None) =>
+    public static Match ReMatch(this string @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
         Regex.Match(@this, pattern, options);
-
-    [Pure]
-    public static string ReMatchGet(this string @this, string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None) =>
-        Regex.Match(@this, pattern, options).Get(groupNum);
-
-    [Pure]
-    public static string ReMatchGet(this string @this, string pattern, string groupName, RegexOptions options = RegexOptions.None) =>
-        Regex.Match(@this, pattern, options).Get(groupName);
 
     [Pure]
     public static Match ReMatch(this string @this, Regex regex) =>
         regex.Match(@this);
+
+    [Pure]
+    public static string ReMatchGet(this string @this, [RegexPattern] string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None) =>
+        Regex.Match(@this, pattern, options).Get(groupNum);
+
+    [Pure]
+    public static string ReMatchGet(this string @this, [RegexPattern] string pattern, string groupName, RegexOptions options = RegexOptions.None) =>
+        Regex.Match(@this, pattern, options).Get(groupName);
 
     [Pure]
     public static string ReMatchGet(this string @this, Regex regex, int groupNum = 1) =>
@@ -165,20 +171,20 @@ public static partial class StringExts
         regex.Match(@this).Get(groupName);
 
     [Pure]
-    public static MatchCollection ReMatches(this string @this, string pattern, RegexOptions options = RegexOptions.None) =>
+    public static MatchCollection ReMatches(this string @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
         Regex.Matches(@this, pattern, options);
-
-    [Pure]
-    public static IEnumerable<string> ReMatchesGet(this string @this, string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None) =>
-        Regex.Matches(@this, pattern, options).Get(groupNum);
-
-    [Pure]
-    public static IEnumerable<string> ReMatchesGet(this string @this, string pattern, string groupName, RegexOptions options = RegexOptions.None) =>
-        Regex.Matches(@this, pattern, options).Get(groupName);
 
     [Pure]
     public static MatchCollection ReMatches(this string @this, Regex regex) =>
         regex.Matches(@this);
+
+    [Pure]
+    public static IEnumerable<string> ReMatchesGet(this string @this, [RegexPattern] string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None) =>
+        Regex.Matches(@this, pattern, options).Get(groupNum);
+
+    [Pure]
+    public static IEnumerable<string> ReMatchesGet(this string @this, [RegexPattern] string pattern, string groupName, RegexOptions options = RegexOptions.None) =>
+        Regex.Matches(@this, pattern, options).Get(groupName);
 
     [Pure]
     public static IEnumerable<string> ReMatchesGet(this string @this, Regex regex, int groupNum = 1) =>
@@ -189,7 +195,7 @@ public static partial class StringExts
         regex.Matches(@this).Get(groupName);
 
     [Pure]
-    public static string ReReplace(this string @this, string pattern, string replacement, RegexOptions options = RegexOptions.None) =>
+    public static string ReReplace(this string @this, [RegexPattern] string pattern, string replacement, RegexOptions options = RegexOptions.None) =>
         Regex.Replace(@this, pattern, replacement, options);
 
     [Pure]
@@ -197,7 +203,7 @@ public static partial class StringExts
         regex.Replace(@this, replacement);
 
     [Pure]
-    public static string ReReplace(this string @this, string pattern, MatchEvaluator evaluator, RegexOptions options = RegexOptions.None) =>
+    public static string ReReplace(this string @this, [RegexPattern] string pattern, MatchEvaluator evaluator, RegexOptions options = RegexOptions.None) =>
         Regex.Replace(@this, pattern, evaluator, options);
 
     [Pure]
@@ -205,12 +211,24 @@ public static partial class StringExts
         regex.Replace(@this, evaluator);
 
     [Pure]
-    public static string[] ReSplit(this string @this, string pattern, RegexOptions options = RegexOptions.None) =>
+    public static string[] ReSplit(this string @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
         Regex.Split(@this, pattern, options);
 
     [Pure]
-    public static string[] ReSplit(this string @this, Regex regex) =>
-        regex.Split(@this);
+    public static string[] ReSplit(this string @this, Regex regex, int count = 0) =>
+        regex.Split(@this, count);
+
+    [Pure]
+    public static Regex.ValueMatchEnumerator ReMatchesEnumerate(this ReadOnlySpan<char> @this, Regex regex) =>
+        regex.EnumerateMatches(@this);
+
+    [Pure]
+    public static Regex.ValueSplitEnumerator ReSplitEnumerate(this ReadOnlySpan<char> @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
+        Regex.EnumerateSplits(@this, pattern, options);
+
+    [Pure]
+    public static Regex.ValueSplitEnumerator ReSplitEnumerate(this ReadOnlySpan<char> @this, Regex regex, int count = 0) =>
+        regex.EnumerateSplits(@this, count);
 
     [Pure]
     public static string ReUnescape(this string @this) =>
