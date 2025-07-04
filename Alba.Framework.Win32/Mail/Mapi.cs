@@ -93,8 +93,8 @@ public partial class Mapi(
         BCC,
     };
 
-    [LibraryImport("mapi32")]
-    private static partial int MAPISendMail(nint sess, nint hwnd, MapiMessage message, int flg, int rsv);
+    [DllImport("mapi32")]
+    private static extern int MAPISendMail(nint sess, nint hwnd, MapiMessage message, int flg, int rsv);
 
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
