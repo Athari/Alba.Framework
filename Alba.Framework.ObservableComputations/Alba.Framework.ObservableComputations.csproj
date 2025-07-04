@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Platform">
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Build">
+    <RootNamespace>Alba.Framework</RootNamespace>
+    <DefineConstants Condition="'$(OcSupportAvalonia)' == 'true'">$(DefineConstants);OC_SUPPORT_AVALONIA</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Label="Build">
+    <Using Include="CommunityToolkit.Diagnostics" />
+    <Using Include="JetBrains.Annotations" />
+    <Using Include="System.Diagnostics.Contracts.PureAttribute" Alias="PureAttribute" />
+  </ItemGroup>
+
+  <ItemGroup Label="References">
+    <ProjectReference Include="$(SolutionDir)Alba.Framework\Alba.Framework\Alba.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Packages">
+    <PackageReference Include="Avalonia" Version="11.0.0" Condition="'$(OcSupportAvalonia)' == 'true'" />
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
+    <PackageReference Include="ObservableComputations" Version="2.3.0" />
+  </ItemGroup>
+
+</Project>
