@@ -2,8 +2,9 @@
 
   <PropertyGroup Label="Platform">
     <TargetFramework>net9.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <UseT4>true</UseT4>
+    <UseCommunityToolkitDiagnostics>true</UseCommunityToolkitDiagnostics>
+    <UseJetBrainsAnnotations>true</UseJetBrainsAnnotations>
   </PropertyGroup>
 
   <PropertyGroup Label="Build">
@@ -11,25 +12,12 @@
     <DefineConstants Condition="'$(IsRuntimeWindows)' == 'true'">$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
-  <ItemGroup Label="Build">
-    <Using Include="CommunityToolkit.Diagnostics" />
-    <Using Include="JetBrains.Annotations" />
-    <Using Include="System.Diagnostics.Contracts.PureAttribute" Alias="PureAttribute" />
-  </ItemGroup>
-
-  <ItemGroup Label="Services">
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
   <ItemGroup Label="Packages">
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
-    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageReference Include="System.Threading.AccessControl" Version="9.0.6" Condition="'$(IsRuntimeWindows)' == 'true'" />
   </ItemGroup>
 
-  <ItemGroup Label="CodeGen">
-    <Compile Update="Globalization\ConvertibleExts.g.cs" DependentUpon="ConvertibleExts.tt" DesignTime="True" AutoGen="True" />
-    <None Update="Globalization\ConvertibleExts.tt" LastGenOutput="ConvertibleExts.g.cs" Generator="TextTemplatingFileGenerator" />
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
 </Project>
