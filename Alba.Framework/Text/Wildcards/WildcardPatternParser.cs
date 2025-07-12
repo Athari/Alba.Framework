@@ -51,13 +51,13 @@ internal abstract class WildcardPatternParser
             if (isBracketExpr) {
                 if (ch == ']' && !isBracketExprStart && !isEscaped) {
                     isBracketExpr = false;
-                    parser.AppendBracketExpression(sbBracketContents.ToString(), sbBracketOperators.ToString(), pattern.Pattern);
+                    parser.AppendBracketExpression(sbBracketContents?.ToString() ?? "", sbBracketOperators?.ToString() ?? "", pattern.Pattern);
                     sbBracketContents = null;
                     sbBracketOperators = null;
                 }
                 else if (ch != WildcardPattern.EscapeChar || isEscaped) {
-                    sbBracketContents.Append(ch);
-                    sbBracketOperators.Append(ch == '-' && !isEscaped ? '-' : ' ');
+                    sbBracketContents!.Append(ch);
+                    sbBracketOperators!.Append(ch == '-' && !isEscaped ? '-' : ' ');
                 }
                 isBracketExprStart = false;
             }

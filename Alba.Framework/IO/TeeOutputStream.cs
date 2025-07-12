@@ -11,7 +11,7 @@ public class TeeOutputStream : Stream
     private readonly List<Stream> _streams;
     private readonly ReadOnlyCollection<Stream> _streamsReadOnly;
 
-    public TeeOutputStream(params Stream[] streams)
+    public TeeOutputStream(params IList<Stream> streams)
     {
         Guard.HasSizeGreaterThan(streams, 0, nameof(streams));
         _streams = [ ];

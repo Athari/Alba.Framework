@@ -37,7 +37,7 @@ public static class ObjectExts
     //}
 
     [Pure]
-    public static bool EqualsAny<T>(this T @this, params T[] values) => values.Any(v => @this.EqualsValue(v));
+    public static bool EqualsAny<T>(this T @this, params IEnumerable<T> values) => values.Any(v => @this.EqualsValue(v));
 
     [Pure]
     public static bool EqualsValue<T>(this T @this, T value) => EqualityComparer<T>.Default.Equals(@this, value);
@@ -51,6 +51,6 @@ public static class ObjectExts
     public static T To<T>(this object @this) => (T)@this;
 
     [Pure]
-    public static bool IsAnyType(this object? @this, params Type[] types) =>
+    public static bool IsAnyType(this object? @this, params IEnumerable<Type> types) =>
         @this == null || types.Any(@this.GetType().IsAssignableTo);
 }
