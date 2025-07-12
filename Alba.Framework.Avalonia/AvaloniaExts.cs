@@ -7,6 +7,7 @@ using SkiaSharp;
 
 namespace Alba.Framework.Avalonia;
 
+[PublicAPI]
 public static class AvaloniaExts
 {
     public static void ToggleSelect<T>(this SelectionModel<T> @this, int index, bool? toggle)

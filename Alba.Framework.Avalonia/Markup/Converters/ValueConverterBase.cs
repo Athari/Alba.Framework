@@ -2,7 +2,7 @@
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 
-namespace Alba.Framework.Avalonia.Converters;
+namespace Alba.Framework.Avalonia.Markup.Converters;
 
 public abstract class ValueConverterBase<TFrom, TTo, TParam> : MarkupExtension, IValueConverter
 {

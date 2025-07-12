@@ -2,9 +2,7 @@
 using Avalonia;
 using Avalonia.Data.Converters;
 
-namespace Alba.Framework.Avalonia.Converters;
-
-using static MultiValue;
+namespace Alba.Framework.Avalonia.Markup.Converters;
 
 public static class MultiValue
 {
@@ -17,7 +15,7 @@ public record class MultiValue<T, T1> : IMultiValueConverter
     public required T1 Arg1 { get; init; }
 
     public object Convert(IList<object?> v, Type targetType, object? parameter, CultureInfo culture) =>
-        new MultiValue<T, T1> { Context = C<T>(v[0]), Arg1 = C<T1>(v[1]) };
+        new MultiValue<T, T1> { Context = MultiValue.C<T>(v[0]), Arg1 = MultiValue.C<T1>(v[1]) };
 
     public MultiValue<T, T1> ProvideValue() => this;
 }
@@ -29,7 +27,7 @@ public record class MultiValue<T, T1, T2> : IMultiValueConverter
     public required T2 Arg2 { get; init; }
 
     public object Convert(IList<object?> v, Type targetType, object? parameter, CultureInfo culture) =>
-        new MultiValue<T, T1, T2> { Context = C<T>(v[0]), Arg1 = C<T1>(v[1]), Arg2 = C<T2>(v[2]) };
+        new MultiValue<T, T1, T2> { Context = MultiValue.C<T>(v[0]), Arg1 = MultiValue.C<T1>(v[1]), Arg2 = MultiValue.C<T2>(v[2]) };
 
     public MultiValue<T, T1, T2> ProvideValue() => this;
 }
@@ -42,7 +40,7 @@ public record class MultiValue<T, T1, T2, T3> : IMultiValueConverter
     public required T3 Arg3 { get; init; }
 
     public object Convert(IList<object?> v, Type targetType, object? parameter, CultureInfo culture) =>
-        new MultiValue<T, T1, T2, T3> { Context = C<T>(v[0]), Arg1 = C<T1>(v[1]), Arg2 = C<T2>(v[2]), Arg3 = C<T3>(v[3]) };
+        new MultiValue<T, T1, T2, T3> { Context = MultiValue.C<T>(v[0]), Arg1 = MultiValue.C<T1>(v[1]), Arg2 = MultiValue.C<T2>(v[2]), Arg3 = MultiValue.C<T3>(v[3]) };
 
     public MultiValue<T, T1, T2, T3> ProvideValue() => this;
 }

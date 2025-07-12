@@ -5,8 +5,8 @@ using static IS;
 [assembly: XmlnsPrefix(UrnGui, PrefixGui)]
 [assembly: XmlnsDefinition(UrnGui, $"{NsGui}")]
 [assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Controls")]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Converters")]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.MarkupExtensions")]
+[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Markup.Converters")]
+[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Markup.MarkupExtensions")]
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
 file interface IS

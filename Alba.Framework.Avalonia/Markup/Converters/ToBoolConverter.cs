@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 
-namespace Alba.Framework.Avalonia.Converters;
+namespace Alba.Framework.Avalonia.Markup.Converters;
 
 public class ToBoolConverter : ValueConverterBase<object?, bool>
 {
-    public override bool Convert(object? value, Type targetType, CultureInfo culture) => 
+    public override bool Convert(object? value, Type targetType, CultureInfo culture) =>
         System.Convert.GetTypeCode(value) switch {
             TypeCode.Empty => false,
             TypeCode.DBNull => false,
@@ -22,8 +22,8 @@ public class ToBoolConverter : ValueConverterBase<object?, bool>
             TypeCode.Single => (float)value! != 0,
             TypeCode.Double => (double)value! != 0,
             TypeCode.Decimal => (decimal)value! != 0,
-            TypeCode.DateTime => (DateTime)value! != DateTime.UnixEpoch && (DateTime)value! != DateTime.MinValue,
+            TypeCode.DateTime => (DateTime)value! != DateTime.UnixEpoch && (DateTime)value != DateTime.MinValue,
             TypeCode.String => ((string)value!).Length > 0,
-            _ => throw new ArgumentOutOfRangeException(nameof(value), value, null),
+            _ => throw EnumException.Create(nameof(value), value),
         };
 }

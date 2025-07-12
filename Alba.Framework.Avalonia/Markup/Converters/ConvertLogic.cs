@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Avalonia.Data.Converters;
 
-namespace Alba.Framework.Avalonia.Converters;
+namespace Alba.Framework.Avalonia.Markup.Converters;
 
+[PublicAPI]
 public static class ConvertLogic
 {
     [field: MaybeNull]

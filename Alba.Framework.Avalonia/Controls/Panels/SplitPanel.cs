@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System.Diagnostics.CodeAnalysis;
+using Avalonia;
 using Avalonia.Controls;
 
 namespace Alba.Framework.Avalonia.Controls;
@@ -9,7 +10,7 @@ public partial class SplitPanel : Panel
         AvaloniaProperty.Register<SplitPanel, double>(nameof(AspectRatio), 1.0d,
             coerce: (_, v) => Math.Clamp(v, 0.1d, 10.0d));
 
-    private List<Cell> _cells = new();
+    private List<Cell> _cells = [ ];
 
     static SplitPanel()
     {
@@ -33,6 +34,7 @@ public partial class SplitPanel : Panel
         return finalSize;
     }
 
+    [SuppressMessage("Style", "IDE0305:Simplify collection initialization", Justification = "Don't mess with LINQ")]
     private void UpdateCells(int count, double width, double height)
     {
         _cells.Clear();
@@ -46,7 +48,7 @@ public partial class SplitPanel : Panel
         double Sqr(double v) => v * v;
 
         double QualityInv(List<Cell> cells) => cells.Sum(c => Sqr(c.Width - c.Height * AspectRatio));
-        
+
         IEnumerable<Cell> LayoutCells(List<int> p)
         {
             var h = height / p.Count;

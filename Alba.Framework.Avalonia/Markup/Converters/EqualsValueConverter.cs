@@ -3,7 +3,7 @@ using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Markup.Xaml;
 
-namespace Alba.Framework.Avalonia.Converters;
+namespace Alba.Framework.Avalonia.Markup.Converters;
 
 public class EqualsValueConverter : MarkupExtension, IValueConverter
 {
