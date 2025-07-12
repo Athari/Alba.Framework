@@ -22,16 +22,19 @@ public static class EnumerableExts
         return ReadOnlyDictionary<TKey, TValue>.Empty;
     }
 
-    public static IEnumerable<T> Concat<T>(params IEnumerable<T>[] enumerables)
+    public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<T> values)
     {
-        return enumerables.SelectMany(e => e);
+        foreach (var item in @this)
+            yield return item;
+        foreach (var value in values)
+            yield return value;
     }
 
-    public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params T[] values)
+    public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<IEnumerable<T>> enumerables)
     {
-        foreach (T item in @this)
+        foreach (var item in @this)
             yield return item;
-        foreach (T value in values)
+        foreach (T value in enumerables.Flatten())
             yield return value;
     }
 
@@ -338,14 +341,24 @@ public static class EnumerableExts
         yield return item;
     }
 
-    public static IEnumerable<int> Range(this int count)
+    public static IEnumerable<int> Range(this int count) =>
+        Enumerable.Range(0, count);
+
+    public static IEnumerable<int> Range(this int start, int count) =>
+        Enumerable.Range(start, count);
+
+    public static IEnumerable<int> ToRange(this Range @this, bool endInclusive = false)
     {
-        return Enumerable.Range(0, count);
+        if (@this.Start.IsFromEnd || @this.End.IsFromEnd)
+            throw new ArgumentOutOfRangeException(nameof(@this), @this, "Range start and end must both be from start");
+        (int offset, int length) = @this.GetOffsetAndLength(0);
+        return Enumerable.Range(offset, length + (endInclusive ? 1 : 0));
     }
 
-    public static IEnumerable<int> Range(this int start, int count)
+    public static IEnumerable<int> ToRange(this Range @this, int count, bool endInclusive = false)
     {
-        return Enumerable.Range(start, count);
+        (int offset, int length) = @this.GetOffsetAndLength(count);
+        return Enumerable.Range(offset, length + (endInclusive ? 1 : 0));
     }
 
     private static class EmptyEnumerable<T>
