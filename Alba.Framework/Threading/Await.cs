@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using System.Transactions;
 
 namespace Alba.Framework.Threading;
 
@@ -38,8 +40,37 @@ public static class Await
     public static CancellationTokenAwaiter GetAwaiter(this CancellationTokenSource @this, bool useSynchronizationContext = true) =>
         new(@this.Token, useSynchronizationContext);
 
+    public static WaitHandleAwaiter GetAwaiter(this WaitHandle @this) =>
+        new(@this);
+
+    public static WaitHandleAwaiter GetAwaiter(this CommittableTransaction @this) =>
+        new((@this as IAsyncResult).AsyncWaitHandle);
+
+    public static WaitHandleAwaiter GetAwaiter(this CountdownEvent @this) =>
+        new(@this.WaitHandle);
+
+    public static WaitHandleAwaiter GetAwaiter(this ManualResetEventSlim @this) =>
+        new(@this.WaitHandle);
+
+    public static WaitHandleAwaiter GetAwaiter(this SemaphoreSlim @this) =>
+        new(@this.AvailableWaitHandle);
+
+    public static WaitHandleAwaiter GetAwaiter(this IAsyncResult @this) =>
+        new(@this.AsyncWaitHandle);
+
+    public static TaskAwaiter<int> GetAwaiter(this Process process)
+    {
+        var tcs = new TaskCompletionSource<int>();
+        process.EnableRaisingEvents = true;
+        process.Exited += (_, _) => tcs.TrySetResult(process.ExitCode);
+        if (process.HasExited)
+            tcs.TrySetResult(process.ExitCode);
+        return tcs.Task.GetAwaiter();
+    }
+
     [PublicAPI]
-    public readonly struct TaskSchedulerAwaiter(TaskScheduler scheduler, bool alwaysYield = false) : ICriticalNotifyCompletion
+    public readonly struct TaskSchedulerAwaiter(TaskScheduler scheduler, bool alwaysYield = false)
+        : IAwaiter<TaskSchedulerAwaiter>
     {
         public bool IsCompleted =>
             !alwaysYield && (
@@ -50,7 +81,7 @@ public static class Await
         public void OnCompleted(Action continuation)
         {
             if (scheduler == TaskScheduler.Default)
-                ThreadPool.QueueUserWorkItem(state => ((Action)state!)(), continuation);
+                ThreadPool.QueueUserWorkItem(Execute, continuation);
             else
                 Task.Factory.StartNew(continuation, CancellationToken.None, TaskCreationOptions.None, scheduler);
         }
@@ -58,7 +89,7 @@ public static class Await
         public void UnsafeOnCompleted(Action continuation)
         {
             if (scheduler == TaskScheduler.Default)
-                ThreadPool.UnsafeQueueUserWorkItem(state => ((Action)state!)(), continuation);
+                ThreadPool.UnsafeQueueUserWorkItem(Execute, continuation);
             else
                 Task.Factory.StartNew(continuation, CancellationToken.None, TaskCreationOptions.None, scheduler);
         }
@@ -69,22 +100,40 @@ public static class Await
     }
 
     [PublicAPI]
-    public readonly struct SynchronizationContextAwaiter(SynchronizationContext syncContext) : ICriticalNotifyCompletion
+    public readonly struct SynchronizationContextAwaiter(SynchronizationContext syncContext)
+        : IAwaiter<SynchronizationContextAwaiter>
     {
-        private static readonly SendOrPostCallback SyncContextDelegate = state => ((Action)state!)();
         public bool IsCompleted => false;
-        public void OnCompleted(Action continuation) => syncContext.Post(SyncContextDelegate, continuation);
-        public void UnsafeOnCompleted(Action continuation) => syncContext.Post(SyncContextDelegate, continuation);
+
+        public void OnCompleted(Action continuation) =>
+            syncContext.Post(Execute, continuation);
+
+        public void UnsafeOnCompleted(Action continuation) =>
+            syncContext.Post(Execute, continuation);
+
         public SynchronizationContextAwaiter GetAwaiter() => this;
+
         public void GetResult() { }
     }
 
     [PublicAPI]
-    public readonly struct CancellationTokenAwaiter(CancellationToken token, bool useSynchronizationContext = true) : ICriticalNotifyCompletion
+    public readonly struct CancellationTokenAwaiter(CancellationToken token, bool useSynchronizationContext = true)
+        : IAwaiter<CancellationTokenAwaiter, object>
     {
         public bool IsCompleted => token.IsCancellationRequested;
-        public void OnCompleted(Action continuation) => token.Register(continuation, useSynchronizationContext);
-        public void UnsafeOnCompleted(Action continuation) => token.Register(continuation, useSynchronizationContext);
+
+        public void OnCompleted(Action continuation)
+        {
+            if (token.CanBeCanceled)
+                token.Register(continuation, useSynchronizationContext);
+        }
+
+        public void UnsafeOnCompleted(Action continuation)
+        {
+            if (token.CanBeCanceled)
+                token.UnsafeRegister(Execute, continuation);
+        }
+
         public CancellationTokenAwaiter GetAwaiter() => this;
 
         public object GetResult() =>
@@ -92,4 +141,28 @@ public static class Await
                 ? new OperationCanceledException()
                 : new InvalidOperationException("The cancellation token has not yet been cancelled."));
     }
+
+    public readonly struct WaitHandleAwaiter(WaitHandle handle) : IAwaiter<WaitHandleAwaiter>
+    {
+        public bool IsCompleted => handle.WaitOne(0);
+
+        public void OnCompleted(Action continuation) =>
+            ThreadPool.RegisterWaitForSingleObject(handle, Execute, WithExecutionContext(continuation), Timeout.Infinite, true);
+
+        public void UnsafeOnCompleted(Action continuation) =>
+            ThreadPool.UnsafeRegisterWaitForSingleObject(handle, Execute, continuation, Timeout.Infinite, true);
+
+        public WaitHandleAwaiter GetAwaiter() => this;
+
+        public void GetResult() { }
+    }
+
+    private static Action WithExecutionContext(Action continuation)
+    {
+        var context = ExecutionContext.Capture();
+        return context != null ? () => ExecutionContext.Run(context, Execute, continuation) : continuation;
+    }
+
+    private static void Execute(object? state) => ((Action)state!)();
+    private static void Execute(object? state, bool _ /*timedOut*/) => ((Action)state!)();
 }
