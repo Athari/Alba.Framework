@@ -29,13 +29,13 @@ public static partial class Paths
     public static string ChangeDir(string path,
         Func<IList<string>, IEnumerable<string?>> dirParts,
         Func<string, string>? safe = null,
-        PathCombine combine = PathCombine.Join)
+        PathConcat concat = PathConcat.Join)
     {
-        Func<IEnumerable<string?>, string> callCombine = combine switch {
-            PathCombine.Combine => Combine,
-            PathCombine.CombineSafe => CombineSafe,
-            PathCombine.Join => Join,
-            _ => throw EnumException.Create(nameof(combine), combine),
+        Func<IEnumerable<string?>, string> callCombine = concat switch {
+            PathConcat.Combine => Combine,
+            PathConcat.CombineSafe => CombineSafe,
+            PathConcat.Join => Join,
+            _ => throw EnumException.Create(nameof(concat), concat),
         };
         var outParts = dirParts(Split(path));
         if (safe != null)
@@ -50,13 +50,13 @@ public static partial class Paths
         Func<string, string?>? name = null,
         Func<string, string?>? ext = null,
         Func<string, string>? safe = null,
-        PathCombine combine = PathCombine.Join)
+        PathConcat concat = PathConcat.Join)
     {
-        Func<string?, string?, string> callCombine = combine switch {
-            PathCombine.Combine => Combine,
-            PathCombine.CombineSafe => CombineSafe,
-            PathCombine.Join => Path.Join,
-            _ => throw EnumException.Create(nameof(combine), combine),
+        Func<string?, string?, string> callCombine = concat switch {
+            PathConcat.Combine => Combine,
+            PathConcat.CombineSafe => CombineSafe,
+            PathConcat.Join => Path.Join,
+            _ => throw EnumException.Create(nameof(concat), concat),
         };
 
         var inDir = Path.GetDirectoryName(path);
@@ -67,7 +67,7 @@ public static partial class Paths
         if (inDir == null)
             outDir = null;
         else if (dirParts != null)
-            outDir = ChangeDir(inDir, dirParts, safe, combine);
+            outDir = ChangeDir(inDir, dirParts, safe, concat);
         else
             outDir = inDir;
         if (outDir != null)
@@ -166,20 +166,20 @@ public static partial class Paths
         Path.Join(Path.GetTempPath(), $"{Guid.NewGuid():N}.{ext}");
 
     public static string GetRoamingAppDir(string company, string product) =>
-        GetAppDir(Environment.SpecialFolder.ApplicationData, company, product);
+        GetAppDir(Environment.SpecialFolder.ApplicationData.GetPath(), company, product);
 
     public static string GetLocalAppDir(string company, string product) =>
-        GetAppDir(Environment.SpecialFolder.LocalApplicationData, company, product);
+        GetAppDir(Environment.SpecialFolder.LocalApplicationData.GetPath(), company, product);
 
     public static string GetCommonAppDir(string company, string product) =>
-        GetAppDir(Environment.SpecialFolder.CommonApplicationData, company, product);
+        GetAppDir(Environment.SpecialFolder.CommonApplicationData.GetPath(), company, product);
 
     public static string GetPortableAppDir(params IEnumerable<string?> parts) =>
-        GetAppDir(Environment.SpecialFolder.CommonApplicationData, parts);
+        GetAppDir(ExecutableFileDir, parts);
 
-    private static string GetAppDir(Environment.SpecialFolder folder, params IEnumerable<string?> parts)
+    private static string GetAppDir(string baseDir, params IEnumerable<string?> parts)
     {
-        string dir = Path.Join([ folder.GetPath(), ..parts ]);
+        string dir = Path.Join([ baseDir, ..parts ]);
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -209,11 +209,4 @@ public static partial class Paths
     [Pure]
     private static string Join(IEnumerable<string?> parts) =>
         Path.Join([ ..parts ]);
-}
-
-public enum PathCombine
-{
-    Combine,
-    CombineSafe,
-    Join,
 }
