@@ -1,6 +1,6 @@
 ﻿namespace Alba.Framework;
 
-public class InvalidStateException : Exception
+public class InvalidStateException : InvalidOperationException
 {
     private const string InvalidObjectStateError = "Invalid object state.";
 
