@@ -1,4 +1,5 @@
-﻿using Avalonia.Platform.Storage;
+﻿using Alba.Framework.IO;
+using Avalonia.Platform.Storage;
 
 namespace Alba.Framework.Avalonia.Storage;
 
@@ -9,10 +10,10 @@ public static class StorageExts
         OperatingSystem.IsAndroid() ? @this.Path.AbsoluteUri : @this.Path.LocalPath;
 
     public static string GetExt(this IStorageItem @this) =>
-        Path.GetExtension(@this.Name);
+        Paths.GetExt(@this.Name);
 
     public static string GetNameWithoutExt(this IStorageItem @this) =>
-        Path.GetFileNameWithoutExtension(@this.Name);
+        Paths.GetNameWithoutExt(@this.Name);
 
     public static string ChangeName(this IStorageItem @this,
         Func<string, string?>? name = null,

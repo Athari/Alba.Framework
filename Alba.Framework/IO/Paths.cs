@@ -44,7 +44,10 @@ public static partial class Paths
     }
 
     [Pure]
-    public static string ChangeFileName(string path,
+    public static string ChangeExt(string path, string? ext = null) => Path.ChangeExtension(path, ext);
+
+    [Pure]
+    public static string ChangeName(string path,
         Func<IList<string>, IEnumerable<string?>>? dirParts = null,
         Func<string, string?>? dir = null,
         Func<string, string?>? name = null,
@@ -189,7 +192,7 @@ public static partial class Paths
         Environment.GetFolderPath(@this, option);
 
     [Pure]
-    public static string GetSafeFileName(string fileName, MatchEvaluator? replace, MatchEvaluator? replaceInvalid) =>
+    public static string GetSafeName(string fileName, MatchEvaluator? replace = null, MatchEvaluator? replaceInvalid = null) =>
         fileName
             .ReReplace(ReInvalidPathChar, replace ?? (_ => InvalidCharString))
             .ReReplace(ReInvalidChars, replaceInvalid ?? (_ => "_"));
