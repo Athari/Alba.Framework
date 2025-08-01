@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Platform">
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UseT4>true</UseT4>
     <UseCommunityToolkitDiagnostics>true</UseCommunityToolkitDiagnostics>
     <UseJetBrainsAnnotations>true</UseJetBrainsAnnotations>
@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup Label="Packages">
-    <PackageReference Include="System.Threading.AccessControl" Version="9.0.6" Condition="'$(IsRuntimeWindows)' == 'true'" />
+    <PackageReference Include="System.Threading.AccessControl" Version="9.0.10" Condition="'$(IsRuntimeWindows)' == 'true'" />
   </ItemGroup>
 
 </Project>

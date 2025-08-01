@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Platform">
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Alba.Framework</RootNamespace>
     <DefineConstants Condition="'$(OcSupportAvalonia)' == 'true'">$(DefineConstants);OC_SUPPORT_AVALONIA</DefineConstants>
     <UseCommunityToolkitDiagnostics>true</UseCommunityToolkitDiagnostics>

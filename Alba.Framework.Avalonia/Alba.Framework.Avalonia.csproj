@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup Label="Platform">
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <UseT4>true</UseT4>
     <UseCommunityToolkitDiagnostics>true</UseCommunityToolkitDiagnostics>
     <UseJetBrainsAnnotations>true</UseJetBrainsAnnotations>
@@ -12,10 +12,9 @@
   </ItemGroup>
 
   <ItemGroup Label="Packages">
-    <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.3.0" />
     <PackageReference Include="Avalonia" Version="11.0.0" />
     <PackageReference Include="Avalonia.Skia" Version="11.0.0" />
-    <PackageReference Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.10.0-beta7" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
+    <PackageReference Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.11.0-beta2" IncludeAssets="runtime; build; native; contentfiles; analyzers; buildtransitive" PrivateAssets="all" />
     <PackageReference Include="SkiaSharp" Version="3.119.0" />
   </ItemGroup>
 
