@@ -71,15 +71,19 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
 
     public int RemoveAtWithSelectedIndex(int selectedIndex)
     {
+        Guard.IsInRangeFor(selectedIndex, (IList<T>)this);
         var newSelectedIndex = -1;
         using var _ = this.WithSelectedIndex(selectedIndex, i => newSelectedIndex = i);
+        RemoveAt(selectedIndex);
         return newSelectedIndex;
     }
 
     public T? RemoveWithSelectedItem(T? selectedItem)
     {
+        Guard.IsNotNull(selectedItem);
         var newSelectedItem = default(T?);
         using var _ = this.WithSelectedItem(selectedItem, i => newSelectedItem = i);
+        Remove(selectedItem);
         return newSelectedItem;
     }
 
