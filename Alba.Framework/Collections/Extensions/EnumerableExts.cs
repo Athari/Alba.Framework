@@ -351,7 +351,7 @@ public static class EnumerableExts
     {
         if (@this.Start.IsFromEnd || @this.End.IsFromEnd)
             throw new ArgumentOutOfRangeException(nameof(@this), @this, "Range start and end must both be from start");
-        (int offset, int length) = @this.GetOffsetAndLength(0);
+        (int offset, int length) = @this.GetOffsetAndLength(int.MaxValue);
         return Enumerable.Range(offset, length + (endInclusive ? 1 : 0));
     }
 
