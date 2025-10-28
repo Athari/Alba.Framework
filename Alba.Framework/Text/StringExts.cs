@@ -19,13 +19,37 @@ public static partial class StringExts
         return sb.ToString();
     }
 
-    [Pure]
+    public static string Q(this string? @this, char q) => $"{q}{@this}{q}";
+    public static string Q(this string? @this, char ql, char qr) => $"{ql}{@this}{qr}";
+    public static string Qg(this string? @this) => $"`{@this}`"; // grave
+    public static string Qs1(this string? @this) => $"'{@this}'"; // straight inner
+    public static string Qs2(this string? @this) => $"\"{@this}\""; // straight outer
+    public static string Qt1(this string? @this) => $"‘{@this}’"; // typographic inner
+    public static string Qt2(this string? @this) => $"“{@this}”"; // typographic outer
+    public static string Qtg1(this string? @this) => $"‚{@this}‘"; // typographic german inner
+    public static string Qtg2(this string? @this) => $"„{@this}“"; // typographic german outer
+    public static string Qa1(this string? @this) => $"‹{@this}›"; // angle inner (french)
+    public static string Qa2(this string? @this) => $"«{@this}»"; // angle outer (french)
+    public static string Qai1(this string? @this) => $"›{@this}‹"; // angle inverted inner
+    public static string Qai2(this string? @this) => $"»{@this}«"; // angle inverted outer
+    public static string Qc1(this string? @this) => $"「{@this}」"; // corner inner (chinese primary)
+    public static string Qc2(this string? @this) => $"『{@this}』"; // corner outer (chinese secondary)
+    public static string Qch1(this string? @this) => $"｢{@this}｣"; // corner half-width inner
+    public static string Qch2(this string? @this) => $"『{@this}』"; // corner half-width outer
+    public static string Qk1(this string? @this) => $"〈{@this}〉"; // chinese book / korean inner
+    public static string Qk2(this string? @this) => $"《{@this}》"; // chinese book / korean outer
+
+    [Pure, ContractAnnotation("null => true")]
     public static bool IsNullOrEmpty(this string? @this) =>
         string.IsNullOrEmpty(@this);
 
-    [Pure]
+    [Pure, ContractAnnotation("null => true")]
     public static bool IsNullOrWhitespace(this string? @this) =>
         string.IsNullOrWhiteSpace(@this);
+
+    [Pure, ContractAnnotation("null => null; notnull => canbenull")]
+    public static string? NullIfEmpty(this string? @this) =>
+        @this.IsNullOrEmpty() ? null : @this;
 
     [Pure]
     public static string NormalizeWhitespace(this string @this, string? nl = null) =>
