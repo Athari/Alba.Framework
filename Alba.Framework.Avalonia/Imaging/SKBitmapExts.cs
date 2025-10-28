@@ -5,24 +5,26 @@ using SkiaSharp;
 
 namespace Alba.Framework.Avalonia.Imaging;
 
-public static class AvaloniaImageExts
+public static class SKBitmapExts
 {
-    public static PixelSize GetPixelSize(this SKBitmap @this) =>
-        new(@this.Width, @this.Height);
-
-    public static WriteableBitmap ToWriteableBitmap(this SKBitmap @this)
+    extension(SKBitmap @this)
     {
-        var bitmap = new WriteableBitmap(
-            @this.GetPixelSize(), SkiaPlatform.DefaultDpi,
-            @this.ColorType.ToPixelFormat(), @this.AlphaType.ToAlphaFormat());
-        using var buffer = bitmap.Lock();
-        @this.GetPixelSpan().CopyTo(buffer.Address.ToSpan<byte>(@this.ByteCount));
-        return bitmap;
-    }
+        public PixelSize PixelSize => new(@this.Width, @this.Height);
 
-    public static Bitmap ToBitmap(this SKBitmap @this) =>
-        new(@this.ColorType.ToPixelFormat(), @this.AlphaType.ToAlphaFormat(),
-            @this.GetPixels(), @this.GetPixelSize(), SkiaPlatform.DefaultDpi, @this.RowBytes);
+        public WriteableBitmap ToWriteableBitmap()
+        {
+            var bitmap = new WriteableBitmap(
+                @this.PixelSize, SkiaPlatform.DefaultDpi,
+                @this.ColorType.ToPixelFormat(), @this.AlphaType.ToAlphaFormat());
+            using var buffer = bitmap.Lock();
+            @this.GetPixelSpan().CopyTo(buffer.Address.ToSpan<byte>(@this.ByteCount));
+            return bitmap;
+        }
+
+        public Bitmap ToBitmap() =>
+            new(@this.ColorType.ToPixelFormat(), @this.AlphaType.ToAlphaFormat(),
+                @this.GetPixels(), @this.PixelSize, SkiaPlatform.DefaultDpi, @this.RowBytes);
+    }
 }
 
 //using E = System.Linq.Expressions.Expression;

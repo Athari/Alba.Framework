@@ -6,32 +6,38 @@ namespace Alba.Framework.Avalonia.Storage;
 [PublicAPI]
 public static class StorageExts
 {
-    public static string GetPath(this IStorageItem @this) =>
-        OperatingSystem.IsAndroid() ? @this.Path.AbsoluteUri : @this.Path.LocalPath;
-
-    public static string GetExt(this IStorageItem @this) =>
-        Paths.GetExt(@this.Name);
-
-    public static string GetNameWithoutExt(this IStorageItem @this) =>
-        Paths.GetNameWithoutExt(@this.Name);
-
-    public static string ChangeName(this IStorageItem @this,
-        Func<string, string?>? name = null,
-        Func<string, string?>? ext = null)
+    extension(IStorageItem @this)
     {
-        var itemName = @this.GetNameWithoutExt();
-        var itemExt = @this.GetExt();
-        return $"{name?.Invoke(itemName) ?? itemName}{ext?.Invoke(itemExt) ?? itemExt}";
+        public string Path =>
+            OperatingSystem.IsAndroid() ? @this.Path.AbsoluteUri : @this.Path.LocalPath;
+
+        public string Ext =>
+            Paths.GetExt(@this.Name);
+
+        public string NameWithoutExt =>
+            Paths.GetNameWithoutExt(@this.Name);
+
+        public string ChangeName(
+            Func<string, string?>? name = null,
+            Func<string, string?>? ext = null)
+        {
+            var itemName = @this.NameWithoutExt;
+            var itemExt = @this.Ext;
+            return $"{name?.Invoke(itemName) ?? itemName}{ext?.Invoke(itemExt) ?? itemExt}";
+        }
     }
 
-    public static async IAsyncEnumerable<IStorageFile> GetAllFilesAsync(this IStorageFolder @this)
+    extension(IStorageFolder @this)
     {
-        await foreach (var item in @this.GetItemsAsync()) {
-            if (item is IStorageFile file)
-                yield return file;
-            if (item is IStorageFolder folder)
-                await foreach (var subItem in GetAllFilesAsync(folder))
-                    yield return subItem;
+        public async IAsyncEnumerable<IStorageFile> GetAllFilesAsync()
+        {
+            await foreach (var item in @this.GetItemsAsync()) {
+                if (item is IStorageFile file)
+                    yield return file;
+                if (item is IStorageFolder folder)
+                    await foreach (var subItem in GetAllFilesAsync(folder))
+                        yield return subItem;
+            }
         }
     }
 }
