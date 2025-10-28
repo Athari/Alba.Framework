@@ -83,7 +83,7 @@ public static partial class Paths
         return callCombine(outDir, safe != null ? safe(outNameExt) : outNameExt);
     }
 
-    [Pure]
+    [Pure, Obsolete("Use Path.Join")]
     public static string CombineSafe(string? path1, string? path2) =>
         (path1, path2) switch {
             ({ } p1, { } p2) => Path.Combine(p1, p2),
@@ -92,7 +92,7 @@ public static partial class Paths
             (null, null) => "",
         };
 
-    [Pure]
+    [Pure, Obsolete("Use Path.Join")]
     public static string CombineSafe(string? path1, string? path2, string? path3) =>
         (path1, path2, path3) switch {
             ({ } p1, { } p2, { } p3) => Path.Combine(p1, p2, p3),
@@ -105,7 +105,7 @@ public static partial class Paths
             (null, null, null) => "",
         };
 
-    [Pure]
+    [Pure, Obsolete("Use Path.Join")]
     public static string CombineSafe(string? path1, string? path2, string? path3, string? path4) =>
         (path1, path2, path3, path4) switch {
             ({ } p1, { } p2, { } p3, { } p4) => Path.Combine(p1, p2, p3, p4),
@@ -126,7 +126,7 @@ public static partial class Paths
             (null, null, null, null) => "",
         };
 
-    [Pure]
+    [Pure, Obsolete("Use Path.Join")]
     public static string CombineSafe(params IEnumerable<string?> paths)
     {
         var actualPaths = paths.WhereNotNull().ToArray();
