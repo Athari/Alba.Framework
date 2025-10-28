@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
+using Alba.Framework.Common;
 
 namespace Alba.Framework.Collections;
 
@@ -11,214 +11,157 @@ namespace Alba.Framework.Collections;
 /// Allows to override methods of Dictionary.
 /// Some members of non-generic interface are only supported if the underlying dictionary supports <see cref="IDictionary"/> interface.
 /// </summary>
-[Serializable, ComVisible(false)]
+[PublicAPI]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
-public class Map<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDictionary
+public class Map<TKey, TValue>(IDictionary<TKey, TValue> dictionary, CollectionOptions options = CollectionOptions.Default)
+    : IDictionary<TKey, TValue>, IDictionary, IReadOnlyDictionary<TKey, TValue>
     where TKey : notnull
 {
-    private static readonly bool IsValueNullable = default(TValue) is null;
+    private readonly IDictionary<TKey, TValue> _dictionary = Ensure.NotNull(dictionary);
+    private readonly CollectionOptions _options = options | CollectionOptions.None;
 
-    private readonly IDictionary<TKey, TValue> _dictionary;
+    public Map() : this(new Dictionary<TKey, TValue>()) { }
 
-    public Map()
-    {
-        _dictionary = new Dictionary<TKey, TValue>();
-    }
-
-    public Map(IDictionary<TKey, TValue> dictionary)
-    {
-        Guard.IsNotNull(dictionary, nameof(dictionary));
-        _dictionary = dictionary;
-    }
-
-    private IDictionary? DictionaryId => _dictionary as IDictionary;
-    private ICollection? DictionaryIc => _dictionary as ICollection;
+    private IDictionary? IdSafe => _dictionary as IDictionary;
+    private IDictionary Id => IdSafe ?? throw MissingNonGeneric();
 
     public int Count => _dictionary.Count;
+    public bool IsReadOnly => _dictionary.IsReadOnly || (_options & CollectionOptions.ReadOnly) != 0;
 
-    bool IDictionary.IsFixedSize => DictionaryId?.IsFixedSize ?? false;
-    bool IDictionary.IsReadOnly => _dictionary.IsReadOnly;
-    bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => _dictionary.IsReadOnly;
-    bool ICollection.IsSynchronized => DictionaryIc?.IsSynchronized ?? false;
-    object ICollection.SyncRoot => DictionaryIc?.SyncRoot ?? this;
+    bool IDictionary.IsFixedSize => IdSafe?.IsFixedSize ?? false;
+    bool ICollection.IsSynchronized => IdSafe?.IsSynchronized ?? false;
+    object ICollection.SyncRoot => IdSafe?.SyncRoot ?? this;
 
-    public TValue this[TKey key]
-    {
-        get
-        {
-            if (!TryGetItem(key, out TValue value))
-                throw new KeyNotFoundException($"Key '{key}' not found.");
-            return value;
-        }
-        set
-        {
-            GuardNotReadOnly();
-            SetItem(key, value);
-        }
+    // public
+
+    public TValue this[TKey key] {
+        get => TryGetItem(key, out TValue value) ? value : throw KeyNotFound($"{key}");
+        set => EnsureNotReadOnly(() => SetItem(key, value));
     }
 
-    object? IDictionary.this[object key]
-    {
-        get
-        {
-            Guard.IsNotNull(key, nameof(key));
-            if (key is not TKey k)
-                return null;
-            return TryGetItem(k, out TValue value) ? value : default;
-        }
-        set
-        {
-            GuardNotReadOnly();
-            Guard.IsNotNull(key, nameof(key));
-            if (key is not TKey k)
-                throw new ArgumentException("Wrong key type.", nameof(key));
-            if (!IsValueNullable)
-                Guard.IsNotNull(value, nameof(value));
-            if (value is not TValue v)
-                throw new ArgumentException("Wrong value type.", nameof(value));
-            SetItem(k, v);
-        }
-    }
-
-    protected virtual void SetItem(TKey key, TValue value)
-    {
-        _dictionary[key] = value;
-    }
-
-    public void Add(TKey key, TValue value)
-    {
-        GuardNotReadOnly();
-        AddItem(key, value);
-    }
-
-    void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
-    {
-        GuardNotReadOnly();
-        AddItem(item.Key, item.Value);
-    }
-
-    void IDictionary.Add(object key, object? value)
-    {
-        GuardNotReadOnly();
-        Guard.IsNotNull(key, nameof(key));
-        if (key is not TKey k)
-            throw new ArgumentException("Wrong key type.", nameof(key));
-        if (!IsValueNullable)
-            Guard.IsNotNull(value, nameof(value));
-        if (value is not TValue v)
-            throw new ArgumentException("Wrong value type.", nameof(value));
-        AddItem(k, v);
-    }
-
-    protected virtual void AddItem(TKey key, TValue value)
-    {
-        _dictionary.Add(key, value);
-    }
-
-    bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
-    {
-        return TryGetItem(item.Key, out TValue value) && value.EqualsValue(item.Value);
-    }
-
-    public bool ContainsKey(TKey key)
-    {
-        return TryGetItem(key, out _);
-    }
-
-    bool IDictionary.Contains(object key)
-    {
-        Guard.IsNotNull(key, nameof(key));
-        return key is TKey k && ContainsKey(k);
-    }
-
-    public bool TryGetValue(TKey key, out TValue value)
-    {
-        return TryGetItem(key, out value);
-    }
-
-    protected virtual bool TryGetItem(TKey key, out TValue value)
-    {
-        return _dictionary.TryGetValue(key, out value!);
-    }
-
-    public bool Remove(TKey key)
-    {
-        GuardNotReadOnly();
-        return RemoveItem(key);
-    }
-
-    bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
-    {
-        GuardNotReadOnly();
-        if (TryGetItem(item.Key, out TValue value) && value.EqualsValue(item.Value))
-            RemoveItem(item.Key);
-        return false;
-    }
-
-    void IDictionary.Remove(object key)
-    {
-        GuardNotReadOnly();
-        Guard.IsNotNull(key, nameof(key));
-        if (key is not TKey k)
-            return;
-        RemoveItem(k);
-    }
-
-    protected virtual bool RemoveItem(TKey key)
-    {
-        return _dictionary.Remove(key);
-    }
-
-    public void Clear()
-    {
-        GuardNotReadOnly();
-        ClearItems();
-    }
-
-    protected virtual void ClearItems()
-    {
-        _dictionary.Clear();
-    }
-
-    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index)
-    {
-        _dictionary.CopyTo(array, index);
-    }
-
-    void ICollection.CopyTo(Array array, int index)
-    {
-        GuardHasNonGeneric();
-        DictionaryId.CopyTo(array, index);
+    object? IDictionary.this[object key] {
+        get => TryGetItem(Ensure.NotNullObject<TKey>(key), out TValue v) ? v : throw KeyNotFound($"{key}");
+        set => EnsureNotReadOnly(() => SetItem(Ensure.NotNullObject<TKey>(key), Ensure.NullableOrNotNullObject<TValue>(value)));
     }
 
     public ICollection<TKey> Keys => _dictionary.Keys;
-    IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
-    ICollection IDictionary.Keys => DictionaryId?.Keys ?? Keys as ICollection ?? throw GetMissingNonGenericException();
 
     public ICollection<TValue> Values => _dictionary.Values;
+
+    public void Add(TKey key, TValue value) =>
+        EnsureNotReadOnly(() => AddItem(key, value));
+
+    public bool ContainsKey(TKey key) =>
+        TryGetItem(key, out _);
+
+    private bool Contains(TKey key, TValue value) =>
+        TryGetItem(key, out TValue v) && v.EqualsValue(value);
+
+    public bool TryGetValue(TKey key, out TValue value) =>
+        TryGetItem(key, out value);
+
+    public bool Remove(TKey key) =>
+        IfNotReadOnly(() => RemoveItem(key));
+
+    public void Clear() =>
+        EnsureNotReadOnly(ClearItems);
+
+    public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index) =>
+        _dictionary.CopyTo(array, index);
+
+    // IReadOnlyDictionary<TKey, TValue>
+
+    IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+
     IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
-    ICollection IDictionary.Values => DictionaryId?.Values ?? Values as ICollection ?? throw GetMissingNonGenericException();
 
-    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() => _dictionary.GetEnumerator();
-    IDictionaryEnumerator IDictionary.GetEnumerator() => DictionaryId?.GetEnumerator() ?? throw GetMissingNonGenericException();
-    IEnumerator IEnumerable.GetEnumerator() => DictionaryId?.GetEnumerator() ?? throw GetMissingNonGenericException();
+    // IDictionary
 
-    private static NotSupportedException GetReadOnlyException() =>
+    ICollection IDictionary.Keys => Id.Keys;
+
+    ICollection IDictionary.Values => Id.Values;
+
+    void IDictionary.Add(object key, object? value) =>
+        Add(Ensure.NotNullObject<TKey>(key), Ensure.NullableOrNotNullObject<TValue>(value));
+
+    bool IDictionary.Contains(object key) =>
+        Ensure.TryNotNullObject<TKey>(key, out var k) && ContainsKey(k);
+
+    void IDictionary.Remove(object key) =>
+        IfNotReadOnly(() => Ensure.IfNotNullObject<TKey>(key, k => RemoveItem(k)));
+
+    IDictionaryEnumerator IDictionary.GetEnumerator() =>
+        Id.GetEnumerator();
+
+    // ICollection<KeyValuePair<TKey, TValue>>
+
+    void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item) =>
+        Add(item.Key, item.Value);
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item) =>
+        Contains(item.Key, item.Value);
+
+    bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item) =>
+        IfNotReadOnly(() => Contains(item.Key, item.Value) && RemoveItem(item.Key));
+
+    // ICollection
+
+    void ICollection.CopyTo(Array array, int index) =>
+        Id.CopyTo(array, index);
+
+    // IEnumerable
+
+    IEnumerator IEnumerable.GetEnumerator() =>
+        Id.GetEnumerator();
+
+    // virtual
+
+    protected virtual bool TryGetItem(TKey key, out TValue value) =>
+        _dictionary.TryGetValue(key, out value!);
+
+    protected virtual void SetItem(TKey key, TValue value) =>
+        _dictionary[key] = value;
+
+    protected virtual void AddItem(TKey key, TValue value) =>
+        _dictionary.Add(key, value);
+
+    protected virtual bool RemoveItem(TKey key) =>
+        _dictionary.Remove(key);
+
+    protected virtual void ClearItems() =>
+        _dictionary.Clear();
+
+    public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator() =>
+        _dictionary.GetEnumerator();
+
+    // utility
+
+    private static NotSupportedException ReadOnly() =>
         new("Dictionary is read-only.");
 
-    private static NotSupportedException GetMissingNonGenericException() =>
+    private static NotSupportedException MissingNonGeneric() =>
         new("Underlying dictionary does not implement non-generic IDictionary interface.");
 
-    private void GuardNotReadOnly()
+    private static KeyNotFoundException KeyNotFound(string key) =>
+        new($"Key '{key}' not found.");
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void EnsureNotReadOnly()
     {
-        if (DictionaryId?.IsReadOnly ?? false)
-            throw GetReadOnlyException();
+        if (IsReadOnly)
+            throw ReadOnly();
     }
 
-    [MemberNotNull(nameof(DictionaryId))]
-    private void GuardHasNonGeneric()
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private void EnsureNotReadOnly(Action action)
     {
-        if (DictionaryId == null)
-            throw GetMissingNonGenericException();
+        EnsureNotReadOnly();
+        action();
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private bool IfNotReadOnly(Func<bool> fun)
+    {
+        return !IsReadOnly && fun();
     }
 }
