@@ -21,49 +21,49 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
         _pausing = this.CollectionPausing();
     }
 
-    public void AddRange(IEnumerable<T> items)
+    public void AddRange([InstantHandle] IEnumerable<T> items)
     {
         foreach (var item in items)
             Add(item);
     }
 
-    public void AddRangeWithPause(IEnumerable<T> items)
+    public void AddRangeWithPause([InstantHandle] IEnumerable<T> items)
     {
         using var _ = WithPause();
         AddRange(items);
     }
 
-    public virtual void RemoveRange(IEnumerable<T> items)
+    public virtual void RemoveRange([InstantHandle] IEnumerable<T> items)
     {
         foreach (T item in items)
             Remove(item);
     }
 
-    public virtual void RemoveRangeWithPause(IEnumerable<T> items)
+    public virtual void RemoveRangeWithPause([InstantHandle] IEnumerable<T> items)
     {
         using var _ = WithPause();
         RemoveRange(items);
     }
 
-    public virtual void InsertRange(int index, IEnumerable<T> items)
+    public virtual void InsertRange(int index, [InstantHandle] IEnumerable<T> items)
     {
         foreach (T item in items)
             Insert(index++, item);
     }
 
-    public virtual void InsertRangeWithPause(int index, IEnumerable<T> items)
+    public virtual void InsertRangeWithPause(int index, [InstantHandle] IEnumerable<T> items)
     {
         using var _ = WithPause();
         InsertRange(index, items);
     }
 
-    public void ReplaceAll(IEnumerable<T> items)
+    public void ReplaceAll([InstantHandle] IEnumerable<T> items)
     {
         Clear();
         AddRange(items);
     }
 
-    public void ReplaceAllWithPause(IEnumerable<T> items)
+    public void ReplaceAllWithPause([InstantHandle] IEnumerable<T> items)
     {
         using var _ = WithPause();
         ReplaceAll(items);
