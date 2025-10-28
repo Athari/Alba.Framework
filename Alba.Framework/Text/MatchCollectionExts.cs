@@ -4,9 +4,12 @@ namespace Alba.Framework.Text;
 
 public static class MatchCollectionExts
 {
-    public static IEnumerable<string> Get(this MatchCollection @this, int groupNum = 1) =>
-        @this.Select(m => m.Get(groupNum));
+    extension(MatchCollection @this)
+    {
+        public IEnumerable<string> Get(int groupNum = 1) =>
+            @this.Select(m => m.Get(groupNum));
 
-    public static IEnumerable<string> Get(this MatchCollection @this, string groupName) =>
-        @this.Select(m => m.Get(groupName));
+        public IEnumerable<string> Get(string groupName) =>
+            @this.Select(m => m.Get(groupName));
+    }
 }

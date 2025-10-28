@@ -6,27 +6,30 @@ namespace Alba.Framework.Text;
 [PublicAPI]
 public static class MatchExts
 {
-    public static string Get(this Match @this, int groupNum = 1) =>
-        @this.Groups[groupNum].Value;
+    extension(Match @this)
+    {
+        public string Get(int groupNum = 1) =>
+            @this.Groups[groupNum].Value;
 
-    public static string Get(this Match @this, string groupName) =>
-        @this.Groups[groupName].Value;
+        public string Get(string groupName) =>
+            @this.Groups[groupName].Value;
 
-    public static IEnumerable<string> GetAll(this Match @this, int groupNum = 1) =>
-        @this.Groups[groupNum].Captures.Select(c => c.Value);
+        public IEnumerable<string> GetAll(int groupNum = 1) =>
+            @this.Groups[groupNum].Captures.Select(c => c.Value);
 
-    public static IEnumerable<string> GetAll(this Match @this, string groupName) =>
-        @this.Groups[groupName].Captures.Select(c => c.Value);
+        public IEnumerable<string> GetAll(string groupName) =>
+            @this.Groups[groupName].Captures.Select(c => c.Value);
 
-    public static string GetConcat(this Match @this, int groupNum = 1) =>
-        @this.GetAll(groupNum).ConcatString();
+        public string GetConcat(int groupNum = 1) =>
+            @this.GetAll(groupNum).ConcatString();
 
-    public static string GetConcat(this Match @this, string groupName) =>
-        @this.GetAll(groupName).ConcatString();
+        public string GetConcat(string groupName) =>
+            @this.GetAll(groupName).ConcatString();
 
-    public static int Count(this Match @this, int groupNum = 1) =>
-        @this.Groups[groupNum].Captures.Count;
+        public int Count(int groupNum = 1) =>
+            @this.Groups[groupNum].Captures.Count;
 
-    public static int Count(this Match @this, string groupName) =>
-        @this.Groups[groupName].Captures.Count;
+        public int Count(string groupName) =>
+            @this.Groups[groupName].Captures.Count;
+    }
 }
