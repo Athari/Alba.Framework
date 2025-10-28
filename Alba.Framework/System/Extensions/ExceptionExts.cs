@@ -2,6 +2,7 @@
 using System.Net.Mail;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using Alba.Framework.Collections;
 using Alba.Framework.Reflection;
@@ -12,8 +13,8 @@ using TypeLoadException = System.Reflection.ReflectionTypeLoadException;
 
 namespace Alba.Framework;
 
-using CreateFromStrSiteType = CallSite<Func<CallSite, Type, string, Exception>>;
 using CreateFromStrInnerExcSiteType = CallSite<Func<CallSite, Type, string, Exception, Exception>>;
+using CreateFromStrSiteType = CallSite<Func<CallSite, Type, string, Exception>>;
 
 [PublicAPI]
 public static class ExceptionExts
@@ -91,4 +92,8 @@ public static class ExceptionExts
 
     public static bool IsIOException(this Exception @this) =>
         @this is IOException or UnauthorizedAccessException;
+
+    [DoesNotReturn, ContractAnnotation("=> halt")]
+    public static void Rethrow(this Exception @this) =>
+        ExceptionDispatchInfo.Capture(@this).Throw();
 }
