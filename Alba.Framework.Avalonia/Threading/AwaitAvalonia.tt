@@ -1,0 +1,66 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#
+    var priorities = "Send,Render,Loaded,Default,Input,Background,ContextIdle,ApplicationIdle,SystemIdle".Split(',');
+#>
+using Avalonia.Threading;
+
+namespace Alba.Framework.Avalonia.Threading;
+
+public static partial class AwaitAvalonia
+{
+<# foreach (var priority in priorities) { #>
+    public static AvaloniaDispatcherAwaiter <#=$"{priority,-20}"#> { get; } = new(DispatcherPriority.<#=$"{priority,-15}"#>, alwaysYield: false);
+    public static AvaloniaDispatcherAwaiter <#=$"{priority + "Yield",-20}"#> { get; } = new(DispatcherPriority.<#=$"{priority,-15}"#>, alwaysYield: true);
+<# } #>
+<# foreach (var priority in priorities) { #>
+
+    public static void InvokeOn<#=priority#>(Action callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>);
+
+    public static void InvokeOn<#=priority#>(CancellationToken ct, Action callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, ct);
+
+    public static void InvokeOn<#=priority#>(TimeSpan timeout, Action callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, CancellationToken.None, timeout);
+
+    public static void InvokeOn<#=priority#>(CancellationToken ct, TimeSpan timeout, Action callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, ct, timeout);
+
+
+    public static void InvokeOn<#=priority#><T>(Func<T> callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>);
+
+    public static void InvokeOn<#=priority#><T>(CancellationToken ct, Func<T> callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, ct);
+
+    public static void InvokeOn<#=priority#><T>(TimeSpan timeout, Func<T> callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, CancellationToken.None, timeout);
+
+    public static void InvokeOn<#=priority#><T>(CancellationToken ct, TimeSpan timeout, Func<T> callback)
+        => Dispatcher.UIThread.Invoke(callback, DispatcherPriority.<#=priority#>, ct, timeout);
+
+
+    public static DispatcherOperation InvokeOn<#=priority#>Async(Action callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>);
+
+    public static DispatcherOperation InvokeOn<#=priority#>Async(CancellationToken ct, Action callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>, ct);
+
+
+    public static DispatcherOperation<T> InvokeOn<#=priority#>Async<T>(Func<T> callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>);
+
+    public static DispatcherOperation<T> InvokeOn<#=priority#>Async<T>(CancellationToken ct, Func<T> callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>, ct);
+
+
+    public static Task InvokeOn<#=priority#>Async(Func<Task> callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>);
+
+    public static Task<T> InvokeOn<#=priority#>Async<T>(Func<Task<T>> callback)
+        => Dispatcher.UIThread.InvokeAsync(callback, DispatcherPriority.<#=priority#>);
+
+<# } #>
+}
