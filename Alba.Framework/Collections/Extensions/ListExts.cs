@@ -1,82 +1,92 @@
-﻿using System.Collections;
-
-namespace Alba.Framework.Collections;
+﻿namespace Alba.Framework.Collections;
 
 [PublicAPI]
 public static class ListExts
 {
     private static readonly Random Rnd = new();
 
-    public static T GetRandomItem<T>(this IList<T> @this, Random? rnd = null)
+    extension<T>(List<T> @this)
     {
-        return @this[(rnd ?? Rnd).Next(@this.Count)];
-    }
-
-    public static List<T> GetRange<T>(this List<T> @this, Range range)
-    {
-        var (index, count) = range.GetOffsetAndLength(@this.Count);
-        return @this.GetRange(index, count);
-    }
-
-    public static void InsertRange<T>(this IList<T> @this, int index, IEnumerable<T> items)
-    {
-        foreach (T item in items)
-            @this.Insert(index++, item);
-    }
-
-    public static T AtWrapped<T>(this IList<T> @this, int index)
-    {
-        return @this[WrapIndex(index, @this.Count)];
-    }
-
-    public static T AtWrappedOrDefault<T>(this IList<T> @this, int index, T defaultValue = default!)
-    {
-        return @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : defaultValue;
-    }
-
-    public static void SetAtWrapped<T>(this IList<T> @this, int index, T value)
-    {
-        @this[WrapIndex(index, @this.Count)] = value;
-    }
-
-    public static int IndexOfOrDefault<T>(this IList<T> @this, T value, int defaultIndex)
-    {
-        int index = @this.IndexOf(value);
-        return index != -1 ? index : defaultIndex;
-    }
-
-    public static void SwapAt<T>(this IList<T> @this, int index, int indexOther)
-    {
-        if (@this is IOwnedList<T> ownedList) {
-            ownedList.SwapAt(index, indexOther);
-            return;
+        public List<T> GetRange(Range range)
+        {
+            var (index, count) = range.GetOffsetAndLength(@this.Count);
+            return @this.GetRange(index, count);
         }
-        (@this[index], @this[indexOther]) = (@this[indexOther], @this[index]);
     }
 
-    public static void ClearAndDispose<T>(this IList<T> @this) where T : IDisposable
+    extension<T>(IList<T> @this)
     {
-        foreach (T item in @this)
-            item.Dispose();
-        @this.Clear();
+        public void InsertRange(int index, [InstantHandle] IEnumerable<T> items)
+        {
+            Guard.IsInRange(index, 0, @this.Count + 1);
+            foreach (T item in items)
+                @this.Insert(index++, item);
+        }
+
+        public void RemoveRange(int index, int count)
+        {
+            Guard.IsInRangeFor(index, @this);
+            Guard.IsInRangeFor(index + count, @this);
+            while (--count >= 0)
+                @this.RemoveAt(index + count);
+        }
+
+        public void ReplaceRange(int index, int count, [InstantHandle] IEnumerable<T> items)
+        {
+            @this.RemoveRange(index, count);
+            @this.InsertRange(index, items);
+        }
+
+        public T AtRandom(Random? rnd = null)
+        {
+            return @this[(rnd ?? Rnd).Next(@this.Count)];
+        }
+
+        public T AtWrapped(int index)
+        {
+            return @this[WrapIndex(index, @this.Count)];
+        }
+
+        public T AtWrappedOrDefault(int index, T defaultValue = default!)
+        {
+            return @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : defaultValue;
+        }
+
+        public void SetAtWrapped(int index, T value)
+        {
+            @this[WrapIndex(index, @this.Count)] = value;
+        }
+
+        public int IndexOfOrDefault(T value, int defaultIndex)
+        {
+            int index = @this.IndexOf(value);
+            return index != -1 ? index : defaultIndex;
+        }
+
+        public void SwapAt(int index, int indexOther)
+        {
+            if (@this is IOwnedList<T> ownedList) {
+                ownedList.SwapAt(index, indexOther);
+                return;
+            }
+            (@this[index], @this[indexOther]) = (@this[indexOther], @this[index]);
+        }
     }
 
-    public static void AddRangeUntyped(this IList @this, IEnumerable items)
+    extension<T>(IList<T> @this) where T : IDisposable
     {
-        foreach (object item in items)
-            @this.Add(item);
-    }
+        public void DisposeAll()
+        {
+            foreach (var item in @this)
+                item.Dispose();
+        }
 
-    public static void RemoveRangeUntyped(this IList @this, IEnumerable items)
-    {
-        foreach (object item in items)
-            @this.Remove(item);
-    }
-
-    public static void ReplaceUntyped(this IList @this, IEnumerable items)
-    {
-        @this.Clear();
-        @this.AddRangeUntyped(items);
+        public void ClearAndDisposeAll()
+        {
+            foreach (var item in @this)
+                item.Dispose();
+            @this.Clear();
+        }
     }
 
     private static int WrapIndex(int index, int count)
