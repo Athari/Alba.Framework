@@ -2,6 +2,7 @@
 
 namespace Alba.Framework.Collections;
 
+[PublicAPI]
 public readonly struct EquatableArray<T>(T[] array) : IEquatable<EquatableArray<T>>, IEnumerable<T>
     where T : IEquatable<T>
 {

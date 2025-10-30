@@ -1,5 +1,6 @@
 ﻿namespace Alba.Framework.Collections;
 
+[PublicAPI]
 public static class EquatableArrayExts
 {
     public static EquatableArray<T> AsEquatable<T>(this T[]? @this) where T : IEquatable<T> =>

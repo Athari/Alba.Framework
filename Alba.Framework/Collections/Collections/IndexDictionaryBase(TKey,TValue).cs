@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Alba.Framework.Collections;
 
@@ -13,7 +12,7 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
     protected IndexDictionaryBase() => _values = [ ];
 
     protected IndexDictionaryBase(int capacity) => _values = new(capacity);
-    
+
     [SuppressMessage("ReSharper", "VirtualMemberCallInConstructor", Justification = "These virtual methods must be effectively static.")]
     protected IndexDictionaryBase(IEnumerable<KeyValuePair<TKey, TValue>> collection)
     {
@@ -22,7 +21,7 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
             ICollection ic => ic.Count,
             _ => null,
         };
-        _values = capacity is {} cap ? new(cap) : new();
+        _values = capacity is { } cap ? new(cap) : new();
         foreach (var kvp in collection)
             _values[KeyToIndex(kvp.Key)] = kvp.Value;
     }
@@ -36,15 +35,12 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
     bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly => false;
     bool IDictionary.IsReadOnly => false;
 
-    public TValue this[TKey key]
-    {
-        get
-        {
+    public TValue this[TKey key] {
+        get {
             int index = KeyToIndex(key);
             return HasIndex(index) ? _values[index] : throw new KeyNotFoundException();
         }
-        set
-        {
+        set {
             int index = KeyToIndex(key);
             if (index >= _values.Capacity * 2)
                 _values.Capacity = index;
@@ -54,8 +50,7 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
         }
     }
 
-    object? IDictionary.this[object key]
-    {
+    object? IDictionary.this[object key] {
         get { return this[(TKey)key]; }
         set { this[(TKey)key] = (TValue)value!; }
     }
@@ -89,6 +84,7 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
 
     public bool ContainsKey(TKey key) => HasIndex(KeyToIndex(key));
     bool IDictionary.Contains(object key) => ContainsKey((TKey)key);
+
     bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
     {
         int index = KeyToIndex(item.Key);
@@ -153,7 +149,7 @@ public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TVal
 
         if (array is KeyValuePair<TKey, TValue>[] pairArray) {
             for (int i = 0; i < _values.Count; i++)
-                pairArray[i + arrayIndex] = new KeyValuePair<TKey, TValue>(IndexToKey(i), _values[i]);
+                pairArray[i + arrayIndex] = new(IndexToKey(i), _values[i]);
         }
         else {
             if (array is not object[] a)

@@ -9,7 +9,7 @@ namespace Alba.Framework.Collections;
 /// <summary>Typed wrapper of an untyped collection.</summary>
 [Serializable]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-internal class TypedCollection<T> : IReadOnlyList<T>, ICollection<T>, ICollection
+public class TypedCollection<T> : IReadOnlyList<T>, ICollection<T>, ICollection
 {
     private static readonly ConcurrentDictionary<Type, Func<ICollection, int, T>> IndexerCache = new();
 

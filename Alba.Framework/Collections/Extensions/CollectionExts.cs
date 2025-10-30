@@ -5,22 +5,30 @@ namespace Alba.Framework.Collections;
 [PublicAPI]
 public static class CollectionExts
 {
-    public static void AddRange<T>(this ICollection<T> @this, [InstantHandle] IEnumerable<T> items)
+    extension<T>(ICollection<T> @this)
     {
-        foreach (T item in items)
-            @this.Add(item);
+        public void AddRange([InstantHandle] IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                @this.Add(item);
+        }
+
+        public void RemoveRange([InstantHandle] IEnumerable<T> items)
+        {
+            foreach (var item in items)
+                @this.Remove(item);
+        }
+
+        public void ReplaceAll([InstantHandle] IEnumerable<T> items)
+        {
+            @this.Clear();
+            @this.AddRange(items);
+        }
     }
 
-    public static void RemoveRange<T>(this ICollection<T> @this, [InstantHandle] IEnumerable<T> items)
+    extension(ICollection @this)
     {
-        foreach (T item in items)
-            @this.Remove(item);
-    }
-
-    public static void ReplaceAll<T>(this ICollection<T> @this, [InstantHandle] IEnumerable<T> items)
-    {
-        @this.Clear();
-        @this.AddRange(items);
+        public TypedCollection<T> ToTyped<T>() => new(@this);
     }
 
     public static void RemoveStaleReferences<T>(this ICollection<WeakReference<T>> @this)
@@ -28,17 +36,13 @@ public static class CollectionExts
     {
         if (@this is List<WeakReference<T>> list) {
             list.RemoveAll(wr => !wr.TryGetTarget(out _));
-            list.Capacity = list.Count;
+            if (list.Capacity > list.Count * 2)
+                list.Capacity = list.Count;
         }
         else {
             foreach (var wr in @this.ToArray())
                 if (!wr.TryGetTarget(out T? _))
                     @this.Remove(wr);
         }
-    }
-
-    public static IReadOnlyList<T> ToTyped<T>(this ICollection @this)
-    {
-        return new TypedCollection<T>(@this);
     }
 }
