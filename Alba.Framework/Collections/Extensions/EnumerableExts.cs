@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Alba.Framework.Collections;
 
@@ -21,6 +20,12 @@ public static class EnumerableExts
     {
         return ReadOnlyDictionary<TKey, TValue>.Empty;
     }
+
+    public static T? AtOrDefault<T>(this IEnumerable<T> @this, int index) =>
+        @this.ElementAtOrDefault(index);
+
+    public static T? AtOrDefault<T>(this IEnumerable<T> @this, Index index) =>
+        @this.ElementAtOrDefault(index);
 
     public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<T> values)
     {
@@ -165,6 +170,40 @@ public static class EnumerableExts
         return @this.Where(i => i != null)!;
     }
 
+    public static IEnumerable<T> WhereNotDefault<T>(this IEnumerable<T> @this)
+    {
+        var def = default(T);
+        return @this.Where(i => !i.EqualsValue(def));
+    }
+
+    public static IEnumerable<(T1, T2)> SelectWith<T1, T2>(this IEnumerable<T1> source, Func<T1, T2> secondSelector)
+    {
+        using var e = source.GetEnumerator();
+        while (e.MoveNext())
+            yield return (e.Current, secondSelector(e.Current));
+    }
+
+    public static IEnumerable<(T1, T2, T3)> SelectWith<T1, T2, T3>(this IEnumerable<T1> source, Func<T1, T2> secondSelector, Func<T1, T3> thirdSelector)
+    {
+        using var e = source.GetEnumerator();
+        while (e.MoveNext())
+            yield return (e.Current, secondSelector(e.Current), thirdSelector(e.Current));
+    }
+
+    public static IEnumerable<TResult> SelectWith<T1, T2, TResult>(this IEnumerable<T1> source, Func<T1, T2> secondSelector, Func<T1, T2, TResult> resultSelector)
+    {
+        using var e = source.GetEnumerator();
+        while (e.MoveNext())
+            yield return resultSelector(e.Current, secondSelector(e.Current));
+    }
+
+    public static IEnumerable<TResult> SelectWith<T1, T2, T3, TResult>(this IEnumerable<T1> source, Func<T1, T2> secondSelector, Func<T1, T3> thirdSelector, Func<T1, T2, T3, TResult> resultSelector)
+    {
+        using var e = source.GetEnumerator();
+        while (e.MoveNext())
+            yield return resultSelector(e.Current, secondSelector(e.Current), thirdSelector(e.Current));
+    }
+
     public static IEnumerable<(T1, T2, T3)> Zip<T1, T2, T3, TResult>(this IEnumerable<T1> source, IEnumerable<T2> second, IEnumerable<T3> third)
     {
         using var e1 = source.GetEnumerator();
@@ -238,17 +277,11 @@ public static class EnumerableExts
         where TKey : notnull =>
         @this.ToDictionary(p => (TKey)p.Key, p => (T)p.Value!);
 
-    public static HashSet<T> ToHashSet<T>(this IEnumerable<T> @this) =>
-        [ ..@this ];
-
-    public static HashSet<T> ToHashSet<T>(this IEnumerable<T> @this, IEqualityComparer<T> comparer) =>
-        new(@this, comparer);
-
     public static HashSet<TKey> ToHashSet<TKey, T>(this IEnumerable<T> @this, Func<T, TKey> keySelector) =>
-        [ ..@this.Select(keySelector) ];
+        @this.Select(keySelector).ToHashSet();
 
     public static HashSet<TKey> ToHashSet<TKey, T>(this IEnumerable<T> @this, Func<T, TKey> keySelector, IEqualityComparer<TKey> comparer) =>
-        new(@this.Select(keySelector), comparer);
+        @this.Select(keySelector).ToHashSet(comparer);
 
     public static SortedSet<T> ToSortedSet<T>(this IEnumerable<T> @this) =>
         [ .. @this ];
