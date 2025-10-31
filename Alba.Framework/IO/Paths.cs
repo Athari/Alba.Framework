@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Text.RegularExpressions;
 using Alba.Framework.Collections;
 using Alba.Framework.Text;
@@ -33,7 +32,9 @@ public static partial class Paths
     {
         Func<IEnumerable<string?>, string> callCombine = concat switch {
             PathConcat.Combine => Combine,
+            #pragma warning disable CS0618 // Type or member is obsolete
             PathConcat.CombineSafe => CombineSafe,
+            #pragma warning restore CS0618
             PathConcat.Join => Join,
             _ => throw EnumException.Create(nameof(concat), concat),
         };
@@ -57,7 +58,9 @@ public static partial class Paths
     {
         Func<string?, string?, string> callCombine = concat switch {
             PathConcat.Combine => Combine,
+            #pragma warning disable CS0618 // Type or member is obsolete
             PathConcat.CombineSafe => CombineSafe,
+            #pragma warning restore CS0618
             PathConcat.Join => Path.Join,
             _ => throw EnumException.Create(nameof(concat), concat),
         };

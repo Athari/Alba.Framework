@@ -277,6 +277,7 @@ public static class EnumerableExts
         where TKey : notnull =>
         @this.ToDictionary(p => (TKey)p.Key, p => (T)p.Value!);
 
+    [SuppressMessage("Style", "IDE0305:Simplify collection initialization", Justification = "Readability")]
     public static HashSet<TKey> ToHashSet<TKey, T>(this IEnumerable<T> @this, Func<T, TKey> keySelector) =>
         @this.Select(keySelector).ToHashSet();
 

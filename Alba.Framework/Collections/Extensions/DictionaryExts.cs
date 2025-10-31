@@ -20,7 +20,7 @@ public static class DictionaryExts
         {
             ref var value = ref @this.GetRefOrNull(key);
             exists = Unsafe.IsNullRef(ref value);
-            return ref value;
+            return ref value!;
         }
 
         public ref TValue? GetRefOrAdd(TKey key, out bool exists) =>
@@ -59,15 +59,15 @@ public static class DictionaryExts
         }
 
         [OverloadResolutionPriority(-1)]
-        public TValue? GetOrDefault(TKey key) =>
+        public TValue? Get(TKey key) =>
             @this.TryGetValue(key, out var value) ? value : default;
 
         [OverloadResolutionPriority(-1)]
-        public TValue GetOrDefault(TKey key, TValue defaultValue) =>
+        public TValue Get(TKey key, TValue defaultValue) =>
             @this.TryGetValue(key, out var value) ? value : defaultValue;
 
         [OverloadResolutionPriority(-1)]
-        public TValue GetOrDefault(TKey key, Func<TValue> getDefaultValue) =>
+        public TValue Get(TKey key, Func<TValue> getDefaultValue) =>
             @this.TryGetValue(key, out var value) ? value : getDefaultValue();
 
         public TValue GetOrAdd(TKey key, Func<TValue> getDefaultValue)
@@ -92,13 +92,13 @@ public static class DictionaryExts
     extension<TKey, TValue>(IReadOnlyDictionary<TKey, TValue> @this)
         where TKey : notnull
     {
-        public TValue? GetOrDefault(TKey key) =>
+        public TValue? Get(TKey key) =>
             @this.GetValueOrDefault(key);
 
-        public TValue GetOrDefault(TKey key, TValue defaultValue) =>
+        public TValue Get(TKey key, TValue defaultValue) =>
             @this.GetValueOrDefault(key, defaultValue);
 
-        public TValue GetOrDefault(TKey key, Func<TValue> getDefaultValue) =>
+        public TValue Get(TKey key, Func<TValue> getDefaultValue) =>
             @this.TryGetValue(key, out var value) ? value : getDefaultValue();
 
         public bool TryGet(TKey key, [MaybeNullWhen(false)] out TValue value) =>
