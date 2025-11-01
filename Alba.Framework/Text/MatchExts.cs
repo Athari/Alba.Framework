@@ -26,6 +26,18 @@ public static class MatchExts
         public string GetConcat(string groupName) =>
             @this.GetAll(groupName).ConcatString();
 
+        public string? TryGet(int groupNum = 1)
+        {
+            var group = @this.Groups[groupNum];
+            return group.Success ? group.Value : null;
+        }
+
+        public string? TryGet(string groupName)
+        {
+            var group = @this.Groups[groupName];
+            return group.Success ? group.Value : null;
+        }
+
         public int Count(int groupNum = 1) =>
             @this.Groups[groupNum].Captures.Count;
 

@@ -8,6 +8,8 @@ namespace Alba.Framework.Text;
 [PublicAPI]
 public static partial class StringExts
 {
+    private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
+
     [GeneratedRegex(@"\r?\n", RegexOptions.Compiled)]
     private static partial Regex ReNewLines();
 
@@ -38,6 +40,14 @@ public static partial class StringExts
     public static string Qch2(this string? @this) => $"『{@this}』"; // corner half-width outer
     public static string Qk1(this string? @this) => $"〈{@this}〉"; // chinese book / korean inner
     public static string Qk2(this string? @this) => $"《{@this}》"; // chinese book / korean outer
+
+    public static int? TryParseInt32(this string? @this) =>
+        @this != null && int.TryParse(@this, NumberStyles.Any, Inv, out var v) ? v : null;
+
+    public static int? TryParseInt32(this string? @this, NumberStyles style) =>
+        @this != null && int.TryParse(@this, style, Inv, out var v) ? v : null;
+
+    // TODO Add TryParse methods for the rest of types (see Parse class)
 
     [Pure, ContractAnnotation("null => true")]
     public static bool IsNullOrEmpty(this string? @this) =>
@@ -128,7 +138,7 @@ public static partial class StringExts
 
     [Pure, StringFormatMethod("format"), Obsolete("Use string interpolation")]
     public static string FmtInv(this string format, params object?[] args) =>
-        string.Format(CultureInfo.InvariantCulture, format, args);
+        string.Format(Inv, format, args);
 
     [Pure]
     public static bool EqualsCulture(this string @this, string other) =>
@@ -193,6 +203,21 @@ public static partial class StringExts
     [Pure]
     public static string ReMatchGet(this string @this, Regex regex, string groupName) =>
         regex.Match(@this).Get(groupName);
+
+    public static string? ReMatchTryGet(this string @this, [RegexPattern] string pattern, int groupNum = 1, RegexOptions options = RegexOptions.None) =>
+        Regex.Match(@this, pattern, options).TryGet(groupNum);
+
+    [Pure]
+    public static string? ReMatchTryGet(this string @this, [RegexPattern] string pattern, string groupName, RegexOptions options = RegexOptions.None) =>
+        Regex.Match(@this, pattern, options).TryGet(groupName);
+
+    [Pure]
+    public static string? ReMatchTryGet(this string @this, Regex regex, int groupNum = 1) =>
+        regex.Match(@this).TryGet(groupNum);
+
+    [Pure]
+    public static string? ReMatchTryGet(this string @this, Regex regex, string groupName) =>
+        regex.Match(@this).TryGet(groupName);
 
     [Pure]
     public static MatchCollection ReMatches(this string @this, [RegexPattern] string pattern, RegexOptions options = RegexOptions.None) =>
