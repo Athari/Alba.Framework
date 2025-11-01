@@ -6,30 +6,36 @@ using Alba.Framework.Numerics;
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
 [PublicAPI]
-public abstract class FloatingComparisonConverter<T, TEpsilonOperations> : ValueConverterBase<T?, bool, T?>
+public abstract class FloatingComparisonConverter<T, TEpsilonOperations> : ValueConverterBase<T?, bool>
     where T : IFloatingPoint<T>
     where TEpsilonOperations : IFloatingPointEpsilonOperations<T>
 {
     public NumberComparisonOperator Operator { get; set; }
 
+    public T Parameter { get; set; } = T.Zero;
+
     protected FloatingComparisonConverter() { }
 
-    protected FloatingComparisonConverter(NumberComparisonOperator @operator) => Operator = @operator;
+    protected FloatingComparisonConverter(NumberComparisonOperator @operator) =>
+        Operator = @operator;
 
-    public override bool Convert(T? value, Type targetType, T? parameter, CultureInfo culture) =>
-        value is not null && parameter is not null && Operator switch {
+    protected FloatingComparisonConverter(NumberComparisonOperator @operator, T parameter) =>
+        (Operator, Parameter) = (@operator, parameter);
+
+    public override bool Convert(T? value, Type targetType, CultureInfo culture) =>
+        value is not null && Operator switch {
             NumberComparisonOperator.Equal =>
-                TEpsilonOperations.IsCloseTo(value, parameter, TEpsilonOperations.Epsilon),
+                TEpsilonOperations.IsCloseTo(value, Parameter, TEpsilonOperations.Epsilon),
             NumberComparisonOperator.NotEqual =>
-                !TEpsilonOperations.IsCloseTo(value, parameter, TEpsilonOperations.Epsilon),
+                !TEpsilonOperations.IsCloseTo(value, Parameter, TEpsilonOperations.Epsilon),
             NumberComparisonOperator.Greater =>
-                TEpsilonOperations.IsGreaterThan(value, parameter),
+                TEpsilonOperations.IsGreaterThan(value, Parameter),
             NumberComparisonOperator.GreaterOrEqual =>
-                TEpsilonOperations.IsGreaterThanOrClose(value, parameter),
+                TEpsilonOperations.IsGreaterThanOrClose(value, Parameter),
             NumberComparisonOperator.Less =>
-                TEpsilonOperations.IsLessThan(value, parameter),
+                TEpsilonOperations.IsLessThan(value, Parameter),
             NumberComparisonOperator.LessOrEqual =>
-                TEpsilonOperations.IsLessThanOrClose(value, parameter),
+                TEpsilonOperations.IsLessThanOrClose(value, Parameter),
             _ => throw new InvalidEnumArgumentException($"Invalid {nameof(Operator)} value."),
         };
 }
