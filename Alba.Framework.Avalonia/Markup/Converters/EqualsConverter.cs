@@ -5,13 +5,13 @@ using Avalonia.Markup.Xaml;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
-public class EqualsValueConverter : MarkupExtension, IValueConverter
+public class EqualsConverter : MarkupExtension, IValueConverter
 {
     public object? Value { get; set; }
 
-    public EqualsValueConverter() { }
+    public EqualsConverter() { }
 
-    public EqualsValueConverter(object value) =>
+    public EqualsConverter(object value) =>
         Value = value;
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>

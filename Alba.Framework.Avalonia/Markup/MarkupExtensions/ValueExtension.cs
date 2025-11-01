@@ -9,6 +9,9 @@ public abstract class ValueExtension<T>(T value) : IMarkupExtension
 }
 
 [PublicAPI]
+public class BoolExtension(bool value) : ValueExtension<bool>(value);
+
+[PublicAPI]
 public class Int32Extension(int value) : ValueExtension<int>(value);
 
 [PublicAPI]
