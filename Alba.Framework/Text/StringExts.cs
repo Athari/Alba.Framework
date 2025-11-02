@@ -50,11 +50,11 @@ public static partial class StringExts
     // TODO Add TryParse methods for the rest of types (see Parse class)
 
     [Pure, ContractAnnotation("null => true")]
-    public static bool IsNullOrEmpty(this string? @this) =>
+    public static bool IsNullOrEmpty([NotNullWhen(false)] this string? @this) =>
         string.IsNullOrEmpty(@this);
 
     [Pure, ContractAnnotation("null => true")]
-    public static bool IsNullOrWhitespace(this string? @this) =>
+    public static bool IsNullOrWhitespace([NotNullWhen(false)] this string? @this) =>
         string.IsNullOrWhiteSpace(@this);
 
     [Pure, ContractAnnotation("null => null; notnull => canbenull")]
