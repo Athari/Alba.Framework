@@ -1,8 +1,17 @@
 ﻿namespace Alba.Framework.Collections;
 
 [PublicAPI]
-public static class EquatableArrayExts
+public static class ArrayExts
 {
+    extension<T>(T[] @this)
+    {
+        public void Fill(T value) =>
+            Array.Fill(@this, value);
+
+        public void Fill(T value, int startIndex, int count) =>
+            Array.Fill(@this, value, startIndex, count);
+    }
+
     public static EquatableArray<T> AsEquatable<T>(this T[]? @this) where T : IEquatable<T> =>
         @this != null ? new(@this) : EquatableArray<T>.Empty;
 
