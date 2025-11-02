@@ -269,6 +269,12 @@ public static class EnumerableExts
     public static IList<T> AsList<T>(this IEnumerable<T> @this) =>
         @this as IList<T> ?? [ .. @this ];
 
+    public static TResult[] ToArray<T, TResult>(this IEnumerable<T> @this, Func<T, TResult> selector) =>
+        @this.Select(selector).ToArray();
+
+    public static TResult[] ToArray<T, TResult>(this IEnumerable<T> @this, Func<T, int, TResult> selector) =>
+        @this.Select(selector).ToArray();
+
     public static Dictionary<TKey, T> ToDictionary<TKey, T>(this IEnumerable<KeyValuePair<TKey, T>> @this)
         where TKey : notnull =>
         @this.ToDictionary(p => p.Key, p => p.Value);
