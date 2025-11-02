@@ -39,11 +39,37 @@ public static class AvaloniaExts
     public static bool ContainsFiles(this IDataObject @this) =>
         @this.Contains(DataFormats.Files);
 
+    public static Size Ceiling(this Size @this) =>
+        new(Math.Ceiling(@this.Width), Math.Ceiling(@this.Height));
+
+    public static Size Floor(this Size @this) =>
+        new(Math.Floor(@this.Width), Math.Floor(@this.Height));
+
+    public static Size Round(this Size @this, MidpointRounding mode = MidpointRounding.ToEven) =>
+        new(Math.Round(@this.Width, mode), Math.Round(@this.Height, mode));
+
+    public static Size RoundTo(this Size @this, double precision, MidpointRounding mode = MidpointRounding.ToEven) =>
+        new(Math.Round(@this.Width / precision, mode) * precision,
+            Math.Round(@this.Height / precision, mode) * precision);
+
     public static PixelSize ToPixel(this Size @this, double scale = 1) =>
         PixelSize.FromSize(@this, scale);
 
     public static PixelSize ToPixelRounded(this Size @this, double scale = 1) =>
         new((int)Math.Round(@this.Width * scale), (int)Math.Round(@this.Height * scale));
+
+    public static Point Ceiling(this Point @this) =>
+        new(Math.Ceiling(@this.X), Math.Ceiling(@this.Y));
+
+    public static Point Floor(this Point @this) =>
+        new(Math.Floor(@this.X), Math.Floor(@this.Y));
+
+    public static Point Round(this Point @this, MidpointRounding mode = MidpointRounding.ToEven) =>
+        new(Math.Round(@this.X, mode), Math.Round(@this.Y, mode));
+
+    public static Point RoundTo(this Point @this, double precision, MidpointRounding mode = MidpointRounding.ToEven) =>
+        new(Math.Round(@this.X / precision, mode) * precision,
+            Math.Round(@this.Y / precision, mode) * precision);
 
     public static PixelPoint ToPixel(this Point @this, double scale = 1) =>
         PixelPoint.FromPoint(@this, scale);
