@@ -26,7 +26,7 @@ public static partial class Paths
 
     [Pure]
     public static string ChangeDir(string path,
-        Func<IList<string>, IEnumerable<string?>> dirParts,
+        Func<string[], IEnumerable<string?>> dirParts,
         Func<string, string>? safe = null,
         PathConcat concat = PathConcat.Join)
     {
@@ -45,11 +45,11 @@ public static partial class Paths
     }
 
     [Pure]
-    public static string ChangeExt(string path, string? ext = null) => Path.ChangeExtension(path, ext);
+    public static string ChangeExt(string path, string? ext) => Path.ChangeExtension(path, ext);
 
     [Pure]
-    public static string ChangeName(string path,
-        Func<IList<string>, IEnumerable<string?>>? dirParts = null,
+    public static string ChangePath(string path,
+        Func<string[], IEnumerable<string?>>? dirParts = null,
         Func<string, string?>? dir = null,
         Func<string, string?>? name = null,
         Func<string, string?>? ext = null,
@@ -144,7 +144,7 @@ public static partial class Paths
         return !includeControl
             ? Path.GetInvalidPathChars()
             : AllInvalidPathChars ??= Path.GetInvalidPathChars()
-                .Concat(CharRange(0x00..0x1F), CharRange(0x7F..0x9F))
+                .Concat(CharRange(0x00..0x1F)).Concat(CharRange(0x7F..0x9F))
                 .ToArray();
 
         static IEnumerable<char> CharRange(Range range) =>
@@ -201,7 +201,7 @@ public static partial class Paths
             .ReReplace(ReInvalidChars, replaceInvalid ?? (_ => "_"));
 
     [Pure]
-    public static IList<string> Split(string path) =>
+    public static string[] Split(string path) =>
         path.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 
     [Pure]

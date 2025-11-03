@@ -27,21 +27,21 @@ public static class EnumerableExts
     public static T? AtOrDefault<T>(this IEnumerable<T> @this, Index index) =>
         @this.ElementAtOrDefault(index);
 
-    public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<T> values)
-    {
-        foreach (var item in @this)
-            yield return item;
-        foreach (var value in values)
-            yield return value;
-    }
+    //public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<T> values)
+    //{
+    //    foreach (var item in @this)
+    //        yield return item;
+    //    foreach (var value in values)
+    //        yield return value;
+    //}
 
-    public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<IEnumerable<T>> enumerables)
-    {
-        foreach (var item in @this)
-            yield return item;
-        foreach (T value in enumerables.Flatten())
-            yield return value;
-    }
+    //public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, params IEnumerable<IEnumerable<T>> enumerables)
+    //{
+    //    foreach (var item in @this)
+    //        yield return item;
+    //    foreach (T value in enumerables.Flatten())
+    //        yield return value;
+    //}
 
     public static IEnumerable<T> Concat<T>(this IEnumerable<T> @this, T value)
     {
