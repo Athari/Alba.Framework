@@ -4,12 +4,12 @@ using Alba.Framework.Collections;
 namespace Alba.Framework.Text;
 
 [PublicAPI]
-public static class MatchExts
+public static partial class MatchExts
 {
     extension(Match @this)
     {
-        public string Get(int groupNum = 1) =>
-            @this.Groups[groupNum].Value;
+        public string Get(int groupIndex = 1) =>
+            @this.Groups[groupIndex].Value;
 
         public string Get(string groupName) =>
             @this.Groups[groupName].Value;
