@@ -10,6 +10,12 @@ public static class ArrayExts
 
         public void Fill(T value, int startIndex, int count) =>
             Array.Fill(@this, value, startIndex, count);
+
+        public T[] ReverseArray()
+        {
+            Array.Reverse(@this);
+            return @this;
+        }
     }
 
     public static EquatableArray<T> AsEquatable<T>(this T[]? @this) where T : IEquatable<T> =>
