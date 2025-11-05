@@ -10,22 +10,32 @@ namespace Alba.Framework.Avalonia;
 [PublicAPI]
 public static class AvaloniaExts
 {
-    public static void ToggleSelect<T>(this SelectionModel<T> @this, int index, bool? toggle)
+    extension<T>(SelectionModel<T> @this)
     {
-        if (toggle == true)
-            @this.Select(index);
-        else if (toggle == false)
-            @this.Deselect(index);
+        public IEnumerable<T> AllSelectedItems =>
+            @this.SelectedItems.OfType<T>();
+
+        public IEnumerable<int> AllSelectedIndexes =>
+            @this.SelectedIndexes;
+
+        public void ToggleSelect(int index, bool? toggle)
+        {
+            toggle ??= !@this.IsSelected(index);
+            if (toggle == true)
+                @this.Select(index);
+            else if (toggle == false)
+                @this.Deselect(index);
+        }
     }
 
-    public static IEnumerable<T> GetSelectedItems<T>(this SelectionModel<T> @this) =>
-        @this.SelectedItems.OfType<T>();
+    extension<T>(SelectionModelSelectionChangedEventArgs<T> @this)
+    {
+        public IEnumerable<T> AllSelectedItems =>
+            @this.SelectedItems.OfType<T>();
 
-    public static IEnumerable<T> GetSelectedItems<T>(this SelectionModelSelectionChangedEventArgs<T> @this) =>
-        @this.SelectedItems.OfType<T>();
-
-    public static IEnumerable<T> GetDeselectedItems<T>(this SelectionModelSelectionChangedEventArgs<T> @this) =>
-        @this.DeselectedItems.OfType<T>();
+        public IEnumerable<T> AllDeselectedItems =>
+            @this.DeselectedItems.OfType<T>();
+    }
 
     public static int GetStride<T>(this ILockedFramebuffer @this) =>
         @this.RowBytes / Marshal.SizeOf<T>();
