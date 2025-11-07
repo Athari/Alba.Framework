@@ -13,12 +13,12 @@ public class PrevNextEnabledConverter : MarkupExtension, IMultiValueConverter
 
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (values is not [ IReadOnlyList<object> items, int index ])
+        if (values is not [ int count, int index ])
             return false;
-        return items.Count > 1 && PrevNext switch {
-            PrevNext.Prev => index < items.Count - 1,
-            PrevNext.Next => index > 1,
-            _ => throw new ArgumentOutOfRangeException(),
+        return index == -1 || count > 0 && PrevNext switch {
+            PrevNext.Prev => index > 0,
+            PrevNext.Next => index < count - 1,
+            _ => true,
         };
     }
 
