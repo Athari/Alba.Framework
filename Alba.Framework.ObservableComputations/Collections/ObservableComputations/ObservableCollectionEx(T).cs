@@ -2,6 +2,7 @@
 
 namespace Alba.Framework.Collections.ObservableComputations;
 
+[SuppressMessage("Style", "IDE0063: Use simple using statement", Justification = "Disposes too late")]
 public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
 {
     private readonly CollectionPausing<T> _pausing;
@@ -73,8 +74,8 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
     {
         Guard.IsInRangeFor(selectedIndex, (IList<T>)this);
         var newSelectedIndex = -1;
-        using var _ = this.WithSelectedIndex(selectedIndex, i => newSelectedIndex = i);
-        RemoveAt(selectedIndex);
+        using (var _ = this.WithSelectedIndex(selectedIndex, i => newSelectedIndex = i))
+            RemoveAt(selectedIndex);
         return newSelectedIndex;
     }
 
@@ -82,8 +83,8 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
     {
         Guard.IsNotNull(selectedItem);
         var newSelectedItem = default(T?);
-        using var _ = this.WithSelectedItem(selectedItem, i => newSelectedItem = i);
-        Remove(selectedItem);
+        using (var _ = this.WithSelectedItem(selectedItem, i => newSelectedItem = i))
+            Remove(selectedItem);
         return newSelectedItem;
     }
 
