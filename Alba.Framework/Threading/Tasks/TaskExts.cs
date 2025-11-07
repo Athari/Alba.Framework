@@ -6,23 +6,17 @@ namespace Alba.Framework.Threading.Tasks;
 [PublicAPI]
 public static class TaskExts
 {
-    private static T ThisNotNull<T>(this T? @this)
-    {
-        Guard.IsNotNull(@this);
-        return @this;
-    }
-
     public static ConfiguredTaskAwaitable NoSync(this Task @this) =>
-        ThisNotNull(@this).ConfigureAwait(false);
+        @this.ConfigureAwait(false);
 
     public static ConfiguredTaskAwaitable<T> NoSync<T>(this Task<T> @this) =>
-        ThisNotNull(@this).ConfigureAwait(false);
+        @this.ConfigureAwait(false);
 
     public static ConfiguredAsyncDisposable NoSync<T>(this T @this) where T : IAsyncDisposable =>
-        ThisNotNull(@this).ConfigureAwait(false);
+        @this.ConfigureAwait(false);
 
     public static ConfiguredAsyncDisposable AsNoSync<T>(this T @this, out T var) where T : IAsyncDisposable =>
-        ThisNotNull(@this).As(out var).ConfigureAwait(false);
+        @this.As(out var).ConfigureAwait(false);
 
     public static ConfiguredValueTaskAwaitable NoSync(this ValueTask @this) =>
         @this.ConfigureAwait(false);

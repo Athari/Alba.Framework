@@ -165,6 +165,14 @@ public static partial class StringExts
         @this.Equals(other, StringComparison.OrdinalIgnoreCase);
 
     [Pure]
+    public static string ReplaceOrd(this string @this, string oldValue, string? newValue) =>
+        @this.Replace(oldValue, newValue, StringComparison.Ordinal);
+
+    [Pure]
+    public static string ReplaceCaseOrd(this string @this, string oldValue, string? newValue) =>
+        @this.Replace(oldValue, newValue, StringComparison.OrdinalIgnoreCase);
+
+    [Pure]
     public static string ReEscape(this string @this) =>
         Regex.Escape(@this);
 
