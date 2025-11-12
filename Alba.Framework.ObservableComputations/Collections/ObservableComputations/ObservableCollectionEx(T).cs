@@ -1,4 +1,5 @@
-﻿using ObservableComputations;
+﻿using System.Collections.Specialized;
+using ObservableComputations;
 
 namespace Alba.Framework.Collections.ObservableComputations;
 
@@ -7,6 +8,8 @@ namespace Alba.Framework.Collections.ObservableComputations;
 public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
 {
     private readonly CollectionPausing<T> _pausing;
+
+    public ObservableCollectionEx<T> Self => this;
 
     public ObservableCollectionEx()
     {
@@ -21,6 +24,12 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
     public ObservableCollectionEx(IEnumerable<T> collection) : base(collection)
     {
         _pausing = this.CollectionPausing();
+    }
+
+    protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
+    {
+        base.OnCollectionChanged(e);
+        OnPropertyChanged(new(nameof(Self)));
     }
 
     public bool IsPaused {
