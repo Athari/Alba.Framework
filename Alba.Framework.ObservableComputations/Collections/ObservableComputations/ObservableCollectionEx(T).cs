@@ -3,6 +3,7 @@
 namespace Alba.Framework.Collections.ObservableComputations;
 
 [SuppressMessage("Style", "IDE0063: Use simple using statement", Justification = "Disposes too late")]
+[SuppressMessage("ReSharper", "ConvertToUsingDeclaration", Justification = "Disposes too late")]
 public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
 {
     private readonly CollectionPausing<T> _pausing;
@@ -20,6 +21,11 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
     public ObservableCollectionEx(IEnumerable<T> collection) : base(collection)
     {
         _pausing = this.CollectionPausing();
+    }
+
+    public bool IsPaused {
+        get => _pausing.IsPaused;
+        set => _pausing.IsPaused = value;
     }
 
     public void AddRange([InstantHandle] IEnumerable<T> items)
@@ -98,12 +104,12 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
         public CollectionPauseDisposable(ObservableCollectionEx<T> collection)
         {
             _collection = collection;
-            _collection._pausing.IsPaused = true;
+            _collection.IsPaused = true;
         }
 
         public void Dispose()
         {
-            _collection._pausing.IsPaused = false;
+            _collection.IsPaused = false;
         }
     }
 }
