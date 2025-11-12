@@ -8,7 +8,7 @@ public static class StorageExts
 {
     extension(IStorageItem @this)
     {
-        public string Path =>
+        public string LocalPath =>
             OperatingSystem.IsAndroid() ? @this.Path.AbsoluteUri : @this.Path.LocalPath;
 
         public string Ext =>
