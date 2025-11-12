@@ -12,6 +12,10 @@
     <DefineConstants Condition="'$(IsRuntimeWindows)' == 'true'">$(DefineConstants);WINDOWS</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup Label="References">
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
   <ItemGroup Label="Packages">
     <PackageReference Include="System.Threading.AccessControl" Version="9.0.10" Condition="'$(IsRuntimeWindows)' == 'true'" />
   </ItemGroup>

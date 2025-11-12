@@ -10,7 +10,4 @@ public static partial class ConvertibleExts
 
     public static object ToTypeInv(this IConvertible @this, Type conversionType) =>
         @this.ToType(conversionType, CultureInfo.InvariantCulture);
-
-    public static string ToStringInv(this IConvertible @this) =>
-        @this.ToString(CultureInfo.InvariantCulture);
 }

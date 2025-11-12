@@ -141,36 +141,12 @@ public static partial class StringExts
         string.Format(Inv, format, args);
 
     [Pure]
-    public static bool EqualsCulture(this string @this, string other) =>
-        @this.Equals(other, StringComparison.CurrentCulture);
+    public static string ToLowerInv(this string @this) =>
+        @this.ToLowerInvariant();
 
     [Pure]
-    public static bool EqualsInv(this string @this, string other) =>
-        @this.Equals(other, StringComparison.InvariantCulture);
-
-    [Pure]
-    public static bool EqualsOrd(this string @this, string other) =>
-        @this.Equals(other, StringComparison.Ordinal);
-
-    [Pure]
-    public static bool EqualsCaseCulture(this string @this, string other) =>
-        @this.Equals(other, StringComparison.CurrentCultureIgnoreCase);
-
-    [Pure]
-    public static bool EqualsCaseInv(this string @this, string other) =>
-        @this.Equals(other, StringComparison.InvariantCultureIgnoreCase);
-
-    [Pure]
-    public static bool EqualsCaseOrd(this string @this, string other) =>
-        @this.Equals(other, StringComparison.OrdinalIgnoreCase);
-
-    [Pure]
-    public static string ReplaceOrd(this string @this, string oldValue, string? newValue) =>
-        @this.Replace(oldValue, newValue, StringComparison.Ordinal);
-
-    [Pure]
-    public static string ReplaceCaseOrd(this string @this, string oldValue, string? newValue) =>
-        @this.Replace(oldValue, newValue, StringComparison.OrdinalIgnoreCase);
+    public static string ToUpperInv(this string @this) =>
+        @this.ToUpperInvariant();
 
     [Pure]
     public static string ReEscape(this string @this) =>
