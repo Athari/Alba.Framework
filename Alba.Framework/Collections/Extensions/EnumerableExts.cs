@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 namespace Alba.Framework.Collections;
 
 [PublicAPI]
+[SuppressMessage("Style", "IDE0305: Use collection expression for fluent", Justification = "LINQ chains")]
 public static class EnumerableExts
 {
     private const string ErrorNoElements = "Sequence contains no elements.";
@@ -274,6 +275,12 @@ public static class EnumerableExts
 
     public static TResult[] ToArray<T, TResult>(this IEnumerable<T> @this, Func<T, int, TResult> selector) =>
         @this.Select(selector).ToArray();
+
+    public static List<TResult> ToList<T, TResult>(this IEnumerable<T> @this, Func<T, TResult> selector) =>
+        @this.Select(selector).ToList();
+
+    public static List<TResult> ToList<T, TResult>(this IEnumerable<T> @this, Func<T, int, TResult> selector) =>
+        @this.Select(selector).ToList();
 
     public static Dictionary<TKey, T> ToDictionary<TKey, T>(this IEnumerable<KeyValuePair<TKey, T>> @this)
         where TKey : notnull =>
