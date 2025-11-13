@@ -6,23 +6,26 @@ namespace Alba.Framework.Avalonia.Markup.Converters;
 public class TimeSpanToStringConverter : ValueConverterBase<TimeSpan, string>
 {
     public int Precision { get; set; } = 0;
-    public bool TrailingZeroes { get; set; }
+    public bool LeadingZeroes { get; set; } = false;
+    public bool TrailingZeroes { get; set; } = false;
+    public bool Minutes { get; set; } = false;
+    public bool Days { get; set; } = false;
 
     public override string Convert(TimeSpan value, Type targetType, CultureInfo culture)
     {
         var sepDecimal = EscapeFormat(culture.NumberFormat.NumberDecimalSeparator);
         var sepTime = EscapeFormat(culture.DateTimeFormat.TimeSeparator);
 
-        var format = "s";
-        if (value.Minutes > 0)
-            format = $"mm{sepTime}s" + format;
-        if (value.Days > 0)
-            format = $"dd{sepTime}" + format;
+        var format = (LeadingZeroes ? "ss" : "s");
+        if (value.Minutes > 0 || Days || Minutes)
+            format = (LeadingZeroes ? $"mm{sepTime}" : $"m{sepTime}s") + format;
+        if (value.Days > 0 || Days)
+            format = (LeadingZeroes ? $"dd{sepTime}" : $"d{sepTime}m") + format;
         if (Precision > 0)
             format += sepDecimal + new string(TrailingZeroes ? 'f' : 'F', Precision);
 
         // .NET tries to parse single 's' as generic format and fails
-        return format == "s" ? value.Seconds.ToString("0") : value.ToString(format, culture);
+        return format == "s" ? value.Seconds.ToString("0", culture) : value.ToString(format, culture);
 
         static string EscapeFormat(string s)
         {
