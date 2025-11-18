@@ -4,6 +4,16 @@ using Avalonia.Markup.Xaml;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
+public class FunctionValueConverter<TFrom, TTo>(Func<TFrom, TTo> fn) : ValueConverterBase<TFrom, TTo>
+{
+    public override TTo Convert(TFrom value, Type targetType, CultureInfo culture) => fn(value);
+}
+
+public class FunctionValueConverter<TFrom, TTo, TParam>(Func<TFrom, TParam, TTo> fn) : ValueConverterBase<TFrom, TTo, TParam>
+{
+    public override TTo Convert(TFrom value, Type targetType, TParam parameter, CultureInfo culture) => fn(value, parameter);
+}
+
 public abstract class ValueConverterBase<TFrom, TTo, TParam> : MarkupExtension, IValueConverter
 {
     object? IValueConverter.Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
@@ -44,7 +54,7 @@ public abstract class ValueConverterBase<TFrom, TTo> : MarkupExtension, IValueCo
 
 public struct ConversionResult<T>
 {
-    public object? Value { get; private set; }
+    public object? Value { get; }
 
     public ConversionResult(T value) => Value = value;
     public ConversionResult(object value) => Value = value;

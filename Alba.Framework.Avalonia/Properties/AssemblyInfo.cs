@@ -1,17 +1,16 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Avalonia.Metadata;
+﻿using Avalonia.Metadata;
 using static IS;
 
-[assembly: XmlnsPrefix(UrnGui, PrefixGui)]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}")]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Controls")]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Markup.Converters")]
-[assembly: XmlnsDefinition(UrnGui, $"{NsGui}.Markup.MarkupExtensions")]
+[assembly: XmlnsPrefix(UrnAlba, PrefixAlba)]
+[assembly: XmlnsDefinition(UrnAlba, $"{NsAlba}")]
+[assembly: XmlnsDefinition(UrnAlba, $"{NsAlba}.Controls")]
+[assembly: XmlnsDefinition(UrnAlba, $"{NsAlba}.Markup.Converters")]
+[assembly: XmlnsDefinition(UrnAlba, $"{NsAlba}.Markup.MarkupExtensions")]
 
 [SuppressMessage("ReSharper", "CheckNamespace")]
 file interface IS
 {
-    const string UrnGui = "urn:alba:avalonia";
-    const string NsGui = "Alba.Framework.Avalonia";
-    const string PrefixGui = "aa";
+    const string PrefixAlba = "aa";
+    const string NsAlba = "Alba.Framework.Avalonia";
+    const string UrnAlba = "urn:alba:avalonia";
 }
