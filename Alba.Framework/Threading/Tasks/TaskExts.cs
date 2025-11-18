@@ -6,6 +6,23 @@ namespace Alba.Framework.Threading.Tasks;
 [PublicAPI]
 public static class TaskExts
 {
+    private const TaskCreationOptions RunLongOptions = TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach;
+
+    extension(Task)
+    {
+        public static Task RunLong(Action action, CancellationToken ct = default) =>
+            Task.Factory.StartNew(action, ct, RunLongOptions, TaskScheduler.Default);
+
+        public static Task<T> RunLong<T>(Func<T> function, CancellationToken ct = default) =>
+            Task.Factory.StartNew(function, ct, RunLongOptions, TaskScheduler.Default);
+
+        public static Task RunLong(Func<Task> function, CancellationToken ct = default) =>
+            Task.Factory.StartNew(function, ct, RunLongOptions, TaskScheduler.Default).Unwrap();
+
+        public static Task<T> RunLong<T>(Func<Task<T>> function, CancellationToken ct = default) =>
+            Task.Factory.StartNew(function, ct, RunLongOptions, TaskScheduler.Default).Unwrap();
+    }
+
     public static ConfiguredTaskAwaitable NoSync(this Task @this) =>
         @this.ConfigureAwait(false);
 
@@ -15,36 +32,49 @@ public static class TaskExts
     public static ConfiguredAsyncDisposable NoSync<T>(this T @this) where T : IAsyncDisposable =>
         @this.ConfigureAwait(false);
 
-    public static ConfiguredAsyncDisposable AsNoSync<T>(this T @this, out T var) where T : IAsyncDisposable =>
-        @this.As(out var).ConfigureAwait(false);
-
     public static ConfiguredValueTaskAwaitable NoSync(this ValueTask @this) =>
         @this.ConfigureAwait(false);
 
     public static ConfiguredValueTaskAwaitable<T> NoSync<T>(this ValueTask<T> @this) =>
         @this.ConfigureAwait(false);
 
-    public static void ContinueOnFaultedWith(this Task @this, Action<Task, AggregateException> onFaulted) =>
+    public static Task ContinueOnFaultedWith(this Task @this, Action<Task, AggregateException> onFaulted) =>
         @this.ContinueWith(t => onFaulted(t, t.Exception!), TaskContinuationOptions.OnlyOnFaulted);
 
-    public static void ContinueOnFaultedWith<T>(this Task<T> @this, Action<Task, AggregateException> onFaulted) =>
+    public static Task ContinueOnFaultedWith<T>(this Task<T> @this, Action<Task, AggregateException> onFaulted) =>
         @this.ContinueWith(t => onFaulted(t, t.Exception!), TaskContinuationOptions.OnlyOnFaulted);
 
-    public static void ContinueOnCanceledWith(this Task @this, Action<Task> onCanceled) =>
+    public static Task ContinueOnCanceledWith(this Task @this, Action<Task> onCanceled) =>
         @this.ContinueWith(onCanceled, TaskContinuationOptions.OnlyOnCanceled);
 
-    public static void ContinueOnCanceledWith<T>(this Task<T> @this, Action<Task> onCanceled) =>
+    public static Task ContinueOnCanceledWith<T>(this Task<T> @this, Action<Task> onCanceled) =>
         @this.ContinueWith(onCanceled, TaskContinuationOptions.OnlyOnCanceled);
 
-    public static void NoAwait(this Task @this, Action<Exception>? onFaulted = null) =>
+    public static void NoWait(this Task @this, Action<Exception>? onFaulted = null) =>
         @this.ContinueOnFaultedWith((_, e) => onFaulted?.Invoke(e.InnerException ?? e));
 
-    public static void NoAwait<T>(this Task<T> @this, Action<Exception>? onFaulted = null) =>
+    public static void NoWait<T>(this Task<T> @this, Action<Exception>? onFaulted = null) =>
         @this.ContinueOnFaultedWith((_, e) => onFaulted?.Invoke(e.InnerException ?? e));
 
-    public static void NoAwait(this ValueTask _) { }
+    public static void NoWait(this ValueTask @this, Action<Exception>? onFaulted = null)
+    {
+        if (!@this.IsCompleted)
+            @this.AsTask().NoWait(onFaulted);
+    }
 
-    public static void NoAwait<T>(this ValueTask<T> _) { }
+    public static void NoWait<T>(this ValueTask<T> @this, Action<Exception>? onFaulted = null)
+    {
+        if (!@this.IsCompleted)
+            @this.AsTask().NoWait(onFaulted);
+    }
+
+    public static void SyncWait(this Task @this) => @this.GetAwaiter().GetResult();
+
+    public static TResult SyncWait<TResult>(this Task<TResult> @this) => @this.GetAwaiter().GetResult();
+
+    public static void SyncWait(this ValueTask @this) => @this.GetAwaiter().GetResult();
+
+    public static TResult SyncWait<TResult>(this ValueTask<TResult> @this) => @this.GetAwaiter().GetResult();
 
     public static Task OrCompleted(this Task? @this) =>
         @this ?? Task.CompletedTask;
@@ -57,11 +87,6 @@ public static class TaskExts
 
     public static ValueTask<T> OrCompleted<T>(this ValueTask<T>? @this, T defaultValue = default!) =>
         @this ?? ValueTask.FromResult(defaultValue);
-
-    public static IEnumerable<T> Yield<T>(this T @this)
-    {
-        yield return @this;
-    }
 
     /// <summary>Aggregates exceptions from all tasks into a single <see cref="AggregateException"/>.</summary>
     public static async Task WhenAllSafe(params IEnumerable<Task> tasks)
@@ -129,10 +154,26 @@ public static class TaskExts
 
         void ObserveTaskAndThrow()
         {
-            task.NoAwait();
+            task.NoWait();
             throw new TimeoutException($"The operation has timed out. Timeout is '{timeout}'.");
         }
     }
+
+    [Obsolete("Use NoWait")]
+    public static void NoAwait(this Task @this, Action<Exception>? onFaulted = null) => @this.NoWait(onFaulted);
+
+    [Obsolete("Use NoWait")]
+    public static void NoAwait<T>(this Task<T> @this, Action<Exception>? onFaulted = null) => @this.NoWait(onFaulted);
+
+    [Obsolete("Use NoWait")]
+    public static void NoAwait(this ValueTask @this) => @this.NoWait();
+
+    [Obsolete("Use NoWait")]
+    public static void NoAwait<T>(this ValueTask<T> @this) => @this.NoWait();
+
+    [Obsolete("Use As.NoSync")]
+    public static ConfiguredAsyncDisposable AsNoSync<T>(this T @this, out T var) where T : IAsyncDisposable =>
+        @this.As(out var).ConfigureAwait(false);
 
     private readonly struct Unit
     {
