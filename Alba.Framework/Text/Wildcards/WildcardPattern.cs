@@ -6,7 +6,6 @@ namespace Alba.Framework.Text;
 /// Burrowed from System.Management.Automation.WildcardPattern.
 /// Documentation for patterns: http://msdn.microsoft.com/en-US/library/aa717088 (the escape char is ^, not `).
 /// </summary>
-[PublicAPI]
 public sealed class WildcardPattern
 {
     internal const char EscapeChar = '^';

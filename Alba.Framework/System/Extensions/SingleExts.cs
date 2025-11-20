@@ -2,7 +2,6 @@
 
 namespace Alba.Framework;
 
-[PublicAPI]
 public static class SingleExts
 {
     public const float Epsilon = SingleEpsilonOperations.Epsilon;

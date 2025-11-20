@@ -7,7 +7,6 @@ public delegate bool ShouldTraceCallback(TraceEventCache? cache, string source, 
 public delegate bool ShouldTraceDetailedCallback(TraceEventCache? cache, string source,
     TraceEventType eventType, int id, string? formatOrMessage, object?[]? args, object? data1, object?[]? data);
 
-[PublicAPI]
 public class CallbackTraceFilter : TraceFilter
 {
     private readonly ShouldTraceCallback? _shouldTraceCallback;

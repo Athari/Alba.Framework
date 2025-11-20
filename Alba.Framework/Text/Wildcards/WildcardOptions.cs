@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Text;
 
-[PublicAPI]
 [Flags]
 public enum WildcardOptions
 {

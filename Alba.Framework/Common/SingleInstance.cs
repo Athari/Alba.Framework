@@ -1,5 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Security.AccessControl;
+﻿using System.Security.AccessControl;
 using System.Security.Principal;
 using Alba.Framework.IO;
 using Alba.Framework.Security;
@@ -7,7 +6,6 @@ using Alba.Framework.Text;
 
 namespace Alba.Framework.Common;
 
-[PublicAPI]
 public static class SingleInstance
 {
     private const string GlobalNamespacePrefix = "Global\\";

@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class ArrayExts
 {
     extension<T>(T[] @this)
@@ -18,9 +17,15 @@ public static class ArrayExts
         }
     }
 
-    public static EquatableArray<T> AsEquatable<T>(this T[]? @this) where T : IEquatable<T> =>
-        @this != null ? new(@this) : EquatableArray<T>.Empty;
+    extension<T>(T[]? @this)
+    {
+        public RefEquatableArray<T> AsRefEquatable() =>
+            @this != null ? new(@this) : RefEquatableArray<T>.Empty;
+    }
 
-    public static RefEquatableArray<T> AsRefEquatable<T>(this T[]? @this) =>
-        @this != null ? new(@this) : RefEquatableArray<T>.Empty;
+    extension<T>(T[]? @this) where T : IEquatable<T>
+    {
+        public EquatableArray<T> AsEquatable() =>
+            @this != null ? new(@this) : EquatableArray<T>.Empty;
+    }
 }

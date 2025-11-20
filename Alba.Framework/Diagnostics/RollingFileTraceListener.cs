@@ -6,7 +6,6 @@ using Alba.Framework.Text;
 
 namespace Alba.Framework.Diagnostics;
 
-[PublicAPI]
 public class RollingFileTraceListener : TextWriterTraceListener
 {
     private const int SourceNameFormatLen = 20;
@@ -450,7 +449,7 @@ public class RollingFileTraceListener : TextWriterTraceListener
                 return File.GetCreationTimeUtc(path);
             }
             catch (UnauthorizedAccessException) {
-                // will cause file be among the first files when sorting, 
+                // will cause file be among the first files when sorting,
                 // and its deletion will likely fail causing it to be skipped
                 return DateTime.MinValue;
             }

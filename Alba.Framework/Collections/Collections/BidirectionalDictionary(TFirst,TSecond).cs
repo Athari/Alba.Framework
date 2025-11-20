@@ -4,11 +4,11 @@ using System.Runtime.Serialization;
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 [Serializable]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
 [Obsolete("Use Sdcb.Collections.BidirectionalDictionary instead https://www.nuget.org/packages/Sdcb.Collections")]
-public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSecond>, IReadOnlyDictionary<TFirst, TSecond>, IDictionary
+public class BidirectionalDictionary<TFirst, TSecond>
+    : IDictionary<TFirst, TSecond>, IReadOnlyDictionary<TFirst, TSecond>, IDictionary
     where TFirst : notnull
     where TSecond : notnull
 {
@@ -61,22 +61,18 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
 
     public bool TryGetValue(TFirst key, out TSecond value) => _firstToSecond.TryGetValue(key, out value!);
 
-    public TSecond this[TFirst key]
-    {
+    public TSecond this[TFirst key] {
         get => _firstToSecond[key];
-        set
-        {
+        set {
             _firstToSecond[key] = value;
             _secondToFirst[value] = key;
         }
     }
 
-    object? IDictionary.this[object key]
-    {
+    object? IDictionary.this[object key] {
         get => FirstToSecondId[key];
-        set
-        {
-            Guard.IsNotNull(value, nameof(value));
+        set {
+            Guard.IsNotNull(value);
             FirstToSecondId[key] = value;
             SecondToFirstId[value] = key;
         }
@@ -90,7 +86,7 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
 
     void IDictionary.Add(object key, object? value)
     {
-        Guard.IsNotNull(value, nameof(value));
+        Guard.IsNotNull(value);
         FirstToSecondId.Add(key, value);
         SecondToFirstId.Add(value, key);
     }
@@ -115,7 +111,7 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
         if (!firstToSecond.Contains(key))
             return;
         var value = firstToSecond[key];
-        Guard.IsNotNull(value, nameof(value));
+        Guard.IsNotNull(value);
         firstToSecond.Remove(key);
         SecondToFirstId.Remove(value);
     }
@@ -175,22 +171,18 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
 
         public bool TryGetValue(TSecond key, out TFirst value) => owner._secondToFirst.TryGetValue(key, out value!);
 
-        public TFirst this[TSecond key]
-        {
+        public TFirst this[TSecond key] {
             get => owner._secondToFirst[key];
-            set
-            {
+            set {
                 owner._secondToFirst[key] = value;
                 owner._firstToSecond[value] = key;
             }
         }
 
-        object? IDictionary.this[object key]
-        {
+        object? IDictionary.this[object key] {
             get => owner.SecondToFirstId[key];
-            set
-            {
-                Guard.IsNotNull(value, nameof(value));
+            set {
+                Guard.IsNotNull(value);
                 owner.SecondToFirstId[key] = value;
                 owner.FirstToSecondId[value] = key;
             }
@@ -204,7 +196,7 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
 
         void IDictionary.Add(object key, object? value)
         {
-            Guard.IsNotNull(value, nameof(value));
+            Guard.IsNotNull(value);
             owner.SecondToFirstId.Add(key, value);
             owner.FirstToSecondId.Add(value, key);
         }
@@ -229,7 +221,7 @@ public class BidirectionalDictionary<TFirst, TSecond> : IDictionary<TFirst, TSec
             if (!firstToSecond.Contains(key))
                 return;
             var value = firstToSecond[key];
-            Guard.IsNotNull(value, nameof(value));
+            Guard.IsNotNull(value);
             firstToSecond.Remove(key);
             owner.FirstToSecondId.Remove(value);
         }

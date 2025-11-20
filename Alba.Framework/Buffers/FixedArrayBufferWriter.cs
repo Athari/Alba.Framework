@@ -3,7 +3,6 @@ using Alba.Framework.Common;
 
 namespace Alba.Framework.Buffers;
 
-[PublicAPI]
 public sealed class FixedArrayBufferWriter<T>(int size) : IBufferWriter<T>
 {
     private readonly T[] _buffer = new T[Ensure.GreaterThanOrEqualTo(size, 0)];

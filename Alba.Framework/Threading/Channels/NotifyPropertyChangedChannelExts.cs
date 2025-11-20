@@ -6,7 +6,6 @@ using Alba.Framework.Threading.Tasks;
 
 namespace Alba.Framework.Threading.Channels;
 
-[PublicAPI]
 public static class NotifyPropertyChangedChannelExts
 {
     extension<TObj>(TObj @this) where TObj : INotifyPropertyChanged

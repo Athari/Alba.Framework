@@ -11,9 +11,9 @@ namespace Alba.Framework.Collections;
 /// Allows to override methods of Dictionary.
 /// Some members of non-generic interface are only supported if the underlying dictionary supports <see cref="IDictionary"/> interface.
 /// </summary>
-[PublicAPI]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
-public class Map<TKey, TValue>(IDictionary<TKey, TValue> dictionary, CollectionOptions options = CollectionOptions.Default)
+public class Map<TKey, TValue>
+    (IDictionary<TKey, TValue> dictionary, CollectionOptions options = CollectionOptions.Default)
     : IDictionary<TKey, TValue>, IDictionary, IReadOnlyDictionary<TKey, TValue>
     where TKey : notnull
 {

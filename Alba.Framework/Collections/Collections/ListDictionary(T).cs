@@ -5,7 +5,8 @@ namespace Alba.Framework.Collections;
 
 [Serializable]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
-public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDictionary
+public class ListDictionary<TKey, TValue>
+    : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDictionary
 {
     private readonly List<KeyValuePair<TKey, TValue>> _list;
     private readonly IEqualityComparer<TKey> _comparer;
@@ -18,7 +19,7 @@ public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnly
 
     public ListDictionary(IEnumerable<KeyValuePair<TKey, TValue>> collection, IEqualityComparer<TKey>? comparer = null)
     {
-        _list = [.. collection];
+        _list = [ .. collection ];
         _comparer = comparer ?? EqualityComparer<TKey>.Default;
     }
 
@@ -64,16 +65,13 @@ public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnly
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int index) => _list.CopyTo(array, index);
     void ICollection.CopyTo(Array array, int index) => ListIc.CopyTo(array, index);
 
-    public TValue this[TKey key]
-    {
-        get
-        {
+    public TValue this[TKey key] {
+        get {
             if (TryGetValue(key, out TValue value))
                 return value;
             throw new KeyNotFoundException($"Key '{key}' not found.");
         }
-        set
-        {
+        set {
             var newPair = new KeyValuePair<TKey, TValue>(key, value);
             for (int i = 0; i < _list.Count; i++) {
                 if (_comparer.Equals(_list[i].Key, key)) {
@@ -85,8 +83,7 @@ public class ListDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnly
         }
     }
 
-    object? IDictionary.this[object key]
-    {
+    object? IDictionary.this[object key] {
         get => this[(TKey)key];
         set => this[(TKey)key] = (TValue)value!;
     }

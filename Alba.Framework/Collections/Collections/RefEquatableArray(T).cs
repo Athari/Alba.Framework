@@ -2,7 +2,6 @@
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public readonly struct RefEquatableArray<T>(T[] array) : IEquatable<RefEquatableArray<T>>, IEnumerable<T>
 {
     public static readonly RefEquatableArray<T> Empty = new([ ]);

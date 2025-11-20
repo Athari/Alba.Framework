@@ -5,7 +5,6 @@ using Alba.Framework.Text;
 
 namespace Alba.Framework.IO;
 
-[PublicAPI]
 public static partial class Paths
 {
     private const string InvalidCharString = "�";

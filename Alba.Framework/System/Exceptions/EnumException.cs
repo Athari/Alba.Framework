@@ -1,4 +1,6 @@
-﻿namespace Alba.Framework;
+﻿using Alba.Framework.Reflection;
+
+namespace Alba.Framework;
 
 public static class EnumException
 {
@@ -9,7 +11,6 @@ public static class EnumException
         => new(paramName, message);
 }
 
-[PublicAPI]
 public class EnumException<T> : ArgumentOutOfRangeException
 {
     public EnumException() { }
@@ -23,5 +24,5 @@ public class EnumException<T> : ArgumentOutOfRangeException
         : base(paramName, message ?? FormatDefaultMessage()) { }
 
     private static string FormatDefaultMessage(object? actualValue = null) =>
-        $"{actualValue ?? "Argument"} is not a valid {typeof(T).GetTypeFullName()}";
+        $"{actualValue ?? "Argument"} is not a valid {typeof(T).GetFullName()}";
 }

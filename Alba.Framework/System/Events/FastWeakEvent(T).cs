@@ -8,7 +8,6 @@ namespace Alba.Framework;
 /// <summary></summary>
 /// <remarks>By Daniel Grunwald, MIT license. See http://www.codeproject.com/Articles/29922/Weak-Events-in-C </remarks>
 /// <typeparam name="T">EventHandler</typeparam>
-[PublicAPI]
 public sealed class FastWeakEvent<T> where T : class
 {
     private readonly List<EventEntry> _eventEntries = [ ];

@@ -3,14 +3,22 @@ using System.Globalization;
 
 namespace Alba.Framework.ComponentModel;
 
-[PublicAPI]
 public static class TypeConverterExts
 {
-    public static string? ConvertToString(this TypeConverter @this, object value,
-        CultureInfo? culture = null, ITypeDescriptorContext? context = null) =>
-        (string?)@this.ConvertTo(context, culture ?? CultureInfo.CurrentCulture, value, typeof(string));
+    extension(TypeConverter @this)
+    {
+        public string? ConvertToString(object value,
+            CultureInfo? culture = null, ITypeDescriptorContext? context = null) =>
+            (string?)@this.ConvertTo(context, culture ?? CultureInfo.CurrentCulture, value, typeof(string));
 
-    public static T? ConvertFromString<T>(this TypeConverter @this, string value,
-        CultureInfo? culture = null, ITypeDescriptorContext? context = null) =>
-        (T?)@this.ConvertFrom(context, culture ?? CultureInfo.CurrentCulture, value);
+        public T? ConvertFromString<T>(string value,
+            CultureInfo? culture = null, ITypeDescriptorContext? context = null) =>
+            (T?)@this.ConvertFrom(context, culture ?? CultureInfo.CurrentCulture, value);
+
+        public string? ConvertToStringInv(object value, ITypeDescriptorContext? context = null) =>
+            (string?)@this.ConvertTo(context, CultureInfo.InvariantCulture, value, typeof(string));
+
+        public T? ConvertFromStringInv<T>(string value, ITypeDescriptorContext? context = null) =>
+            (T?)@this.ConvertFrom(context, CultureInfo.InvariantCulture, value);
+    }
 }

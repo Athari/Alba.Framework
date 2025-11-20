@@ -1,0 +1,3 @@
+[*.cs]
+resharper_unused_member_global_highlighting = none
+resharper_unused_member_in_super_global_highlighting = none

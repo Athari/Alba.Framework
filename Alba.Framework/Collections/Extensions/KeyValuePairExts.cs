@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class KeyValuePairExts
 {
     extension<TValue, TKey>(KeyValuePair<TKey, TValue> @this)

@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework;
 
-[PublicAPI]
 public static class DelegateExts
 {
     public static Func<T1> Merge<T1>(this Func<T1>? @this, Func<T1>? other, Func<T1, T1, T1> merge) =>
@@ -27,17 +26,20 @@ public static class DelegateExts
             (_, _) => (t1, t2) => merge(@this(t1, t2), other(t1, t2)),
         };
 
-    public static Predicate<T> Merge<T>(this Predicate<T>? @this, Predicate<T>? other, Func<bool, bool, bool> merge) =>
-        (@this, other) switch {
-            (null, null) => throw new ArgumentNullException(nameof(@this)),
-            (null, _) => other,
-            (_, null) => @this,
-            (_, _) => t1 => merge(@this(t1), other(t1)),
-        };
+    extension<T>(Predicate<T>? @this)
+    {
+        public Predicate<T> Merge(Predicate<T>? other, Func<bool, bool, bool> merge) =>
+            (@this, other) switch {
+                (null, null) => throw new ArgumentNullException(nameof(@this)),
+                (null, _) => other,
+                (_, null) => @this,
+                (_, _) => t1 => merge(@this(t1), other(t1)),
+            };
 
-    public static Predicate<T> MergeAnd<T>(this Predicate<T>? @this, Predicate<T>? other) =>
-        Merge(@this, other, (a, b) => a && b);
+        public Predicate<T> MergeAnd(Predicate<T>? other) =>
+            Merge(@this, other, (a, b) => a && b);
 
-    public static Predicate<T> MergeOr<T>(this Predicate<T>? @this, Predicate<T>? other) =>
-        Merge(@this, other, (a, b) => a || b);
+        public Predicate<T> MergeOr(Predicate<T>? other) =>
+            Merge(@this, other, (a, b) => a || b);
+    }
 }

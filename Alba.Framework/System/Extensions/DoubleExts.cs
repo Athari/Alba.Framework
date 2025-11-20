@@ -2,7 +2,6 @@
 
 namespace Alba.Framework;
 
-[PublicAPI]
 public static class DoubleExts
 {
     public const double Epsilon = DoubleEpsilonOperations.Epsilon;

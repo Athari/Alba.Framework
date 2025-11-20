@@ -1,8 +1,7 @@
-﻿namespace Alba.Framework.Diagnostics
+﻿namespace Alba.Framework.Diagnostics;
+
+public enum UnhandledExceptionSource
 {
-    public enum UnhandledExceptionSource
-    {
-        CurrentDomain,
-        TaskScheduler,
-    }
+    CurrentDomain,
+    TaskScheduler,
 }

@@ -2,7 +2,6 @@
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public abstract class OwnedCollectionBase<T> : Collection<T>, IOwnedList<T>
     where T : class
 {

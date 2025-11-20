@@ -2,7 +2,6 @@
 
 /// <summary>URLZONE enumeration. Contains all the predefined zones used by Windows Internet Explorer.</summary>
 /// <remarks>Header: UrlMon.h</remarks>
-[PublicAPI]
 public enum UrlZone
 {
     /// <summary>URLZONE_INVALID: Internet Explorer 7. Invalid zone. Used only if no appropriate zone is available.</summary>

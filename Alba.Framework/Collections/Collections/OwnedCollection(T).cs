@@ -2,7 +2,6 @@
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public class OwnedCollection<T, TOwner>(TOwner owner) : OwnedCollectionBase<T>
     where T : class, IOwned<TOwner>
 {

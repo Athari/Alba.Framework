@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Diagnostics;
 
-[PublicAPI]
 public class UnhandledExceptionsHandler
 {
     public event EventHandler<UnhandledExceptionsEventArgs>? UnhandledException;

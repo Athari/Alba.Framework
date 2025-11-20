@@ -4,27 +4,36 @@ namespace Alba.Framework.Common;
 
 public static class OwnedExts
 {
-    public static IEnumerable<T> TraverseToRootOwner<T>(this T root) where T : class, IOwned
+    extension<TOwner>(IOwned<TOwner> @this)
     {
-        return root.TraverseList(i => i.Owner as T);
+        public void SetNewOwner(TOwner owner)
+        {
+            if (!Equals(@this.Owner, default(TOwner)))
+                throw new InvalidOperationException("Cannot set owner. Item is already owned.");
+            @this.Owner = owner;
+        }
+
+        public void ResetOwner()
+        {
+            if (Equals(@this.Owner, default(TOwner)))
+                throw new InvalidOperationException("Cannot reset owner. Item is not yet owned.");
+            @this.Owner = default;
+        }
     }
 
-    public static IEnumerable<T> TraverseToRootOwnerTyped<T>(this T root) where T : class, IOwned<T>
+    extension<T>(T root) where T : class, IOwned
     {
-        return root.TraverseList(i => i.Owner);
+        public IEnumerable<T> TraverseToRootOwner()
+        {
+            return root.TraverseList(i => i.Owner as T);
+        }
     }
 
-    public static void SetNewOwner<TOwner>(this IOwned<TOwner> @this, TOwner owner)
+    extension<T>(T root) where T : class, IOwned<T>
     {
-        if (!Equals(@this.Owner, default(TOwner)))
-            throw new InvalidOperationException("Cannot set owner. Item is already owned.");
-        @this.Owner = owner;
-    }
-
-    public static void ResetOwner<TOwner>(this IOwned<TOwner> @this)
-    {
-        if (Equals(@this.Owner, default(TOwner)))
-            throw new InvalidOperationException("Cannot reset owner. Item is not yet owned.");
-        @this.Owner = default;
+        public IEnumerable<T> TraverseToRootOwnerTyped()
+        {
+            return root.TraverseList(i => i.Owner);
+        }
     }
 }

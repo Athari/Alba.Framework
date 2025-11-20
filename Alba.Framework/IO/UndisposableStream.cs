@@ -8,20 +8,17 @@ internal class UndisposableStream(Stream stream) : Stream
     public override bool CanWrite => stream.CanWrite;
     public override long Length => stream.Length;
 
-    public override int ReadTimeout
-    {
+    public override int ReadTimeout {
         get => stream.ReadTimeout;
         set => stream.ReadTimeout = value;
     }
 
-    public override long Position
-    {
+    public override long Position {
         get => stream.Position;
         set => stream.Position = value;
     }
 
-    public override int WriteTimeout
-    {
+    public override int WriteTimeout {
         get => stream.WriteTimeout;
         set => stream.WriteTimeout = value;
     }

@@ -2,9 +2,12 @@
 
 public static class StackExts
 {
-    public static void PushRange<T>(this Stack<T> @this, IEnumerable<T> items)
+    extension<T>(Stack<T> @this)
     {
-        foreach (T item in items)
-            @this.Push(item);
+        public void PushRange(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                @this.Push(item);
+        }
     }
 }

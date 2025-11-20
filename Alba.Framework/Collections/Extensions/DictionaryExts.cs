@@ -5,11 +5,8 @@ using System.Runtime.InteropServices;
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class DictionaryExts
 {
-    private const string ErrorKeyNotFound = "Key '{0}' not found.";
-
     extension<TKey, TValue>(Dictionary<TKey, TValue> @this)
         where TKey : notnull
     {

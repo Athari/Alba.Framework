@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public class ComparerBuilder<T> : IComparer<T>
 {
     private readonly IComparer<T> _comparer;

@@ -1,12 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using Windows.Win32;
 
 namespace Alba.Framework.Mail;
 
-[PublicAPI]
 [SuppressMessage("ReSharper", "InconsistentNaming")]
-public partial class Mapi(
+public class Mapi(
     string subject, string body, IEnumerable<string>? to = null, IEnumerable<string>? cc = null,
     IEnumerable<string>? bcc = null, IEnumerable<string>? attachments = null)
 {
@@ -98,7 +96,7 @@ public partial class Mapi(
 
 #pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
-// ReSharper disable NotAccessedField.Local
+    // ReSharper disable NotAccessedField.Local
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
     private class MapiMessage

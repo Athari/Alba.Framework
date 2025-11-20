@@ -1,9 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
+﻿using System.Text;
 
 namespace Alba.Framework.Text;
 
-[PublicAPI]
 public static class Encodings
 {
     [field: MaybeNull]

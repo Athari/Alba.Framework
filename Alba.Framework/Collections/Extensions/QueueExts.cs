@@ -2,9 +2,12 @@
 
 public static class QueueExts
 {
-    public static void EnqueueRange<T>(this Queue<T> @this, IEnumerable<T> items)
+    extension<T>(Queue<T> @this)
     {
-        foreach (T item in items)
-            @this.Enqueue(item);
+        public void EnqueueRange(IEnumerable<T> items)
+        {
+            foreach (T item in items)
+                @this.Enqueue(item);
+        }
     }
 }

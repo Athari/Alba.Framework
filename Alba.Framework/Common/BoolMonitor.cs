@@ -1,8 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿namespace Alba.Framework.Common;
 
-namespace Alba.Framework.Common;
-
-[PublicAPI]
 public readonly struct BoolMonitor : IDisposable
 {
     private readonly Action _setIsChangingFalse;

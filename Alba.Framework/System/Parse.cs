@@ -2,7 +2,6 @@ using System.Globalization;
 
 namespace Alba.Framework;
 
-[PublicAPI]
 public static class Parse
 {
     private static readonly IFormatProvider Inv = CultureInfo.InvariantCulture;

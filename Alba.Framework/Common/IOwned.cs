@@ -1,7 +1,6 @@
-namespace Alba.Framework.Common
+namespace Alba.Framework.Common;
+
+public interface IOwned
 {
-    public interface IOwned
-    {
-        object? Owner { get; set; }
-    }
+    object? Owner { get; set; }
 }

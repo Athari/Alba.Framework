@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using Alba.Framework.Reflection;
 using E = System.Linq.Expressions.Expression;
 
 namespace Alba.Framework.Collections;
@@ -19,7 +20,7 @@ public class TypedCollection<T> : IReadOnlyList<T>, ICollection<T>, ICollection
 
     public TypedCollection(ICollection collection)
     {
-        Guard.IsNotNull(collection, nameof(collection));
+        Guard.IsNotNull(collection);
         _collection = collection;
         _indexer = GetIndexer();
     }
@@ -41,7 +42,7 @@ public class TypedCollection<T> : IReadOnlyList<T>, ICollection<T>, ICollection
         var indexProp = collectionType.GetProperty("Item", [ typeof(int) ]);
         if (indexProp == null || !indexProp.CanRead)
             throw new NotSupportedException(
-                $"Collection type '{collectionType.GetTypeFullName()}' does not have an accessible integer indexer.");
+                $"Collection type '{collectionType.GetFullName()}' does not have an accessible integer indexer.");
 
         var paramCol = E.Parameter(typeof(ICollection), "col");
         var paramI = E.Parameter(typeof(int), "i");

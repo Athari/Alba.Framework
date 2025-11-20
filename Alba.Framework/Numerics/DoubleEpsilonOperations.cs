@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Alba.Framework.Numerics;
+﻿namespace Alba.Framework.Numerics;
 
 public class DoubleEpsilonOperations : IFloatingPointEpsilonOperations<double>
 {

@@ -3,7 +3,6 @@ using MethodAttribute = System.Runtime.CompilerServices.MethodImplAttribute;
 
 namespace Alba.Framework.Common;
 
-[PublicAPI]
 public static class Ensure
 {
     private const MethodImplOptions Inline = MethodImplOptions.AggressiveInlining;

@@ -7,16 +7,11 @@ namespace <#=Namespace#>;
 
 public static partial class ConvertibleExts
 {
-<# foreach (string type in new[] { "Boolean", "Char", "SByte", "Byte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double", "Decimal", "DateTime" }) { #>
-    public static <#=type#> To<#=type#> (this IConvertible @this)
+    extension(IConvertible @this)
     {
-        return @this.To<#=type#>(CultureInfo.CurrentCulture);
+<#    foreach (string type in new[] { "Boolean", "Char", "SByte", "Byte", "Int16", "UInt16", "Int32", "UInt32", "Int64", "UInt64", "Single", "Double", "Decimal", "DateTime" }) { #>
+        public <#=type#> To<#=type#>() => @this.To<#=type#>(CultureInfo.CurrentCulture);
+        public <#=type#> To<#=type#>Inv() => @this.To<#=type#>(CultureInfo.InvariantCulture);
+<#    } #>
     }
-
-    public static <#=type#> To<#=type#>Inv (this IConvertible @this)
-    {
-        return @this.To<#=type#>(CultureInfo.InvariantCulture);
-    }
-
-<# } #>
 }

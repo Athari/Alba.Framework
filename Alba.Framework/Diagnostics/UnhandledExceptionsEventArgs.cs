@@ -3,7 +3,6 @@ using Alba.Framework.Collections;
 
 namespace Alba.Framework.Diagnostics;
 
-[PublicAPI]
 public class UnhandledExceptionsEventArgs(
     ReadOnlyCollection<Exception> exceptions, UnhandledExceptionSource source, bool canHandle = true)
     : EventArgs

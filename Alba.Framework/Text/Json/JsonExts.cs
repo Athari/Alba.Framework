@@ -15,14 +15,17 @@ public static class JsonExts
         WriteIndented = false,
     };
 
-    public static T JsonClone<T>(this T @this)
+    extension<T>(T @this)
     {
-        if (@this == null)
-            return default!;
+        public T JsonClone()
+        {
+            if (@this == null)
+                return default!;
 
-        var stream = new MemoryStream();
-        JsonSerializer.Serialize(stream, @this, CloneOptions);
-        stream.Position = 0;
-        return JsonSerializer.Deserialize<T>(stream, CloneOptions)!;
+            var stream = new MemoryStream();
+            JsonSerializer.Serialize(stream, @this, CloneOptions);
+            stream.Position = 0;
+            return JsonSerializer.Deserialize<T>(stream, CloneOptions)!;
+        }
     }
 }

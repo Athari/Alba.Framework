@@ -4,7 +4,6 @@ using Alba.Framework.Text;
 
 namespace Alba.Framework.IO;
 
-[PublicAPI]
 public class Streams
 {
     private const FileShare DefaultFileShare = FileShare.Read;

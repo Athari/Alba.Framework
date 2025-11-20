@@ -3,7 +3,7 @@ using System.Security.Principal;
 
 namespace Alba.Framework.Security;
 
-[PublicAPI, SupportedOSPlatform("windows")]
+[SupportedOSPlatform("windows")]
 public static class WellKnownSidTypeExts
 {
     public static SecurityIdentifier ToIdentifier(this WellKnownSidType @this, SecurityIdentifier? security = null) =>

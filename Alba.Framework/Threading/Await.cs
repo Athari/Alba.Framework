@@ -4,7 +4,6 @@ using System.Transactions;
 
 namespace Alba.Framework.Threading;
 
-[PublicAPI]
 [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "GetAwaiter method must have no parameters to be recognized")]
 public static class Await
 {
@@ -12,32 +11,44 @@ public static class Await
     public static TaskSchedulerAwaiter Default { get; } = TaskScheduler.Default.GetAwaiter(alwaysYield: false);
     public static TaskSchedulerAwaiter DefaultYield { get; } = TaskScheduler.Default.GetAwaiter(alwaysYield: true);
 
-    public static TaskSchedulerAwaiter GetAwaiter(this TaskScheduler @this) =>
-        new(@this, alwaysYield: false);
+    extension(TaskScheduler @this)
+    {
+        public TaskSchedulerAwaiter GetAwaiter() =>
+            new(@this, alwaysYield: false);
 
-    public static TaskSchedulerAwaiter GetAwaiter(this TaskScheduler @this, bool alwaysYield = false) =>
-        new(@this, alwaysYield);
+        public TaskSchedulerAwaiter GetAwaiter(bool alwaysYield = false) =>
+            new(@this, alwaysYield);
+    }
+
+    extension(TaskFactory @this)
+    {
+        public TaskSchedulerAwaiter GetAwaiter() =>
+            new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)));
+
+        public TaskSchedulerAwaiter GetAwaiter(bool alwaysYield = false) =>
+            new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)), alwaysYield);
+    }
+
+    extension(CancellationToken @this)
+    {
+        public CancellationTokenAwaiter GetAwaiter() =>
+            new(@this, useSynchronizationContext: true);
+
+        public CancellationTokenAwaiter GetAwaiter(bool useSynchronizationContext = true) =>
+            new(@this, useSynchronizationContext);
+    }
+
+    extension(CancellationTokenSource @this)
+    {
+        public CancellationTokenAwaiter GetAwaiter() =>
+            new(@this.Token, useSynchronizationContext: true);
+
+        public CancellationTokenAwaiter GetAwaiter(bool useSynchronizationContext = true) =>
+            new(@this.Token, useSynchronizationContext);
+    }
 
     public static SynchronizationContextAwaiter GetAwaiter(this SynchronizationContext @this) =>
         new(@this);
-
-    public static TaskSchedulerAwaiter GetAwaiter(this TaskFactory @this) =>
-        new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)));
-
-    public static TaskSchedulerAwaiter GetAwaiter(this TaskFactory @this, bool alwaysYield = false) =>
-        new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)), alwaysYield);
-
-    public static CancellationTokenAwaiter GetAwaiter(this CancellationToken @this) =>
-        new(@this, useSynchronizationContext: true);
-
-    public static CancellationTokenAwaiter GetAwaiter(this CancellationToken @this, bool useSynchronizationContext = true) =>
-        new(@this, useSynchronizationContext);
-
-    public static CancellationTokenAwaiter GetAwaiter(this CancellationTokenSource @this) =>
-        new(@this.Token, useSynchronizationContext: true);
-
-    public static CancellationTokenAwaiter GetAwaiter(this CancellationTokenSource @this, bool useSynchronizationContext = true) =>
-        new(@this.Token, useSynchronizationContext);
 
     public static WaitHandleAwaiter GetAwaiter(this WaitHandle @this) =>
         new(@this);
@@ -67,7 +78,6 @@ public static class Await
         return tcs.Task.GetAwaiter();
     }
 
-    [PublicAPI]
     public readonly struct TaskSchedulerAwaiter(TaskScheduler scheduler, bool alwaysYield = false)
         : IAwaiter<TaskSchedulerAwaiter>
     {
@@ -98,7 +108,6 @@ public static class Await
         public void GetResult() { }
     }
 
-    [PublicAPI]
     public readonly struct SynchronizationContextAwaiter(SynchronizationContext syncContext)
         : IAwaiter<SynchronizationContextAwaiter>
     {
@@ -115,7 +124,6 @@ public static class Await
         public void GetResult() { }
     }
 
-    [PublicAPI]
     public readonly struct CancellationTokenAwaiter(CancellationToken token, bool useSynchronizationContext = true)
         : IAwaiter<CancellationTokenAwaiter, object>
     {

@@ -2,7 +2,6 @@
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class EnumeratorExts
 {
     extension(IEnumerator @this)

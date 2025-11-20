@@ -5,7 +5,8 @@ using Alba.Framework.Common;
 namespace Alba.Framework.Collections;
 
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-public class ReadOnlyTypedCollection<T>(ICollection collection /*, CollectionOptions options = CollectionOptions.Default*/)
+public class ReadOnlyTypedCollection<T>
+    (ICollection collection /*, CollectionOptions options = CollectionOptions.Default*/)
     : ICollection<T>, IReadOnlyCollection<T>, ICollection
 {
     private readonly ICollection _collection = Ensure.NotNull(collection);

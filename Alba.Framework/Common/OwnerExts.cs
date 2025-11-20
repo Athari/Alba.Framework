@@ -22,28 +22,16 @@ public static class OwnerExts
         }
     }
 
-    public static IEnumerable<T> TraverseToSingleLeaf<T>(this T root) where T : class, IOwner<T>
+    extension<T>(T root) where T : class, IOwner<T>
     {
-        return root.TraverseList(i => i.Owned.SingleOrDefault());
+        public IEnumerable<T> TraverseToSingleLeaf() => root.TraverseList(i => i.Owned.SingleOrDefault());
     }
 
-    public static IEnumerable<T> TraverseTree<T>(this T root) where T : IOwner<T>
+    extension<T>(T root) where T : IOwner<T>
     {
-        return root.TraverseTree(i => i.Owned);
-    }
-
-    public static IEnumerable<T> TraverseTreeDepth<T>(this T root) where T : IOwner<T>
-    {
-        return root.TraverseTreeDepth(i => i.Owned);
-    }
-
-    public static IEnumerable<T> TraverseTreeBreadth<T>(this T root) where T : IOwner<T>
-    {
-        return root.TraverseTreeBreadth(i => i.Owned);
-    }
-
-    public static IEnumerable<T> TraverseGraph<T>(this T root) where T : IOwner<T>
-    {
-        return root.TraverseGraph(i => i.Owned);
+        public IEnumerable<T> TraverseOwnedTree() => root.TraverseTree(i => i.Owned);
+        public IEnumerable<T> TraverseOwnedTreeDepth() => root.TraverseTreeDepth(i => i.Owned);
+        public IEnumerable<T> TraverseOwnedTreeBreadth() => root.TraverseTreeBreadth(i => i.Owned);
+        public IEnumerable<T> TraverseOwnedGraph() => root.TraverseGraph(i => i.Owned);
     }
 }

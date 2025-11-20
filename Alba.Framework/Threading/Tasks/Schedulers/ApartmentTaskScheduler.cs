@@ -59,7 +59,7 @@ public class ApartmentTaskScheduler : TaskScheduler, IDisposable
 
     protected override IEnumerable<Task> GetScheduledTasks()
     {
-        return [ .. _tasks ];
+        return [ .._tasks ];
     }
 
     protected override void QueueTask(Task task)

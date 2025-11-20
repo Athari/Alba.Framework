@@ -3,11 +3,13 @@ using Alba.Framework.Collections;
 
 namespace Alba.Framework.Text;
 
-[PublicAPI]
 public static partial class MatchExts
 {
     extension(Match @this)
     {
+        public string Value =>
+            @this.Groups[1].Value;
+
         public string Get(int groupIndex = 1) =>
             @this.Groups[groupIndex].Value;
 

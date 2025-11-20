@@ -6,7 +6,6 @@
 /// Documentation: http://blogs.msdn.com/b/pfxteam/archive/2010/04/09/9990424.aspx
 /// License: MS-LPL
 /// </summary>
-[PublicAPI]
 public class LimitedConcurrencyTaskScheduler : TaskScheduler
 {
     [ThreadStatic]
@@ -22,7 +21,7 @@ public class LimitedConcurrencyTaskScheduler : TaskScheduler
     /// <param name="maxDegreeOfParallelism">The maximum degree of parallelism provided by this scheduler.</param>
     public LimitedConcurrencyTaskScheduler(int maxDegreeOfParallelism)
     {
-        Guard.IsGreaterThan(maxDegreeOfParallelism, 0, nameof(maxDegreeOfParallelism));
+        Guard.IsGreaterThan(maxDegreeOfParallelism, 0);
         MaximumConcurrencyLevel = maxDegreeOfParallelism;
     }
 

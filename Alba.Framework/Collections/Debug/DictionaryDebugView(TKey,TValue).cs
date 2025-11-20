@@ -6,12 +6,9 @@ internal class DictionaryDebugView<TKey, TValue>
 {
     private readonly IDictionary<TKey, TValue> _dictionary;
 
-    [PublicAPI]
     [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-    public KeyValuePair<TKey, TValue>[] Items
-    {
-        get
-        {
+    public KeyValuePair<TKey, TValue>[] Items {
+        get {
             var array = new KeyValuePair<TKey, TValue>[_dictionary.Count];
             _dictionary.CopyTo(array, 0);
             return array;
@@ -20,7 +17,7 @@ internal class DictionaryDebugView<TKey, TValue>
 
     public DictionaryDebugView(IDictionary<TKey, TValue> dictionary)
     {
-        Guard.IsNotNull(dictionary, nameof(dictionary));
+        Guard.IsNotNull(dictionary);
         _dictionary = dictionary;
     }
 }

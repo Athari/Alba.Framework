@@ -5,144 +5,35 @@ namespace Alba.Framework.Globalization;
 
 public static partial class ConvertibleExts
 {
-    public static Boolean ToBoolean (this IConvertible @this)
+    extension(IConvertible @this)
     {
-        return @this.ToBoolean(CultureInfo.CurrentCulture);
+        public Boolean ToBoolean() => @this.ToBoolean(CultureInfo.CurrentCulture);
+        public Boolean ToBooleanInv() => @this.ToBoolean(CultureInfo.InvariantCulture);
+        public Char ToChar() => @this.ToChar(CultureInfo.CurrentCulture);
+        public Char ToCharInv() => @this.ToChar(CultureInfo.InvariantCulture);
+        public SByte ToSByte() => @this.ToSByte(CultureInfo.CurrentCulture);
+        public SByte ToSByteInv() => @this.ToSByte(CultureInfo.InvariantCulture);
+        public Byte ToByte() => @this.ToByte(CultureInfo.CurrentCulture);
+        public Byte ToByteInv() => @this.ToByte(CultureInfo.InvariantCulture);
+        public Int16 ToInt16() => @this.ToInt16(CultureInfo.CurrentCulture);
+        public Int16 ToInt16Inv() => @this.ToInt16(CultureInfo.InvariantCulture);
+        public UInt16 ToUInt16() => @this.ToUInt16(CultureInfo.CurrentCulture);
+        public UInt16 ToUInt16Inv() => @this.ToUInt16(CultureInfo.InvariantCulture);
+        public Int32 ToInt32() => @this.ToInt32(CultureInfo.CurrentCulture);
+        public Int32 ToInt32Inv() => @this.ToInt32(CultureInfo.InvariantCulture);
+        public UInt32 ToUInt32() => @this.ToUInt32(CultureInfo.CurrentCulture);
+        public UInt32 ToUInt32Inv() => @this.ToUInt32(CultureInfo.InvariantCulture);
+        public Int64 ToInt64() => @this.ToInt64(CultureInfo.CurrentCulture);
+        public Int64 ToInt64Inv() => @this.ToInt64(CultureInfo.InvariantCulture);
+        public UInt64 ToUInt64() => @this.ToUInt64(CultureInfo.CurrentCulture);
+        public UInt64 ToUInt64Inv() => @this.ToUInt64(CultureInfo.InvariantCulture);
+        public Single ToSingle() => @this.ToSingle(CultureInfo.CurrentCulture);
+        public Single ToSingleInv() => @this.ToSingle(CultureInfo.InvariantCulture);
+        public Double ToDouble() => @this.ToDouble(CultureInfo.CurrentCulture);
+        public Double ToDoubleInv() => @this.ToDouble(CultureInfo.InvariantCulture);
+        public Decimal ToDecimal() => @this.ToDecimal(CultureInfo.CurrentCulture);
+        public Decimal ToDecimalInv() => @this.ToDecimal(CultureInfo.InvariantCulture);
+        public DateTime ToDateTime() => @this.ToDateTime(CultureInfo.CurrentCulture);
+        public DateTime ToDateTimeInv() => @this.ToDateTime(CultureInfo.InvariantCulture);
     }
-
-    public static Boolean ToBooleanInv (this IConvertible @this)
-    {
-        return @this.ToBoolean(CultureInfo.InvariantCulture);
-    }
-
-    public static Char ToChar (this IConvertible @this)
-    {
-        return @this.ToChar(CultureInfo.CurrentCulture);
-    }
-
-    public static Char ToCharInv (this IConvertible @this)
-    {
-        return @this.ToChar(CultureInfo.InvariantCulture);
-    }
-
-    public static SByte ToSByte (this IConvertible @this)
-    {
-        return @this.ToSByte(CultureInfo.CurrentCulture);
-    }
-
-    public static SByte ToSByteInv (this IConvertible @this)
-    {
-        return @this.ToSByte(CultureInfo.InvariantCulture);
-    }
-
-    public static Byte ToByte (this IConvertible @this)
-    {
-        return @this.ToByte(CultureInfo.CurrentCulture);
-    }
-
-    public static Byte ToByteInv (this IConvertible @this)
-    {
-        return @this.ToByte(CultureInfo.InvariantCulture);
-    }
-
-    public static Int16 ToInt16 (this IConvertible @this)
-    {
-        return @this.ToInt16(CultureInfo.CurrentCulture);
-    }
-
-    public static Int16 ToInt16Inv (this IConvertible @this)
-    {
-        return @this.ToInt16(CultureInfo.InvariantCulture);
-    }
-
-    public static UInt16 ToUInt16 (this IConvertible @this)
-    {
-        return @this.ToUInt16(CultureInfo.CurrentCulture);
-    }
-
-    public static UInt16 ToUInt16Inv (this IConvertible @this)
-    {
-        return @this.ToUInt16(CultureInfo.InvariantCulture);
-    }
-
-    public static Int32 ToInt32 (this IConvertible @this)
-    {
-        return @this.ToInt32(CultureInfo.CurrentCulture);
-    }
-
-    public static Int32 ToInt32Inv (this IConvertible @this)
-    {
-        return @this.ToInt32(CultureInfo.InvariantCulture);
-    }
-
-    public static UInt32 ToUInt32 (this IConvertible @this)
-    {
-        return @this.ToUInt32(CultureInfo.CurrentCulture);
-    }
-
-    public static UInt32 ToUInt32Inv (this IConvertible @this)
-    {
-        return @this.ToUInt32(CultureInfo.InvariantCulture);
-    }
-
-    public static Int64 ToInt64 (this IConvertible @this)
-    {
-        return @this.ToInt64(CultureInfo.CurrentCulture);
-    }
-
-    public static Int64 ToInt64Inv (this IConvertible @this)
-    {
-        return @this.ToInt64(CultureInfo.InvariantCulture);
-    }
-
-    public static UInt64 ToUInt64 (this IConvertible @this)
-    {
-        return @this.ToUInt64(CultureInfo.CurrentCulture);
-    }
-
-    public static UInt64 ToUInt64Inv (this IConvertible @this)
-    {
-        return @this.ToUInt64(CultureInfo.InvariantCulture);
-    }
-
-    public static Single ToSingle (this IConvertible @this)
-    {
-        return @this.ToSingle(CultureInfo.CurrentCulture);
-    }
-
-    public static Single ToSingleInv (this IConvertible @this)
-    {
-        return @this.ToSingle(CultureInfo.InvariantCulture);
-    }
-
-    public static Double ToDouble (this IConvertible @this)
-    {
-        return @this.ToDouble(CultureInfo.CurrentCulture);
-    }
-
-    public static Double ToDoubleInv (this IConvertible @this)
-    {
-        return @this.ToDouble(CultureInfo.InvariantCulture);
-    }
-
-    public static Decimal ToDecimal (this IConvertible @this)
-    {
-        return @this.ToDecimal(CultureInfo.CurrentCulture);
-    }
-
-    public static Decimal ToDecimalInv (this IConvertible @this)
-    {
-        return @this.ToDecimal(CultureInfo.InvariantCulture);
-    }
-
-    public static DateTime ToDateTime (this IConvertible @this)
-    {
-        return @this.ToDateTime(CultureInfo.CurrentCulture);
-    }
-
-    public static DateTime ToDateTimeInv (this IConvertible @this)
-    {
-        return @this.ToDateTime(CultureInfo.InvariantCulture);
-    }
-
 }

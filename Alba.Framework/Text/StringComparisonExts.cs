@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Text;
 
-[PublicAPI]
 public static class StringComparisonExts
 {
     extension(StringComparison @this)

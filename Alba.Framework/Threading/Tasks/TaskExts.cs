@@ -3,7 +3,6 @@ using System.Runtime.ExceptionServices;
 
 namespace Alba.Framework.Threading.Tasks;
 
-[PublicAPI]
 public static class TaskExts
 {
     private const TaskCreationOptions RunLongOptions = TaskCreationOptions.LongRunning | TaskCreationOptions.DenyChildAttach;

@@ -2,7 +2,6 @@
 
 namespace Alba.Framework.Drawing;
 
-[PublicAPI]
 public static class ColorExts
 {
     extension(Color @this)

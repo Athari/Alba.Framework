@@ -2,9 +2,11 @@
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class ObservableCollectionExts
 {
-    public static ReadOnlyObservableCollection<T> ToReadOnlyObservable<T>(this ObservableCollection<T> @this) =>
-        new(@this);
+    extension<T>(ObservableCollection<T> @this)
+    {
+        public ReadOnlyObservableCollection<T> ToReadOnlyObservable() =>
+            new(@this);
+    }
 }

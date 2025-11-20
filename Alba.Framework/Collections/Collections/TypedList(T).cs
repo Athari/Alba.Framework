@@ -5,9 +5,9 @@ using Alba.Framework.Common;
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(CollectionDebugView<>))]
-public class TypedList<T>(IList list, CollectionOptions options = CollectionOptions.Default)
+public class TypedList<T>
+    (IList list, CollectionOptions options = CollectionOptions.Default)
     : IList<T>, IReadOnlyList<T>, IList
 {
     private readonly IList _list = Ensure.NotNull(list);

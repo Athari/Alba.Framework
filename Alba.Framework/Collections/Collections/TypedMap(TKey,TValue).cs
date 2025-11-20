@@ -7,7 +7,8 @@ using Alba.Framework.Text;
 namespace Alba.Framework.Collections;
 
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
-internal class TypedMap<TKey, TValue>(IDictionary dictionary, CollectionOptions options = CollectionOptions.Default)
+internal class TypedMap<TKey, TValue>
+    (IDictionary dictionary, CollectionOptions options = CollectionOptions.Default)
     : IDictionary<TKey, TValue>, IDictionary, IReadOnlyDictionary<TKey, TValue>
     where TKey : notnull
 {

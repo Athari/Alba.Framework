@@ -5,7 +5,8 @@ namespace Alba.Framework.Collections;
 
 [Serializable]
 [DebuggerDisplay("Count = {Count}"), DebuggerTypeProxy(typeof(DictionaryDebugView<,>))]
-public abstract class IndexDictionaryBase<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDictionary
+public abstract class IndexDictionaryBase<TKey, TValue>
+    : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>, IDictionary
 {
     private readonly List<TValue> _values;
 

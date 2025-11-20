@@ -5,7 +5,6 @@ namespace Alba.Framework.IO;
 /// <summary>
 /// Writing to multiple output streams. Position and length properties and methods return values for the first stream, but change both. Reading is not supported.
 /// </summary>
-[PublicAPI]
 public class TeeOutputStream : Stream
 {
     private readonly List<Stream> _streams;
@@ -13,7 +12,7 @@ public class TeeOutputStream : Stream
 
     public TeeOutputStream(params IList<Stream> streams)
     {
-        Guard.HasSizeGreaterThan(streams, 0, nameof(streams));
+        Guard.HasSizeGreaterThan(streams, 0);
         _streams = [ ];
         _streamsReadOnly = new(_streams);
         _streams.AddRange(streams);
@@ -29,34 +28,23 @@ public class TeeOutputStream : Stream
 
     public override long Length => _streams[0].Length;
 
-    public override long Position
-    {
+    public override long Position {
         get => _streams[0].Position;
         set => _streams.ForEach(s => s.Position = value);
     }
 
-    public override void Flush()
-    {
+    public override void Flush() =>
         _streams.ForEach(s => s.Flush());
-    }
 
-    public override long Seek(long offset, SeekOrigin origin)
-    {
-        return _streams.Select(s => s.Seek(offset, origin)).First();
-    }
+    public override long Seek(long offset, SeekOrigin origin) =>
+        _streams.Select(s => s.Seek(offset, origin)).First();
 
-    public override void SetLength(long value)
-    {
+    public override void SetLength(long value) =>
         _streams.ForEach(s => s.SetLength(value));
-    }
 
-    public override int Read(byte[] buffer, int offset, int count)
-    {
+    public override int Read(byte[] buffer, int offset, int count) =>
         throw new NotSupportedException();
-    }
 
-    public override void Write(byte[] buffer, int offset, int count)
-    {
+    public override void Write(byte[] buffer, int offset, int count) =>
         _streams.ForEach(s => s.Write(buffer, offset, count));
-    }
 }
