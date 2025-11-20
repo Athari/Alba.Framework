@@ -58,9 +58,9 @@ public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
             Insert(index++, item);
     }
 
-    public virtual void ReplaceAll([InstantHandle] IEnumerable<T> items, bool pause = false)
+    public virtual void ReplaceAll([InstantHandle] IEnumerable<T> items)
     {
-        using var _ = WithPause(pause);
+        using var _ = WithPause();
         Clear();
         AddRange(items);
     }
