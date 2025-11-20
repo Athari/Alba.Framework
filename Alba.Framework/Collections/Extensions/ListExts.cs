@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Collections;
 
-[PublicAPI]
 public static class ListExts
 {
     private static readonly Random Rnd = new();
@@ -37,25 +36,26 @@ public static class ListExts
             @this.InsertRange(index, items);
         }
 
-        public T AtRandom(Random? rnd = null)
-        {
-            return @this[(rnd ?? Rnd).Next(@this.Count)];
-        }
+        public T AtRandom(Random? rnd = null) =>
+            @this[(rnd ?? Rnd).Next(@this.Count)];
 
-        public T AtWrapped(int index)
-        {
-            return @this[WrapIndex(index, @this.Count)];
-        }
+        public T? AtOrDefault(int index) =>
+            index >= 0 && index < @this.Count ? @this[index] : default;
 
-        public T AtWrappedOrDefault(int index, T defaultValue = default!)
-        {
-            return @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : defaultValue;
-        }
+        public T AtOrDefault(int index, T defaultValue) =>
+            index >= 0 && index < @this.Count ? @this[index] : defaultValue;
 
-        public void SetAtWrapped(int index, T value)
-        {
+        public T AtWrapped(int index) =>
+            @this[WrapIndex(index, @this.Count)];
+
+        public T? AtWrappedOrDefault(int index) =>
+            @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : default;
+
+        public T AtWrappedOrDefault(int index, T defaultValue) =>
+            @this.Count > 0 ? @this[WrapIndex(index, @this.Count)] : defaultValue;
+
+        public void SetAtWrapped(int index, T value) =>
             @this[WrapIndex(index, @this.Count)] = value;
-        }
 
         public int IndexOfOrDefault(T value, int defaultIndex)
         {
@@ -71,6 +71,12 @@ public static class ListExts
             }
             (@this[index], @this[indexOther]) = (@this[indexOther], @this[index]);
         }
+
+        public ListSelectedIndex<T> WithSelectedIndex(int selectedIndex) =>
+            new(@this, selectedIndex);
+
+        public ListSelectedItem<T> WithSelectedItem(T? selectedItem) =>
+            new(@this, selectedItem);
     }
 
     extension<T>(IList<T> @this) where T : IDisposable
@@ -91,29 +97,20 @@ public static class ListExts
 
     private static int WrapIndex(int index, int count)
     {
-        Guard.IsGreaterThan(count, 0, nameof(count));
+        Guard.IsGreaterThan(count, 0);
         return index % count + (index < 0 ? count : 0);
     }
 
-    public static ListSelectedIndexDisposable<T> WithSelectedIndex<T>(this IList<T> @this,
-        int selectedIndex, Action<int> setSelectedIndex) =>
-        new(@this, selectedIndex, setSelectedIndex);
-
-    public static ListSelectedItemDisposable<T> WithSelectedItem<T>(this IList<T> @this,
-        T? selectedItem, Action<T?> setSelectedItem) =>
-        new(@this, selectedItem != null ? @this.IndexOf(selectedItem) : -1, setSelectedItem);
-
-    public readonly struct ListSelectedIndexDisposable<T>(
-        IList<T> list, int selectedIndex, Action<int> setSelectedIndex) : IDisposable
+    public readonly struct ListSelectedIndex<T>(IList<T> list, int selectedIndex)
     {
-        public void Dispose() =>
-            setSelectedIndex(list.Count > 0 ? Math.Min(selectedIndex, list.Count - 1) : -1);
+        public int Value => list.Count > 0 ? Math.Min(selectedIndex, list.Count - 1) : -1;
+        public static implicit operator int(ListSelectedIndex<T> @this) => @this.Value;
     }
 
-    public readonly struct ListSelectedItemDisposable<T>(
-        IList<T> list, int selectedIndex, Action<T?> setSelectedItem) : IDisposable
+    public readonly struct ListSelectedItem<T>(IList<T> list, T? selectedItem)
     {
-        public void Dispose() =>
-            setSelectedItem(list.Count > 0 ? list[Math.Min(selectedIndex, list.Count - 1)] : default);
+        private readonly int _selectedIndex = selectedItem != null ? list.IndexOf(selectedItem) : -1;
+        public T? Value => list.Count > 0 ? list[Math.Min(_selectedIndex, list.Count - 1)] : default;
+        public static implicit operator T?(ListSelectedItem<T> @this) => @this.Value;
     }
 }
