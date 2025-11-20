@@ -3,12 +3,9 @@ using System.Collections.ObjectModel;
 
 namespace Alba.Framework.Collections;
 
-[PublicAPI, SuppressMessage("ReSharper", "UnusedMember.Global")]
 [SuppressMessage("Style", "IDE0305: Use collection expression for fluent", Justification = "LINQ chains")]
 public static partial class EnumerableExts
 {
-    private const string ErrorNoElements = "Sequence contains no elements.";
-
     private static readonly Random Rnd = new();
 
     public static ReadOnlyCollection<T> EmptyList<T>() => EmptyEnumerable<T>.EmptyList;
@@ -249,6 +246,17 @@ public static partial class EnumerableExts
         }
     }
 
+    extension<T>(IEnumerable<T> @this) where T : notnull
+    {
+        public IEnumerable<TResult> Intersect<TResult>(IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
+        {
+            var dic = second.ToDictionary(i => i, comparer);
+            foreach (T item in @this)
+                if (dic.TryGetValue(item, out var value))
+                    yield return resultSelector(item, value);
+        }
+    }
+
     public static IEnumerable<T> Flatten<T>(this IEnumerable<IEnumerable<T>> @this)
     {
         return @this.SelectMany(i => i);
@@ -269,15 +277,13 @@ public static partial class EnumerableExts
         return @this.Values.SelectMany(i => i.Values);
     }
 
-    extension<T>(IEnumerable<T> @this) where T : notnull
+    extension(int @this)
     {
-        public IEnumerable<TResult> Intersect<TResult>(IEnumerable<T> second, Func<T, T, TResult> resultSelector, IEqualityComparer<T> comparer)
-        {
-            var dic = second.ToDictionary(i => i, comparer);
-            foreach (T item in @this)
-                if (dic.TryGetValue(item, out var value))
-                    yield return resultSelector(item, value);
-        }
+        public IEnumerable<int> Range() =>
+            Enumerable.Range(0, @this);
+
+        public IEnumerable<int> Range(int count) =>
+            Enumerable.Range(@this, count);
     }
 
     private static class EmptyEnumerable<T>

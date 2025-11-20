@@ -1,19 +1,12 @@
-﻿namespace Alba.Framework.Collections;
+﻿namespace Alba.Framework;
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
-public static partial class EnumerableExts
+public static class RangeExts
 {
-    extension(int @this)
-    {
-        public IEnumerable<int> Range() =>
-            Enumerable.Range(0, @this);
-
-        public IEnumerable<int> Range(int count) =>
-            Enumerable.Range(@this, count);
-    }
-
     extension(Range @this)
     {
+        public (int Start, int End) GetOffsets(int length) =>
+            (@this.Start.GetOffset(length), @this.End.GetOffset(length));
+
         public IEnumerable<int> ToRange(bool endInclusive = false)
         {
             if (@this.Start.IsFromEnd || @this.End.IsFromEnd)

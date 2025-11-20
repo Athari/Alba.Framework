@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 
 namespace Alba.Framework.Collections;
 
-[SuppressMessage("ReSharper", "UnusedMember.Global")]
 public static partial class EnumerableExts
 {
     extension<T>(IEnumerable<T> @this)
