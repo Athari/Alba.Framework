@@ -15,11 +15,11 @@ public class PrevNextEnabledConverter : MarkupExtension, IMultiValueConverter
     {
         if (values is not [ int count, int index ])
             return false;
-        return index == -1 || count > 0 && PrevNext switch {
+        return count > 0 && (index == -1 || PrevNext switch {
             PrevNext.Prev => index > 0,
             PrevNext.Next => index < count - 1,
             _ => true,
-        };
+        });
     }
 
     public override object ProvideValue(IServiceProvider serviceProvider) => this;
