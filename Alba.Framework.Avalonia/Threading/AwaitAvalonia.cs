@@ -3,7 +3,6 @@ using Avalonia.Threading;
 
 namespace Alba.Framework.Avalonia.Threading;
 
-[PublicAPI]
 [SuppressMessage("ReSharper", "MethodOverloadWithOptionalParameter", Justification = "GetAwaiter method must have no parameters to be recognized")]
 [SuppressMessage("Design", "CA1068:CancellationToken parameters must come last", Justification = "Convenience methods which have callback last for readability")]
 public static partial class AwaitAvalonia
@@ -81,7 +80,6 @@ public static partial class AwaitAvalonia
         => Dispatcher.UIThread.InvokeAsync(callback, priority);
 
 
-    [PublicAPI]
     public readonly struct AvaloniaDispatcherAwaiter(DispatcherPriority priority, bool alwaysYield = false)
         : IAwaiter<AvaloniaDispatcherAwaiter>
     {

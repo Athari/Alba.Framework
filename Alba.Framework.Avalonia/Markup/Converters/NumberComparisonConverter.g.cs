@@ -7,7 +7,6 @@ using Alba.Framework.Numerics;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
-[PublicAPI]
 public class SByteComparisonConverter : IntegerComparisonConverter<SByte>
 {
     public SByteComparisonConverter() { }
@@ -15,7 +14,6 @@ public class SByteComparisonConverter : IntegerComparisonConverter<SByte>
     public SByteComparisonConverter(NumberComparisonOperator @operator, SByte parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class Int16ComparisonConverter : IntegerComparisonConverter<Int16>
 {
     public Int16ComparisonConverter() { }
@@ -23,7 +21,6 @@ public class Int16ComparisonConverter : IntegerComparisonConverter<Int16>
     public Int16ComparisonConverter(NumberComparisonOperator @operator, Int16 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class Int32ComparisonConverter : IntegerComparisonConverter<Int32>
 {
     public Int32ComparisonConverter() { }
@@ -31,7 +28,6 @@ public class Int32ComparisonConverter : IntegerComparisonConverter<Int32>
     public Int32ComparisonConverter(NumberComparisonOperator @operator, Int32 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class Int64ComparisonConverter : IntegerComparisonConverter<Int64>
 {
     public Int64ComparisonConverter() { }
@@ -39,7 +35,6 @@ public class Int64ComparisonConverter : IntegerComparisonConverter<Int64>
     public Int64ComparisonConverter(NumberComparisonOperator @operator, Int64 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class Int128ComparisonConverter : IntegerComparisonConverter<Int128>
 {
     public Int128ComparisonConverter() { }
@@ -47,7 +42,6 @@ public class Int128ComparisonConverter : IntegerComparisonConverter<Int128>
     public Int128ComparisonConverter(NumberComparisonOperator @operator, Int128 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class IntPtrComparisonConverter : IntegerComparisonConverter<IntPtr>
 {
     public IntPtrComparisonConverter() { }
@@ -55,7 +49,6 @@ public class IntPtrComparisonConverter : IntegerComparisonConverter<IntPtr>
     public IntPtrComparisonConverter(NumberComparisonOperator @operator, IntPtr parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class ByteComparisonConverter : IntegerComparisonConverter<Byte>
 {
     public ByteComparisonConverter() { }
@@ -63,7 +56,6 @@ public class ByteComparisonConverter : IntegerComparisonConverter<Byte>
     public ByteComparisonConverter(NumberComparisonOperator @operator, Byte parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class UInt16ComparisonConverter : IntegerComparisonConverter<UInt16>
 {
     public UInt16ComparisonConverter() { }
@@ -71,7 +63,6 @@ public class UInt16ComparisonConverter : IntegerComparisonConverter<UInt16>
     public UInt16ComparisonConverter(NumberComparisonOperator @operator, UInt16 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class UInt32ComparisonConverter : IntegerComparisonConverter<UInt32>
 {
     public UInt32ComparisonConverter() { }
@@ -79,7 +70,6 @@ public class UInt32ComparisonConverter : IntegerComparisonConverter<UInt32>
     public UInt32ComparisonConverter(NumberComparisonOperator @operator, UInt32 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class UInt64ComparisonConverter : IntegerComparisonConverter<UInt64>
 {
     public UInt64ComparisonConverter() { }
@@ -87,7 +77,6 @@ public class UInt64ComparisonConverter : IntegerComparisonConverter<UInt64>
     public UInt64ComparisonConverter(NumberComparisonOperator @operator, UInt64 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class UInt128ComparisonConverter : IntegerComparisonConverter<UInt128>
 {
     public UInt128ComparisonConverter() { }
@@ -95,7 +84,6 @@ public class UInt128ComparisonConverter : IntegerComparisonConverter<UInt128>
     public UInt128ComparisonConverter(NumberComparisonOperator @operator, UInt128 parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class UIntPtrComparisonConverter : IntegerComparisonConverter<UIntPtr>
 {
     public UIntPtrComparisonConverter() { }
@@ -103,7 +91,6 @@ public class UIntPtrComparisonConverter : IntegerComparisonConverter<UIntPtr>
     public UIntPtrComparisonConverter(NumberComparisonOperator @operator, UIntPtr parameter) : base(@operator, parameter) { }
 }
 
-[PublicAPI]
 public class BigIntegerComparisonConverter : IntegerComparisonConverter<BigInteger>
 {
     public BigIntegerComparisonConverter() { }

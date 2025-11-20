@@ -3,7 +3,6 @@ using System.Globalization;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
-[PublicAPI]
 public class ItemIndexConverter : MultiValueConverterBase<object?, IList?, int?>
 {
     public int Offset { get; set; } = 1;

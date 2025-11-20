@@ -5,7 +5,6 @@ using Alba.Framework.Numerics;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
-[PublicAPI]
 public abstract class FloatingComparisonConverter<T, TEpsilonOperations> : ValueConverterBase<T?, bool>
     where T : IFloatingPoint<T>
     where TEpsilonOperations : IFloatingPointEpsilonOperations<T>

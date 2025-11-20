@@ -4,7 +4,6 @@ using AvaloniaMultiBinding = Avalonia.Data.MultiBinding;
 
 namespace Alba.Framework.Avalonia.Markup.MarkupExtensions;
 
-[PublicAPI]
 public class MultiBinding : AvaloniaMultiBinding, IMarkupExtension<MultiBinding>
 {
     public MultiBinding(IBinding b1, IBinding b2) =>

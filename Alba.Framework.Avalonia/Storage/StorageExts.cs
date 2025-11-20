@@ -3,7 +3,6 @@ using Avalonia.Platform.Storage;
 
 namespace Alba.Framework.Avalonia.Storage;
 
-[PublicAPI]
 public static class StorageExts
 {
     extension(IStorageItem @this)

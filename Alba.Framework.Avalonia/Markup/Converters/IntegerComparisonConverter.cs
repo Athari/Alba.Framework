@@ -4,7 +4,6 @@ using System.Numerics;
 
 namespace Alba.Framework.Avalonia.Markup.Converters;
 
-[PublicAPI]
 public abstract class IntegerComparisonConverter<T> : ValueConverterBase<T?, bool>
     where T : IBinaryInteger<T>
 {

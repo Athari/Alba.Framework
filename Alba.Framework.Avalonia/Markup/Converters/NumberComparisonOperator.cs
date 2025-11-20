@@ -1,6 +1,5 @@
 ﻿namespace Alba.Framework.Avalonia.Markup.Converters;
 
-[PublicAPI]
 public enum NumberComparisonOperator
 {
     Equal,
