@@ -3,8 +3,6 @@ using ObservableComputations;
 
 namespace Alba.Framework.Collections.ObservableComputations;
 
-[SuppressMessage("Style", "IDE0063: Use simple using statement", Justification = "Disposes too late")]
-[SuppressMessage("ReSharper", "ConvertToUsingDeclaration", Justification = "Disposes too late")]
 public class ObservableCollectionEx<T> : ObservableCollectionExtended<T>
 {
     private readonly CollectionPausing<T> _pausing;
