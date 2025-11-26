@@ -20,6 +20,9 @@ public static class TaskExts
 
         public static Task<T> RunLong<T>(Func<Task<T>> function, CancellationToken ct = default) =>
             Task.Factory.StartNew(function, ct, RunLongOptions, TaskScheduler.Default).Unwrap();
+
+        public static void RunNoWait(Func<Task> function) =>
+            function().NoWait();
     }
 
     public static ConfiguredTaskAwaitable NoSync(this Task @this) =>
