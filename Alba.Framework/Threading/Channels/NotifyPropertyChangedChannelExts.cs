@@ -99,7 +99,7 @@ public static class NotifyPropertyChangedChannelExts
             LambdaExpression prop, Func<T> getValue,
             Channel<T> channel, CancellationToken ct)
         {
-            return @this.SetupChannel([ PropertyName.Of(prop) ], getValue, channel, ct);
+            return @this.SetupChannel([ NameOf.Prop(prop) ], getValue, channel, ct);
         }
 
         private ChannelReader<T> SetupChannel<T>(
