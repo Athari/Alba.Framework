@@ -13,6 +13,14 @@ public static class SelectionModelExts
         public IEnumerable<T> AllSelectedItems =>
             @this.SelectedItems.WhereNotNull();
 
+        public int GetSelectedIndexAfterRemoval()
+        {
+            if (@this.Count == 0 || @this.SourceCount == @this.Count)
+                return -1;
+            var unselectedIndexes = Enumerable.Range(0, @this.SourceCount).Where(i => !@this.IsSelected(i)).ToList();
+            return unselectedIndexes[Math.Min(@this.SelectedIndexes.Min(), unselectedIndexes.Count - 1)];
+        }
+
         public void Select(Index index) =>
             @this.Select(index.GetOffset(@this.SourceCount));
 
