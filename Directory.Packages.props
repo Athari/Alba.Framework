@@ -1,0 +1,21 @@
+<Project>
+  <!-- DOC: Include parent -->
+  <!--<Import Project="$([MSBuild]::GetPathOfFileAbove(Directory.Packages.props, $(MSBuildThisFileDirectory)..))" />-->
+  <!-- DOC: Alba.Framework Central Package Management -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup Label="Main">
+    <PackageVersion Include="Avalonia" Version="11.1.0" />
+    <PackageVersion Include="Avalonia.Skia" Version="11.1.0" />
+    <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
+    <PackageVersion Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.11.0-beta2" />
+    <PackageVersion Include="ObservableComputations" Version="2.3.0" />
+    <PackageVersion Include="SkiaSharp" Version="3.119.0" />
+    <PackageVersion Include="System.Threading.AccessControl" Version="9.0.10" />
+  </ItemGroup>
+  <ItemGroup Label="Dev">
+    <PackageVersion Include="JetBrains.Annotations" Version="2025.2.4" />
+    <PackageVersion Include="Microsoft.Windows.CsWin32" Version="0.3.259" />
+  </ItemGroup>
+</Project>

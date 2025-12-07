@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Packages">
-    <!--<PackageReference Include="System.Threading.AccessControl" Version="9.0.10" Condition="'$(IsRuntimeWindows)' == 'true'" />-->
+    <!--<PackageReference Include="System.Threading.AccessControl" Condition="'$(IsRuntimeWindows)' == 'true'" />-->
   </ItemGroup>
 
 </Project>

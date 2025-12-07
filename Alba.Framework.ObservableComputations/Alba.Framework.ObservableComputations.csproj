@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup Label="Packages">
-    <PackageReference Include="Avalonia" Version="11.0.0" Condition="'$(OcSupportAvalonia)' == 'true'" />
-    <PackageReference Include="ObservableComputations" Version="2.3.0" />
+    <PackageReference Include="Avalonia" Condition="'$(OcSupportAvalonia)' == 'true'" />
+    <PackageReference Include="ObservableComputations" />
   </ItemGroup>
 
 </Project>
