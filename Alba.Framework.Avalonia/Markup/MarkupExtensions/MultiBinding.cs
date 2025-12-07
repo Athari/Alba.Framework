@@ -6,6 +6,9 @@ namespace Alba.Framework.Avalonia.Markup.MarkupExtensions;
 
 public class MultiBinding : AvaloniaMultiBinding, IMarkupExtension<MultiBinding>
 {
+    public MultiBinding(IBinding b1) =>
+        Bindings.AddRange([ b1 ]);
+
     public MultiBinding(IBinding b1, IBinding b2) =>
         Bindings.AddRange([ b1, b2 ]);
 
