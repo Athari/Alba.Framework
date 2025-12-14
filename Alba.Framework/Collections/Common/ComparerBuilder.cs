@@ -1,58 +1,71 @@
-﻿namespace Alba.Framework.Collections;
+﻿using System.ComponentModel;
 
-public class ComparerBuilder<T> : IComparer<T>
+namespace Alba.Framework.Collections;
+
+public class ComparerBuilder<T>
 {
-    private readonly IComparer<T> _comparer;
+    private readonly List<IComparer<T>> _comparers = [ ];
 
-    private ComparerBuilder(IComparer<T> comparer) =>
-        _comparer = comparer;
+    public static ComparerBuilder<T> Empty => new();
 
-    public static ComparerBuilder<T> Order(IComparer<T>? comparer = null) =>
-        new(comparer ?? Comparer<T>.Default);
+    public static ComparerBuilder<T> Order(IComparer<T>? comparer = null, ListSortDirection direction = ListSortDirection.Ascending) =>
+        new ComparerBuilder<T>().AddComparer(comparer, direction);
 
-    public static ComparerBuilder<T> OrderBy<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) =>
-        new(KeyComparer(keySelector, comparer, false));
+    public static ComparerBuilder<T> OrderBy<TKey>(Func<T, TKey>? keySelector, IComparer<TKey>? comparer = null) =>
+        OrderByDirection(keySelector, ListSortDirection.Ascending, comparer);
 
-    public static ComparerBuilder<T> OrderByDescending<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) =>
-        new(KeyComparer(keySelector, comparer, true));
+    public static ComparerBuilder<T> OrderByDescending<TKey>(Func<T, TKey>? keySelector, IComparer<TKey>? comparer = null) =>
+        OrderByDirection(keySelector, ListSortDirection.Descending, comparer);
 
-    public ComparerBuilder<T> Then(IComparer<T>? comparer = null) =>
-        new(new ChainComparer(_comparer, comparer ?? Comparer<T>.Default));
+    public static ComparerBuilder<T> OrderByDirection<TKey>(
+        Func<T, TKey>? keySelector, ListSortDirection direction, IComparer<TKey>? comparer = null) =>
+        new ComparerBuilder<T>().AddComparer(KeyComparer(keySelector, comparer, direction));
 
-    public ComparerBuilder<T> ThenBy<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) =>
-        Then(KeyComparer(keySelector, comparer, false));
+    public ComparerBuilder<T> Then(IComparer<T>? comparer = null, ListSortDirection direction = ListSortDirection.Ascending) =>
+        AddComparer(comparer, direction);
 
-    public ComparerBuilder<T> ThenByDescending<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer = null) =>
-        Then(KeyComparer(keySelector, comparer, true));
+    public ComparerBuilder<T> ThenBy<TKey>(Func<T, TKey>? keySelector, IComparer<TKey>? comparer = null) =>
+        ThenByDirection(keySelector, ListSortDirection.Ascending, comparer);
 
-    public int Compare(T? x, T? y) => _comparer.Compare(x, y);
+    public ComparerBuilder<T> ThenByDescending<TKey>(Func<T, TKey>? keySelector, IComparer<TKey>? comparer = null) =>
+        ThenByDirection(keySelector, ListSortDirection.Descending, comparer);
 
-    private static Comparer<T> KeyComparer<TKey>(Func<T, TKey> keySelector, IComparer<TKey>? comparer, bool isDescending)
+    public ComparerBuilder<T> ThenByDirection<TKey>(
+        Func<T, TKey>? keySelector, ListSortDirection direction, IComparer<TKey>? comparer = null) =>
+        keySelector != null ? AddComparer(KeyComparer(keySelector, comparer, direction)) : this;
+
+    private ComparerBuilder<T> AddComparer(IComparer<T>? comparer, ListSortDirection direction = ListSortDirection.Ascending)
     {
-        comparer ??= Comparer<TKey>.Default;
-        return Comparer<T>.Create(isDescending
-            ? (x, y) => -comparer.Compare(keySelector(x), keySelector(y))
-            : (x, y) => comparer.Compare(keySelector(x), keySelector(y)));
+        if (comparer is ChainComparer chain)
+            _comparers.AddRange(chain._comparers);
+        else
+            _comparers.Add((comparer ?? Comparer<T>.Default).WithDirection(direction));
+        return this;
     }
 
-    private class ChainComparer : IComparer<T>
+    public IComparer<T> ToComparer()
     {
-        private readonly List<IComparer<T>> _comparers = [ ];
+        return _comparers.Where(c => c is not EmptyComparer).ToList() switch {
+            { Count: 0 } => new EmptyComparer(),
+            [ var comparer ] => comparer,
+            _ => new ChainComparer(_comparers),
+        };
+    }
 
-        public ChainComparer(params IEnumerable<IComparer<T>> comparers)
-        {
-            foreach (var comparer in comparers)
-                AddComparer(comparer);
-        }
+    private static IComparer<T> KeyComparer<TKey>(
+        Func<T, TKey>? keySelector, IComparer<TKey>? comparer, ListSortDirection direction)
+    {
+        if (keySelector == null)
+            return EmptyComparer.Instance;
+        comparer ??= Comparer<TKey>.Default;
+        return Comparer<T>.Create(direction == ListSortDirection.Ascending
+            ? (x, y) => comparer.Compare(keySelector(x), keySelector(y))
+            : (x, y) => -comparer.Compare(keySelector(x), keySelector(y)));
+    }
 
-        private void AddComparer(IComparer<T> comparer)
-        {
-            if (comparer is not ChainComparer chain)
-                _comparers.Add(comparer);
-            else
-                foreach (var subComparer in chain._comparers)
-                    AddComparer(subComparer);
-        }
+    private class ChainComparer(List<IComparer<T>> comparers) : IComparer<T>
+    {
+        public readonly List<IComparer<T>> _comparers = comparers;
 
         public int Compare(T? x, T? y)
         {
@@ -61,5 +74,12 @@ public class ComparerBuilder<T> : IComparer<T>
                 r = _comparers[i].Compare(x, y);
             return r;
         }
+    }
+
+    private class EmptyComparer : IComparer<T>
+    {
+        public static readonly EmptyComparer Instance = new();
+
+        public int Compare(T? x, T? y) => 0;
     }
 }
