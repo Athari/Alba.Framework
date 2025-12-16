@@ -23,6 +23,24 @@ public static class CollectionExts
             @this.Clear();
             @this.AddRange(items);
         }
+
+        public void AddRange(ReadOnlySpan<T> items)
+        {
+            foreach (var item in items)
+                @this.Add(item);
+        }
+
+        public void RemoveRange(ReadOnlySpan<T> items)
+        {
+            foreach (var item in items)
+                @this.Remove(item);
+        }
+
+        public void ReplaceAll(ReadOnlySpan<T> items)
+        {
+            @this.Clear();
+            @this.AddRange(items);
+        }
     }
 
     extension(ICollection @this)
