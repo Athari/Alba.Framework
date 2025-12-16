@@ -9,6 +9,7 @@
   <ItemGroup Label="Main">
     <PackageVersion Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageVersion Include="Avalonia.Skia" Version="$(AvaloniaVersion)" />
+    <PackageVersion Include="Collections.Pooled" Version="1.0.82" />
     <PackageVersion Include="CommunityToolkit.Diagnostics" Version="8.4.0" />
     <PackageVersion Include="jp2masa.Avalonia.PropertyGenerator.CSharp" Version="0.11.0-beta2" />
     <PackageVersion Include="ObservableComputations" Version="2.3.0" />

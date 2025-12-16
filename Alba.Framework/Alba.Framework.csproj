@@ -18,6 +18,7 @@
 
   <ItemGroup Label="Packages">
     <!--<PackageReference Include="System.Threading.AccessControl" Condition="'$(IsRuntimeWindows)' == 'true'" />-->
+    <PackageReference Include="Collections.Pooled" />
   </ItemGroup>
 
 </Project>
