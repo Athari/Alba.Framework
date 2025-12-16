@@ -102,26 +102,75 @@ public static class NotifyPropertyChangedChannelExts
             return @this.SetupChannel([ NameOf.Prop(prop) ], getValue, channel, ct);
         }
 
+        //private ChannelReader<T> SetupChannel<T>(
+        //    ReadOnlySpan<string> propertyNames, Func<T> getValue,
+        //    Channel<T> channel, CancellationToken ct)
+        //{
+        //    Guard.IsNotDefault(ct);
+
+        //    var sub = @this.WeakSubscribePropertyChanged(OnPropertyChanged, propertyNames);
+        //    ct.Register(() => {
+        //        sub.Dispose();
+        //        channel.Writer.Complete();
+        //    });
+        //    channel.Reader.Completion.ContinueWith(_ => sub.Dispose(), ct).NoWait();
+        //    return channel.Reader;
+
+        //    void OnPropertyChanged(object? _, PropertyChangedEventArgs e) =>
+        //        channel.Writer.WriteAsync(getValue(), ct).NoWait();
+        //}
+
         private ChannelReader<T> SetupChannel<T>(
-            string[] propertyNames, Func<T> getValue,
+            ReadOnlySpan<string> propertyNames, Func<T> getValue,
             Channel<T> channel, CancellationToken ct)
         {
-            Guard.IsNotDefault(ct);
+            var ns = propertyNames.ToArray();
+            return SetupChannel(h => @this.WeakSubscribePropertyChanged(h, ns), getValue, channel, ct);
+        }
+    }
 
-            @this.PropertyChanged += OnPropertyChanged;
-            ct.Register(() => {
-                @this.PropertyChanged -= OnPropertyChanged;
-                channel.Writer.Complete();
-            });
-            channel.Reader.Completion.ContinueWith(_ =>
-                @this.PropertyChanged -= OnPropertyChanged, ct);
-            return channel.Reader;
+    private static ChannelReader<T> SetupChannel<T>(
+        Func<PropertyChangedEventHandler, IDisposable> subscribe, Func<T> getValue,
+        Channel<T> channel, CancellationToken ct)
+    {
+        Guard.IsNotDefault(ct);
 
-            void OnPropertyChanged(object? _, PropertyChangedEventArgs e)
-            {
-                if (e.PropertyName == null || propertyNames.Contains(e.PropertyName))
-                    channel.Writer.WriteAsync(getValue(), ct).NoWait();
-            }
+        var sub = subscribe(OnPropertyChanged);
+        ct.Register(() => {
+            sub.Dispose();
+            channel.Writer.Complete();
+        });
+        channel.Reader.Completion.ContinueWith(_ => sub.Dispose(), ct).NoWait();
+        return channel.Reader;
+
+        void OnPropertyChanged(object? _, PropertyChangedEventArgs e) =>
+            channel.Writer.WriteAsync(getValue(), ct).NoWait();
+    }
+
+    extension(Channel)
+    {
+        public static ChannelReader<T> CreateBoundedReaderFromSubscription<T>(
+            Func<PropertyChangedEventHandler, IDisposable> subscribe, Func<T> getValue,
+            BoundedChannelOptions options, CancellationToken ct)
+        {
+            var channel = Channel.CreateBounded<T>(options);
+            return SetupChannel(subscribe, getValue, channel, ct);
+        }
+
+        public static ChannelReader<T> CreateUnboundedReaderFromSubscription<T>(
+            Func<PropertyChangedEventHandler, IDisposable> subscribe, Func<T> getValue,
+            UnboundedChannelOptions options, CancellationToken ct)
+        {
+            var channel = Channel.CreateUnbounded<T>(options);
+            return SetupChannel(subscribe, getValue, channel, ct);
+        }
+
+        public static ChannelReader<T> CreateUnboundedPrioritizedReaderFromSubscription<T>(
+            Func<PropertyChangedEventHandler, IDisposable> subscribe, Func<T> getValue,
+            UnboundedPrioritizedChannelOptions<T> options, CancellationToken ct)
+        {
+            var channel = Channel.CreateUnboundedPrioritized(options);
+            return SetupChannel(subscribe, getValue, channel, ct);
         }
     }
 }
