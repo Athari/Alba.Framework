@@ -82,18 +82,18 @@ internal class TypedMap<TKey, TValue>
     ICollection IDictionary.Values => _dictionary.Values;
 
     object? IDictionary.this[object key] {
-        get => this[Ensure.NotNullObject<TKey>(key)];
-        set => this[Ensure.NotNullObject<TKey>(key)] = Ensure.NullableOrNotNullObject<TValue>(value);
+        get => this[Ensure.OfType<TKey>(key)];
+        set => this[Ensure.OfType<TKey>(key)] = Ensure.OfTypeOrNullable<TValue>(value);
     }
 
     void IDictionary.Add(object key, object? value) =>
-        Add(Ensure.NotNullObject<TKey>(key), Ensure.NullableOrNotNullObject<TValue>(value));
+        Add(Ensure.OfType<TKey>(key), Ensure.OfTypeOrNullable<TValue>(value));
 
     bool IDictionary.Contains(object key) =>
-        Ensure.TryNotNullObject<TKey>(key, out var k) && ContainsKey(k);
+        Ensure.TryOfType<TKey>(key, out var k) && ContainsKey(k);
 
     void IDictionary.Remove(object key) =>
-        IfNotReadOnly(() => Ensure.IfNotNullObject<TKey>(key, k => RemoveItem(k)));
+        IfNotReadOnly(() => Ensure.IfOfType<TKey>(key, k => RemoveItem(k)));
 
     IDictionaryEnumerator IDictionary.GetEnumerator() =>
         _dictionary.GetEnumerator();

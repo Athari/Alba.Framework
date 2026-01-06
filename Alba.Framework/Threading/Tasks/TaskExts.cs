@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.ExceptionServices;
+using Alba.Framework.Common;
 
 namespace Alba.Framework.Threading.Tasks;
 
@@ -93,7 +94,7 @@ public static class TaskExts
     /// <summary>Aggregates exceptions from all tasks into a single <see cref="AggregateException"/>.</summary>
     public static async Task WhenAllSafe(params IEnumerable<Task> tasks)
     {
-        var whenAllTask = Task.WhenAll(tasks ?? throw new ArgumentNullException(nameof(tasks)));
+        var whenAllTask = Task.WhenAll(Ensure.NotNull(tasks));
         try {
             await whenAllTask;
         }

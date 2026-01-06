@@ -27,7 +27,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static T NullableOrNotNullObject<T>(object? param,
+    public static T OfTypeOrNullable<T>(object? param,
         [InvokerParameterName, CallerArgumentExpression(nameof(param))] string? paramName = null)
     {
         if (default(T) is null && param is null)
@@ -38,7 +38,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static bool TryNullableOrNotNullObject<T>(object? param, out T result)
+    public static bool TryOfTypeOrNullable<T>(object? param, out T result)
     {
         if (default(T) is null && param is null) {
             result = default!;
@@ -55,7 +55,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static bool IfNullableOrNotNullObject<T>(object? param, Action<T> action)
+    public static bool IfOfTypeOrNullable<T>(object? param, Action<T> action)
     {
         if (default(T) is null && param is null) {
             action(default!);
@@ -71,7 +71,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static T NotNullObject<T>(object? param,
+    public static T OfType<T>(object? param,
         [InvokerParameterName, CallerArgumentExpression(nameof(param))] string? paramName = null)
     {
         if (param is T p)
@@ -80,7 +80,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static bool TryNotNullObject<T>(object? param, out T result)
+    public static bool TryOfType<T>(object? param, out T result)
     {
         if (param is T p) {
             result = p;
@@ -93,7 +93,7 @@ public static class Ensure
     }
 
     [Method(Inline)]
-    public static bool IfNotNullObject<T>(object? param, Action<T> action)
+    public static bool IfOfType<T>(object? param, Action<T> action)
     {
         if (param is T p) {
             action(p);

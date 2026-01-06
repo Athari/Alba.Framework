@@ -27,7 +27,7 @@ public class TypedList<T>
 
     object? IList.this[int index] {
         get => this[index];
-        set => this[index] = Ensure.NullableOrNotNullObject<T>(value);
+        set => this[index] = Ensure.OfTypeOrNullable<T>(value);
     }
 
     // public
@@ -79,22 +79,22 @@ public class TypedList<T>
     // IList
 
     bool IList.Contains(object? value) =>
-        Ensure.TryNullableOrNotNullObject<T>(value, out var v) && Contains(v);
+        Ensure.TryOfTypeOrNullable<T>(value, out var v) && Contains(v);
 
     int IList.IndexOf(object? value) =>
-        Ensure.TryNullableOrNotNullObject<T>(value, out var v) ? IndexOf(v) : -1;
+        Ensure.TryOfTypeOrNullable<T>(value, out var v) ? IndexOf(v) : -1;
 
     int IList.Add(object? value)
     {
-        Add(Ensure.NullableOrNotNullObject<T>(value));
+        Add(Ensure.OfTypeOrNullable<T>(value));
         return Count - 1;
     }
 
     void IList.Insert(int index, object? value) =>
-        Insert(index, Ensure.NullableOrNotNullObject<T>(value));
+        Insert(index, Ensure.OfTypeOrNullable<T>(value));
 
     void IList.Remove(object? value) =>
-        Ensure.IfNullableOrNotNullObject<T>(value, v => Remove(v));
+        Ensure.IfOfTypeOrNullable<T>(value, v => Remove(v));
 
     // ICollection
 

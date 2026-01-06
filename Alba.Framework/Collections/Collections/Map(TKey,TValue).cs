@@ -40,8 +40,8 @@ public class Map<TKey, TValue>
     }
 
     object? IDictionary.this[object key] {
-        get => TryGetItem(Ensure.NotNullObject<TKey>(key), out TValue v) ? v : throw KeyNotFound($"{key}");
-        set => EnsureNotReadOnly(() => SetItem(Ensure.NotNullObject<TKey>(key), Ensure.NullableOrNotNullObject<TValue>(value)));
+        get => TryGetItem(Ensure.OfType<TKey>(key), out TValue v) ? v : throw KeyNotFound($"{key}");
+        set => EnsureNotReadOnly(() => SetItem(Ensure.OfType<TKey>(key), Ensure.OfTypeOrNullable<TValue>(value)));
     }
 
     public ICollection<TKey> Keys => _dictionary.Keys;
@@ -82,13 +82,13 @@ public class Map<TKey, TValue>
     ICollection IDictionary.Values => Id.Values;
 
     void IDictionary.Add(object key, object? value) =>
-        Add(Ensure.NotNullObject<TKey>(key), Ensure.NullableOrNotNullObject<TValue>(value));
+        Add(Ensure.OfType<TKey>(key), Ensure.OfTypeOrNullable<TValue>(value));
 
     bool IDictionary.Contains(object key) =>
-        Ensure.TryNotNullObject<TKey>(key, out var k) && ContainsKey(k);
+        Ensure.TryOfType<TKey>(key, out var k) && ContainsKey(k);
 
     void IDictionary.Remove(object key) =>
-        IfNotReadOnly(() => Ensure.IfNotNullObject<TKey>(key, k => RemoveItem(k)));
+        IfNotReadOnly(() => Ensure.IfOfType<TKey>(key, k => RemoveItem(k)));
 
     IDictionaryEnumerator IDictionary.GetEnumerator() =>
         Id.GetEnumerator();
