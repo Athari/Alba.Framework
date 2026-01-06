@@ -216,6 +216,14 @@ public static partial class EnumerableExts
                 throw new InvalidOperationException("Sequence is empty.");
             return true;
         }
+
+        public IEnumerable<T> Do(Action<T> action)
+        {
+            foreach (var item in @this) {
+                action(item);
+                yield return item;
+            }
+        }
     }
 
     extension<T>(IEnumerable<T?> @this)
