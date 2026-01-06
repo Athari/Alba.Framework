@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.IO.Pipelines;
 using System.Runtime.CompilerServices;
 using System.Transactions;
+using Alba.Framework.Common;
 
 namespace Alba.Framework.Threading;
 
@@ -20,13 +22,22 @@ public static class Await
             new(@this, alwaysYield);
     }
 
+    extension(PipeScheduler @this)
+    {
+        public PipeSchedulerAwaiter GetAwaiter() =>
+            new(@this, alwaysYield: false);
+
+        public PipeSchedulerAwaiter GetAwaiter(bool alwaysYield = false) =>
+            new(@this, alwaysYield);
+    }
+
     extension(TaskFactory @this)
     {
         public TaskSchedulerAwaiter GetAwaiter() =>
-            new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)));
+            new(Ensure.NotNull(@this.Scheduler));
 
         public TaskSchedulerAwaiter GetAwaiter(bool alwaysYield = false) =>
-            new(@this.Scheduler ?? throw new ArgumentNullException(nameof(@this)), alwaysYield);
+            new(Ensure.NotNull(@this.Scheduler), alwaysYield);
     }
 
     extension(CancellationToken @this)
@@ -83,8 +94,8 @@ public static class Await
     {
         public bool IsCompleted =>
             !alwaysYield && (
-                (scheduler == TaskScheduler.Default && Thread.CurrentThread.IsThreadPoolThread)
-             || (scheduler == TaskScheduler.Current && TaskScheduler.Current != TaskScheduler.Default)
+                (scheduler == TaskScheduler.Default && Thread.CurrentThread.IsThreadPoolThread) ||
+                (scheduler == TaskScheduler.Current && TaskScheduler.Current != TaskScheduler.Default)
             );
 
         public void OnCompleted(Action continuation)
@@ -108,6 +119,36 @@ public static class Await
         public void GetResult() { }
     }
 
+    public readonly struct PipeSchedulerAwaiter(PipeScheduler scheduler, bool alwaysYield = false)
+        : IAwaiter<PipeSchedulerAwaiter>
+    {
+        public bool IsCompleted =>
+            !alwaysYield && (
+                (scheduler == PipeScheduler.ThreadPool && Thread.CurrentThread.IsThreadPoolThread) ||
+                (scheduler == PipeScheduler.Inline)
+            );
+
+        public void OnCompleted(Action continuation)
+        {
+            if (scheduler == PipeScheduler.ThreadPool)
+                ThreadPool.QueueUserWorkItem(Execute, continuation);
+            else
+                scheduler.Schedule(Execute, continuation);
+        }
+
+        public void UnsafeOnCompleted(Action continuation)
+        {
+            if (scheduler == PipeScheduler.ThreadPool)
+                ThreadPool.UnsafeQueueUserWorkItem(Execute, continuation);
+            else
+                scheduler.Schedule(Execute, continuation);
+        }
+
+        public PipeSchedulerAwaiter GetAwaiter() => this;
+
+        public void GetResult() { }
+    }
+
     public readonly struct SynchronizationContextAwaiter(SynchronizationContext syncContext)
         : IAwaiter<SynchronizationContextAwaiter>
     {
@@ -117,7 +158,7 @@ public static class Await
             syncContext.Post(Execute, continuation);
 
         public void UnsafeOnCompleted(Action continuation) =>
-            syncContext.Post(Execute, continuation);
+            OnCompleted(continuation);
 
         public SynchronizationContextAwaiter GetAwaiter() => this;
 
