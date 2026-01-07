@@ -8,7 +8,11 @@ public static class DoubleExts
 
     extension(double @this)
     {
-        public bool IsNaN => double.IsNaN(@this);
+        public bool IsValid => !double.IsNaN(@this);
+        public bool IsInvalid => double.IsNaN(@this);
+        public bool IsInf => double.IsInfinity(@this);
+        public bool IsPositiveInf => double.IsPositiveInfinity(@this);
+        public bool IsNegativeInf => double.IsNegativeInfinity(@this);
         public bool IsOne => DoubleEpsilonOperations.IsOne(@this);
         public bool IsZero => DoubleEpsilonOperations.IsZero(@this);
         public bool IsBetweenZeroAndOne => DoubleEpsilonOperations.IsBetweenZeroAndOne(@this);
