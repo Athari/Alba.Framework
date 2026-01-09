@@ -4,7 +4,15 @@ public static class CancellationTokenSourceExts
 {
     extension(CancellationTokenSource? @this)
     {
-        public async Task CancelAndDisposeAsync()
+        public void CancelAndDispose()
+        {
+            if (@this != null) {
+                @this.Cancel();
+                @this.Dispose();
+            }
+        }
+
+        public async ValueTask CancelAndDisposeAsync()
         {
             if (@this != null) {
                 await @this.CancelAsync();
