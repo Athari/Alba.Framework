@@ -7,5 +7,5 @@ namespace Alba.Framework.Threading.Tasks.Schedulers;
 /// execute in the order that they were queued. Uses a single thread.
 /// </summary>
 [SupportedOSPlatform("windows")]
-public sealed class ThreadTaskScheduler(ApartmentState apartmentState = ApartmentState.MTA, string threadName = "ThreadTaskScheduler")
-    : ApartmentTaskScheduler(1, apartmentState, threadName);
+public sealed class ThreadScheduler(ApartmentState apartmentState = ApartmentState.MTA, string threadName = "ThreadTaskScheduler")
+    : ApartmentScheduler(1, apartmentState, threadName);

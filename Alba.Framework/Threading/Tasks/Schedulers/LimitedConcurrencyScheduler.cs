@@ -6,7 +6,7 @@
 /// Documentation: http://blogs.msdn.com/b/pfxteam/archive/2010/04/09/9990424.aspx
 /// License: MS-LPL
 /// </summary>
-public class LimitedConcurrencyTaskScheduler : TaskScheduler
+public class LimitedConcurrencyScheduler : TaskScheduler
 {
     [ThreadStatic]
     private static bool _CurrentThreadIsProcessingItems;
@@ -19,7 +19,7 @@ public class LimitedConcurrencyTaskScheduler : TaskScheduler
 
     /// <summary>Initializes an instance of the LimitedConcurrencyLevelTaskScheduler class with the specified degree of parallelism.</summary>
     /// <param name="maxDegreeOfParallelism">The maximum degree of parallelism provided by this scheduler.</param>
-    public LimitedConcurrencyTaskScheduler(int maxDegreeOfParallelism)
+    public LimitedConcurrencyScheduler(int maxDegreeOfParallelism)
     {
         Guard.IsGreaterThan(maxDegreeOfParallelism, 0);
         MaximumConcurrencyLevel = maxDegreeOfParallelism;

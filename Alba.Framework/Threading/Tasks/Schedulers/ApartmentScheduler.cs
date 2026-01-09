@@ -13,7 +13,7 @@ namespace Alba.Framework.Threading.Tasks.Schedulers;
 /// License: MS-LPL
 /// </summary>
 [SupportedOSPlatform("windows")]
-public class ApartmentTaskScheduler : TaskScheduler, IDisposable
+public class ApartmentScheduler : TaskScheduler, IDisposable
 {
     private readonly BlockingCollection<Task> _tasks;
     private readonly List<Thread> _threads;
@@ -24,7 +24,7 @@ public class ApartmentTaskScheduler : TaskScheduler, IDisposable
     /// <param name="numberOfThreads">The number of threads that should be created and used by this scheduler.</param>
     /// <param name="apartmentState">Apartment state of created threads.</param>
     /// <param name="threadName">Base name for threads.</param>
-    public ApartmentTaskScheduler(int numberOfThreads = 1, ApartmentState apartmentState = ApartmentState.MTA, string threadName = "ApartmentTaskScheduler")
+    public ApartmentScheduler(int numberOfThreads = 1, ApartmentState apartmentState = ApartmentState.MTA, string threadName = "ApartmentTaskScheduler")
     {
         Guard.IsGreaterThan(numberOfThreads, 0, nameof(numberOfThreads));
 
