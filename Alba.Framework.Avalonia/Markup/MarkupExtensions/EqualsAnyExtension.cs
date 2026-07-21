@@ -11,7 +11,7 @@ public class EqualsAnyExtension : ParamBinding<object?>
 {
     private static readonly EqualsAnyConverter _convEqualsAny = new();
 
-    public EqualsAnyExtension(IBinding b1, object? param) : base(b1, param) => Converter = _convEqualsAny;
+    public EqualsAnyExtension(BindingBase b1, object? param) : base(b1, param) => Converter = _convEqualsAny;
 
     internal class EqualsAnyConverter : IMultiValueConverter
     {

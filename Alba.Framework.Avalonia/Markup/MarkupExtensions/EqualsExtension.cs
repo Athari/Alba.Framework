@@ -10,7 +10,7 @@ public class EqualsExtension : ParamBinding<object?>
 {
     private static readonly EqualsConverter _conv = new();
 
-    public EqualsExtension(IBinding b1, object? param) : base(b1, param) => Converter = _conv;
+    public EqualsExtension(BindingBase b1, object? param) : base(b1, param) => Converter = _conv;
 
     private class EqualsConverter : IMultiValueConverter
     {

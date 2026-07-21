@@ -9,7 +9,7 @@ public class NotEqualsAnyExtension : ParamBinding<object?>
     private static readonly EqualsAnyExtension.EqualsAnyConverter _convEqualsAny = new();
     private static readonly NotEqualsAnyConverter _convNotEqualsAny = new();
 
-    public NotEqualsAnyExtension(IBinding b1, object? param) : base(b1, param) => Converter = _convNotEqualsAny;
+    public NotEqualsAnyExtension(BindingBase b1, object? param) : base(b1, param) => Converter = _convNotEqualsAny;
 
     internal class NotEqualsAnyConverter : IMultiValueConverter
     {
