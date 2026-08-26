@@ -171,11 +171,27 @@ public static partial class StringExts
 
         [Pure]
         public int? TryParseInt32() =>
-            @this != null && int.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+            int.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
 
         [Pure]
         public int? TryParseInt32(NumberStyles style) =>
-            @this != null && int.TryParse(@this, style, Inv, out var v) ? v : null;
+            int.TryParse(@this, style, Inv, out var v) ? v : null;
+
+        [Pure]
+        public long? TryParseInt64() =>
+            long.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+
+        [Pure]
+        public long? TryParseInt64(NumberStyles style) =>
+            long.TryParse(@this, style, Inv, out var v) ? v : null;
+
+        [Pure]
+        public double? TryParseDouble() =>
+            double.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+
+        [Pure]
+        public double? TryParseDouble(NumberStyles style) =>
+            double.TryParse(@this, style, Inv, out var v) ? v : null;
 
         [Pure, ContractAnnotation("null => null; notnull => canbenull")]
         public string? NullIfEmpty() =>
