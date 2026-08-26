@@ -16,6 +16,12 @@ public static partial class MatchExts
         public string Get(string groupName) =>
             @this.Groups[groupName].Value;
 
+        public ReadOnlySpan<char> GetSpan(int groupIndex = 1) =>
+            @this.Groups[groupIndex].ValueSpan;
+
+        public ReadOnlySpan<char> GetSpan(string groupName) =>
+            @this.Groups[groupName].ValueSpan;
+
         public IEnumerable<string> GetAll(int groupNum = 1) =>
             @this.Groups[groupNum].Captures.Select(c => c.Value);
 
