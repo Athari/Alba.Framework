@@ -171,7 +171,7 @@ public static partial class StringExts
 
         [Pure]
         public int? TryParseInt32() =>
-            int.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+            int.TryParse(@this, Inv, out var v) ? v : null;
 
         [Pure]
         public int? TryParseInt32(NumberStyles style) =>
@@ -179,7 +179,7 @@ public static partial class StringExts
 
         [Pure]
         public long? TryParseInt64() =>
-            long.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+            long.TryParse(@this, Inv, out var v) ? v : null;
 
         [Pure]
         public long? TryParseInt64(NumberStyles style) =>
@@ -187,7 +187,7 @@ public static partial class StringExts
 
         [Pure]
         public double? TryParseDouble() =>
-            double.TryParse(@this, NumberStyles.Integer, Inv, out var v) ? v : null;
+            double.TryParse(@this, Inv, out var v) ? v : null;
 
         [Pure]
         public double? TryParseDouble(NumberStyles style) =>
